@@ -3,5 +3,5 @@ package pianolearn.diplomskirad.constants;
 public class Strings {
 
     // Strings on screen
-    public static String appTitle = "Learn piano";
+    public static final String appTitle = "Learn piano";
 }

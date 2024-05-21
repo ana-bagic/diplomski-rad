@@ -11,10 +11,10 @@ public class PianoLearn extends Application {
 
     @Override
     public void start(Stage stage) {
-        MainViewController controller = new MainViewController();
-        MainView view = new MainView(controller);
+        MainView view = new MainView();
+        MainViewController controller = new MainViewController(view);
 
-        Scene scene = new Scene(view);
+        Scene scene = new Scene(view.getRoot(), 1000, 700);
         stage.setTitle(Strings.appTitle);
         stage.setScene(scene);
         stage.show();
