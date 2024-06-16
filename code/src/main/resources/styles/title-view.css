@@ -1,0 +1,15 @@
+@import 'colors.css';
+@import 'fonts.css';
+
+.background {
+    -fx-background-color: -background-color;
+}
+
+.button {
+    -fx-background-color: -secondary-color;
+    -fx-background-radius: 20;
+}
+
+.title {
+    -fx-text-fill: -secondary-color;
+}
