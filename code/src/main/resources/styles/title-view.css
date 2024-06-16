@@ -3,13 +3,24 @@
 
 .background {
     -fx-background-color: -background-color;
+    -fx-alignment: center;
+    -fx-spacing: 60;
+}
+
+.title {
+    -fx-text-fill: -secondary-color;
+}
+
+.buttons-stack-h-box {
+    -fx-alignment: center;
+    -fx-spacing: 50;
 }
 
 .button {
     -fx-background-color: -secondary-color;
     -fx-background-radius: 20;
-}
-
-.title {
-    -fx-text-fill: -secondary-color;
+    -fx-max-width: 100;
+    -fx-max-height: 100;
+    -fx-min-width: 100;
+    -fx-min-height: 100;
 }

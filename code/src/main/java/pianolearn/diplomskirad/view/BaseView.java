@@ -10,7 +10,6 @@ public abstract class BaseView {
     protected void setupGUI() {
         addViews();
         styleViews();
-        setupConstraints();
         setupActions();
     }
 
@@ -19,21 +18,16 @@ public abstract class BaseView {
     protected void styleViews() {
     }
 
-    protected abstract void setupConstraints();
-
     protected void setupActions() {
     }
 
-    public abstract Pane getRoot();
+    public abstract Pane getRootPane();
 
-    protected void bindImageToButton(Image image, Button button, double width, double height) {
+    protected void bindImageToButton(Image image, Button button) {
         ImageView imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
         imageView.fitWidthProperty().bind(button.widthProperty());
         imageView.fitHeightProperty().bind(button.heightProperty());
         button.setGraphic(imageView);
-
-        button.setMinSize(width, height);
-        button.setMaxSize(width, height);
     }
 }

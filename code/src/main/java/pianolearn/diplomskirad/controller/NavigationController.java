@@ -8,7 +8,7 @@ import java.util.Stack;
 public class NavigationController {
 
     private final Stage stage;
-    private final Stack<BaseViewController> controllerStack = new Stack<>();
+    private final Stack<Scene> sceneStack = new Stack<>();
 
     public NavigationController(Stage stage) {
         this.stage = stage;
@@ -20,19 +20,15 @@ public class NavigationController {
     }
 
     public void push(BaseViewController viewController) {
-        controllerStack.push(viewController);
-        showScene(viewController);
+        Scene scene = new Scene(viewController.getView(), 1200, 800);
+        sceneStack.push(scene);
+        stage.setScene(scene);
     }
 
     public void pop() {
-        if (!controllerStack.isEmpty()) {
-            controllerStack.pop();
-            showScene(controllerStack.peek());
+        if (!sceneStack.isEmpty()) {
+            sceneStack.pop();
+            stage.setScene(sceneStack.peek());
         }
-    }
-
-    private void showScene(BaseViewController viewController) {
-        Scene scene = new Scene(viewController.getView(), 1200, 800);
-        stage.setScene(scene);
     }
 }

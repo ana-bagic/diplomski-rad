@@ -52,12 +52,7 @@ public class PianoKeyboard extends BaseView {
     }
 
     @Override
-    protected void setupConstraints() {
-
-    }
-
-    @Override
-    public Pane getRoot() {
+    public Pane getRootPane() {
         return root;
     }
 }

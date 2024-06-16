@@ -1,6 +1,5 @@
 package pianolearn.diplomskirad.view.screens;
 
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -12,10 +11,10 @@ import pianolearn.diplomskirad.view.BaseView;
 
 public class TitleView extends BaseView {
 
-    private final VBox root = new VBox();
+    private final VBox rootPane = new VBox();
 
     private final Label titleLabel = new Label();
-    private final HBox buttonsStack = new HBox();
+    private final HBox buttonsStackHBox = new HBox();
     private final Button uploadButton = new Button();
     private final Button libraryButton = new Button();
     private final Button settingsButton = new Button();
@@ -31,45 +30,40 @@ public class TitleView extends BaseView {
 
     @Override
     protected void addViews() {
-        buttonsStack.getChildren().addAll(uploadButton, libraryButton, settingsButton);
-        root.getChildren().addAll(titleLabel, buttonsStack);
+        buttonsStackHBox.getChildren().addAll(uploadButton, libraryButton, settingsButton);
+        rootPane.getChildren().addAll(titleLabel, buttonsStackHBox);
     }
 
     @Override
     protected void styleViews() {
-        root.getStylesheets().add(Styles.TITLE_VIEW_STYLE);
-        root.getStyleClass().add("background");
+        rootPane.getStylesheets().add(Styles.TITLE_VIEW_STYLE);
+        rootPane.getStyleClass().add("background");
 
-        titleLabel.getStyleClass().add("title");
-        titleLabel.getStyleClass().add("font-title");
+        titleLabel.getStyleClass().addAll("title", "font-title");
         titleLabel.setText(Strings.appTitle);
 
-        double BUTTON_SIZE = 100;
+        buttonsStackHBox.getStyleClass().add("buttons-stack-h-box");
+
         uploadButton.getStyleClass().add("button");
-        bindImageToButton(Images.uploadIcon, uploadButton, BUTTON_SIZE, BUTTON_SIZE);
-        uploadButton.setOnAction(e -> uploadButtonClicked.onButtonClicked());
+        bindImageToButton(Images.uploadIcon, uploadButton);
 
         libraryButton.getStyleClass().add("button");
-        bindImageToButton(Images.musicLibraryIcon, libraryButton, BUTTON_SIZE, BUTTON_SIZE);
-        libraryButton.setOnAction(e -> libraryButtonClicked.onButtonClicked());
+        bindImageToButton(Images.musicLibraryIcon, libraryButton);
 
         settingsButton.getStyleClass().add("button");
-        bindImageToButton(Images.settingsIcon, settingsButton, BUTTON_SIZE, BUTTON_SIZE);
+        bindImageToButton(Images.settingsIcon, settingsButton);
+    }
+
+    @Override
+    protected void setupActions() {
+        uploadButton.setOnAction(e -> uploadButtonClicked.onButtonClicked());
+        libraryButton.setOnAction(e -> libraryButtonClicked.onButtonClicked());
         settingsButton.setOnAction(e -> settingsButtonClicked.onButtonClicked());
     }
 
     @Override
-    protected void setupConstraints() {
-        root.setAlignment(Pos.CENTER);
-        root.setSpacing(60);
-
-        buttonsStack.setAlignment(Pos.CENTER);
-        buttonsStack.setSpacing(50);
-    }
-
-    @Override
-    public VBox getRoot() {
-        return root;
+    public VBox getRootPane() {
+        return rootPane;
     }
 
     public void setUploadButtonClicked(ButtonClickListener uploadButtonClicked) {
