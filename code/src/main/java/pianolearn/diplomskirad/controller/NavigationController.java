@@ -5,16 +5,15 @@ import javafx.stage.Stage;
 
 import java.util.Stack;
 
-public class NavigationController {
+public enum NavigationController {
 
-    private final Stage stage;
+    INSTANCE;
+
+    private Stage stage;
     private final Stack<Scene> sceneStack = new Stack<>();
 
-    public NavigationController(Stage stage) {
+    public void init(Stage stage, BaseViewController viewController) {
         this.stage = stage;
-    }
-
-    public void start(BaseViewController viewController) {
         push(viewController);
         stage.show();
     }

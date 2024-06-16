@@ -3,13 +3,13 @@ package pianolearn.diplomskirad.controller.screens;
 import javafx.scene.layout.Pane;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
-import pianolearn.diplomskirad.view.screens.SettingsView;
+import pianolearn.diplomskirad.view.screens.UploadView;
 
-public class SettingsViewController extends BaseViewController {
+public class UploadViewController extends BaseViewController {
 
-    private final SettingsView view = new SettingsView();
+    private final UploadView view = new UploadView();
 
-    public SettingsViewController() {
+    public UploadViewController() {
         super();
         setupListeners();
     }

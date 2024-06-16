@@ -9,8 +9,8 @@ public class TitleViewController extends BaseViewController {
 
     private final TitleView view = new TitleView();
 
-    public TitleViewController(NavigationController navigationController) {
-        super(navigationController);
+    public TitleViewController() {
+        super();
         setupListeners();
     }
 
@@ -20,8 +20,8 @@ public class TitleViewController extends BaseViewController {
     }
 
     private void setupListeners() {
-        view.setUploadButtonClicked(() -> System.out.println("Upload button clicked"));
+        view.setUploadButtonClicked(() -> NavigationController.INSTANCE.push(new UploadViewController()));
         view.setLibraryButtonClicked(() -> System.out.println("Library button clicked"));
-        view.setSettingsButtonClicked(() -> navigationController.push(new SettingsViewController(navigationController)));
+        view.setSettingsButtonClicked(() -> NavigationController.INSTANCE.push(new SettingsViewController()));
     }
 }
