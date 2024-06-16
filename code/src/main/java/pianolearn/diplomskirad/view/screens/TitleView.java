@@ -7,6 +7,7 @@ import javafx.scene.layout.*;
 import pianolearn.diplomskirad.constants.Images;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.constants.Styles;
+import pianolearn.diplomskirad.listener.ButtonClickListener;
 import pianolearn.diplomskirad.view.BaseView;
 
 public class TitleView extends BaseView {
@@ -15,9 +16,13 @@ public class TitleView extends BaseView {
 
     private final Label titleLabel = new Label();
     private final HBox buttonsStack = new HBox();
-    private final Button fromComputerButton = new Button();
-    private final Button fromLibraryButton = new Button();
+    private final Button uploadButton = new Button();
+    private final Button libraryButton = new Button();
     private final Button settingsButton = new Button();
+
+    private ButtonClickListener uploadButtonClicked;
+    private ButtonClickListener libraryButtonClicked;
+    private ButtonClickListener settingsButtonClicked;
 
     public TitleView() {
         super();
@@ -26,7 +31,7 @@ public class TitleView extends BaseView {
 
     @Override
     protected void addViews() {
-        buttonsStack.getChildren().addAll(fromComputerButton, fromLibraryButton, settingsButton);
+        buttonsStack.getChildren().addAll(uploadButton, libraryButton, settingsButton);
         root.getChildren().addAll(titleLabel, buttonsStack);
     }
 
@@ -40,14 +45,17 @@ public class TitleView extends BaseView {
         titleLabel.setText(Strings.appTitle);
 
         double BUTTON_SIZE = 100;
-        fromComputerButton.getStyleClass().add("button");
-        bindImageToButton(Images.uploadIcon, fromComputerButton, BUTTON_SIZE, BUTTON_SIZE);
+        uploadButton.getStyleClass().add("button");
+        bindImageToButton(Images.uploadIcon, uploadButton, BUTTON_SIZE, BUTTON_SIZE);
+        uploadButton.setOnAction(e -> uploadButtonClicked.onButtonClicked());
 
-        fromLibraryButton.getStyleClass().add("button");
-        bindImageToButton(Images.musicLibraryIcon, fromLibraryButton, BUTTON_SIZE, BUTTON_SIZE);
+        libraryButton.getStyleClass().add("button");
+        bindImageToButton(Images.musicLibraryIcon, libraryButton, BUTTON_SIZE, BUTTON_SIZE);
+        libraryButton.setOnAction(e -> libraryButtonClicked.onButtonClicked());
 
         settingsButton.getStyleClass().add("button");
         bindImageToButton(Images.settingsIcon, settingsButton, BUTTON_SIZE, BUTTON_SIZE);
+        settingsButton.setOnAction(e -> settingsButtonClicked.onButtonClicked());
     }
 
     @Override
@@ -62,5 +70,17 @@ public class TitleView extends BaseView {
     @Override
     public VBox getRoot() {
         return root;
+    }
+
+    public void setUploadButtonClicked(ButtonClickListener uploadButtonClicked) {
+        this.uploadButtonClicked = uploadButtonClicked;
+    }
+
+    public void setLibraryButtonClicked(ButtonClickListener libraryButtonClicked) {
+        this.libraryButtonClicked = libraryButtonClicked;
+    }
+
+    public void setSettingsButtonClicked(ButtonClickListener settingsButtonClicked) {
+        this.settingsButtonClicked = settingsButtonClicked;
     }
 }
