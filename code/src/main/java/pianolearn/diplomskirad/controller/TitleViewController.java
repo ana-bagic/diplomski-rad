@@ -1,12 +1,17 @@
 package pianolearn.diplomskirad.controller;
 
-import pianolearn.diplomskirad.view.TitleView;
+import javafx.scene.layout.Pane;
+import pianolearn.diplomskirad.view.screens.TitleView;
 
-public class TitleViewController {
+public class TitleViewController extends BaseViewController {
 
-    public final TitleView view;
+    private final TitleView view = new TitleView();
 
-    public TitleViewController(TitleView view) {
-        this.view = view;
+    public TitleViewController(NavigationController navigationController) {
+        super(navigationController);
+    }
+
+    public Pane getView() {
+        return view.getRoot();
     }
 }

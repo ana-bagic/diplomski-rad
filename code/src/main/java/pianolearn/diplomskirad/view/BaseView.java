@@ -1,17 +1,11 @@
-package pianolearn.diplomskirad.view.base;
+package pianolearn.diplomskirad.view;
 
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-public abstract class BaseView<T extends Pane> {
-
-    protected final T root;
-
-    public BaseView(T root) {
-        this.root = root;
-    }
+public abstract class BaseView {
 
     protected void setupGUI() {
         addViews();
@@ -30,9 +24,7 @@ public abstract class BaseView<T extends Pane> {
     protected void setupActions() {
     }
 
-    public T getRoot() {
-        return root;
-    }
+    public abstract Pane getRoot();
 
     protected void bindImageToButton(Image image, Button button, double width, double height) {
         ImageView imageView = new ImageView(image);

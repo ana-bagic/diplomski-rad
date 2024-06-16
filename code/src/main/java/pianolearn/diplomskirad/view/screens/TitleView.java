@@ -1,4 +1,4 @@
-package pianolearn.diplomskirad.view;
+package pianolearn.diplomskirad.view.screens;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -7,9 +7,11 @@ import javafx.scene.layout.*;
 import pianolearn.diplomskirad.constants.Images;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.constants.Styles;
-import pianolearn.diplomskirad.view.base.BaseView;
+import pianolearn.diplomskirad.view.BaseView;
 
-public class TitleView extends BaseView<VBox> {
+public class TitleView extends BaseView {
+
+    private final VBox root = new VBox();
 
     private final Label titleLabel = new Label();
     private final HBox buttonsStack = new HBox();
@@ -18,7 +20,7 @@ public class TitleView extends BaseView<VBox> {
     private final Button settingsButton = new Button();
 
     public TitleView() {
-        super(new VBox());
+        super();
         setupGUI();
     }
 
@@ -55,5 +57,10 @@ public class TitleView extends BaseView<VBox> {
 
         buttonsStack.setAlignment(Pos.CENTER);
         buttonsStack.setSpacing(50);
+    }
+
+    @Override
+    public VBox getRoot() {
+        return root;
     }
 }
