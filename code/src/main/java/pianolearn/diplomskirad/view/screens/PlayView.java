@@ -13,6 +13,6 @@ public class PlayView extends BaseNavigationView {
     @Override
     protected void styleViews() {
         super.styleViews();
-        rootPane.getStylesheets().add(Styles.PLAY_VIEW_STYLE);
+        getStylesheets().add(Styles.PLAY_VIEW_STYLE);
     }
 }

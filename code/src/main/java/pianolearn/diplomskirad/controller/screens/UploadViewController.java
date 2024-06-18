@@ -10,7 +10,7 @@ import pianolearn.diplomskirad.view.screens.UploadView;
 
 import java.io.File;
 
-public class UploadViewController extends BaseViewController {
+public class UploadViewController implements BaseViewController {
 
     private final UploadView view = new UploadView();
 
@@ -21,7 +21,7 @@ public class UploadViewController extends BaseViewController {
 
     @Override
     public Pane getView() {
-        return view.getRootPane();
+        return view;
     }
 
     private void setupListeners() {

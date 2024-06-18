@@ -5,7 +5,7 @@ import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.view.screens.LibraryView;
 
-public class LibraryViewController extends BaseViewController {
+public class LibraryViewController implements BaseViewController {
 
     private final LibraryView view = new LibraryView();
 
@@ -16,7 +16,7 @@ public class LibraryViewController extends BaseViewController {
 
     @Override
     public Pane getView() {
-        return view.getRootPane();
+        return view;
     }
 
     public void setupListeners() {

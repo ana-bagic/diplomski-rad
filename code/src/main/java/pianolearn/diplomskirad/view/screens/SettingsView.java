@@ -23,7 +23,7 @@ public class SettingsView extends BaseNavigationView {
     @Override
     protected void styleViews() {
         super.styleViews();
-        rootPane.getStylesheets().add(Styles.SETTINGS_VIEW_STYLE);
+        getStylesheets().add(Styles.SETTINGS_VIEW_STYLE);
 
         headerLabel.getStyleClass().addAll("header", "font-header");
         headerLabel.setText(Strings.settingsLabel);

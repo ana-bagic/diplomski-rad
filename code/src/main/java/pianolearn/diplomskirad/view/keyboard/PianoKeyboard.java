@@ -50,9 +50,4 @@ public class PianoKeyboard extends BaseView {
     protected void addViews() {
 
     }
-
-    @Override
-    public Pane getRootPane() {
-        return root;
-    }
 }

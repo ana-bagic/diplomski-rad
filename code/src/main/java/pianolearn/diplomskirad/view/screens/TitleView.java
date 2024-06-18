@@ -13,7 +13,6 @@ import pianolearn.diplomskirad.view.BaseView;
 public class TitleView extends BaseView {
 
     private final VBox rootPane = new VBox();
-
     private final Label titleLabel = new Label();
     private final HBox buttonsStackHBox = new HBox();
     private final Button uploadButton = new Button();
@@ -33,11 +32,12 @@ public class TitleView extends BaseView {
     protected void addViews() {
         buttonsStackHBox.getChildren().addAll(uploadButton, libraryButton, settingsButton);
         rootPane.getChildren().addAll(titleLabel, buttonsStackHBox);
+        bindToSelf(rootPane);
     }
 
     @Override
     protected void styleViews() {
-        rootPane.getStylesheets().add(Styles.TITLE_VIEW_STYLE);
+        getStylesheets().add(Styles.TITLE_VIEW_STYLE);
         rootPane.getStyleClass().add("background");
 
         titleLabel.getStyleClass().addAll("title", "font-title");
@@ -63,11 +63,6 @@ public class TitleView extends BaseView {
         uploadButton.setOnAction(e -> uploadButtonListener.onButtonClicked());
         libraryButton.setOnAction(e -> libraryButtonListener.onButtonClicked());
         settingsButton.setOnAction(e -> settingsButtonListener.onButtonClicked());
-    }
-
-    @Override
-    public VBox getRootPane() {
-        return rootPane;
     }
 
     public void setUploadButtonListener(ButtonClickListener listener) {

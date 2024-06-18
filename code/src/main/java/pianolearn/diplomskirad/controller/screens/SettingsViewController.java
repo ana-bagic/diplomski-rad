@@ -5,7 +5,7 @@ import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.view.screens.SettingsView;
 
-public class SettingsViewController extends BaseViewController {
+public class SettingsViewController implements BaseViewController {
 
     private final SettingsView view = new SettingsView();
 
@@ -16,7 +16,7 @@ public class SettingsViewController extends BaseViewController {
 
     @Override
     public Pane getView() {
-        return view.getRootPane();
+        return view;
     }
 
     private void setupListeners() {

@@ -5,7 +5,7 @@ import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.view.screens.TitleView;
 
-public class TitleViewController extends BaseViewController {
+public class TitleViewController implements BaseViewController {
 
     private final TitleView view = new TitleView();
 
@@ -16,7 +16,7 @@ public class TitleViewController extends BaseViewController {
 
     @Override
     public Pane getView() {
-        return view.getRootPane();
+        return view;
     }
 
     private void setupListeners() {

@@ -5,7 +5,7 @@ import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.view.screens.PlayView;
 
-public class PlayViewController extends BaseViewController {
+public class PlayViewController implements BaseViewController {
 
     private final PlayView view = new PlayView();
 
@@ -16,7 +16,7 @@ public class PlayViewController extends BaseViewController {
 
     @Override
     public Pane getView() {
-        return view.getRootPane();
+        return view;
     }
 
     public void setupListeners() {

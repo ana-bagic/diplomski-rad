@@ -39,7 +39,7 @@ public class UploadView extends BaseNavigationView {
     @Override
     protected void styleViews() {
         super.styleViews();
-        rootPane.getStylesheets().add(Styles.UPLOAD_VIEW_STYLE);
+        getStylesheets().add(Styles.UPLOAD_VIEW_STYLE);
 
         header.getStyleClass().addAll("header", "font-header");
         header.setText(Strings.loadLabel);
