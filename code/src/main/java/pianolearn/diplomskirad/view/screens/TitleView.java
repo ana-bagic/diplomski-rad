@@ -70,15 +70,15 @@ public class TitleView extends BaseView {
         return rootPane;
     }
 
-    public void setUploadButtonListener(ButtonClickListener uploadButtonListener) {
-        this.uploadButtonListener = uploadButtonListener;
+    public void setUploadButtonListener(ButtonClickListener listener) {
+        uploadButtonListener = listener;
     }
 
-    public void setLibraryButtonListener(ButtonClickListener libraryButtonListener) {
-        this.libraryButtonListener = libraryButtonListener;
+    public void setLibraryButtonListener(ButtonClickListener listener) {
+        libraryButtonListener = listener;
     }
 
-    public void setSettingsButtonListener(ButtonClickListener settingsButtonListener) {
-        this.settingsButtonListener = settingsButtonListener;
+    public void setSettingsButtonListener(ButtonClickListener listener) {
+        settingsButtonListener = listener;
     }
 }

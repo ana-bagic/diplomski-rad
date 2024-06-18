@@ -21,7 +21,7 @@ public class TitleViewController extends BaseViewController {
 
     private void setupListeners() {
         view.setUploadButtonListener(() -> NavigationController.INSTANCE.push(new UploadViewController()));
-        view.setLibraryButtonListener(() -> System.out.println("Library button clicked"));
+        view.setLibraryButtonListener(() -> NavigationController.INSTANCE.push(new LibraryViewController()));
         view.setSettingsButtonListener(() -> NavigationController.INSTANCE.push(new SettingsViewController()));
     }
 }

@@ -11,8 +11,8 @@ import pianolearn.diplomskirad.view.BaseNavigationView;
 
 public class UploadView extends BaseNavigationView {
 
+    private final Label header = new Label();
     private final VBox centerVBox = new VBox();
-    private final Label loadLabel = new Label();
     private final HBox fileChooserHBox = new HBox();
     private final Button fileChooserButton = new Button();
     private final Label fileChosenLabel = new Label();
@@ -20,6 +20,7 @@ public class UploadView extends BaseNavigationView {
     private final Label errorLabel = new Label();
 
     private ButtonClickListener fileChooserButtonListener;
+    private ButtonClickListener confirmButtonListener;
 
     public UploadView() {
         super();
@@ -29,8 +30,9 @@ public class UploadView extends BaseNavigationView {
     @Override
     protected void addViews() {
         super.addViews();
+        topHBox.getChildren().add(header);
         fileChooserHBox.getChildren().addAll(fileChooserButton, fileChosenLabel);
-        centerVBox.getChildren().addAll(loadLabel, fileChooserHBox, confirmButton, errorLabel);
+        centerVBox.getChildren().addAll(fileChooserHBox, confirmButton, errorLabel);
         rootPane.setCenter(centerVBox);
     }
 
@@ -39,10 +41,10 @@ public class UploadView extends BaseNavigationView {
         super.styleViews();
         rootPane.getStylesheets().add(Styles.UPLOAD_VIEW_STYLE);
 
-        centerVBox.getStyleClass().add("center-v-box");
+        header.getStyleClass().addAll("header", "font-header");
+        header.setText(Strings.loadLabel);
 
-        loadLabel.getStyleClass().addAll("load-label", "font-header");
-        loadLabel.setText(Strings.loadLabel);
+        centerVBox.getStyleClass().add("center-v-box");
 
         fileChooserHBox.getStyleClass().add("file-chooser-h-box");
 
@@ -62,10 +64,15 @@ public class UploadView extends BaseNavigationView {
     protected void setupActions() {
         super.setupActions();
         fileChooserButton.setOnAction(e -> fileChooserButtonListener.onButtonClicked());
+        confirmButton.setOnAction(e -> confirmButtonListener.onButtonClicked());
     }
 
-    public void setFileChooserButtonListener(ButtonClickListener fileChooserButtonListener) {
-        this.fileChooserButtonListener = fileChooserButtonListener;
+    public void setFileChooserButtonListener(ButtonClickListener listener) {
+        fileChooserButtonListener = listener;
+    }
+
+    public void setConfirmButtonListener(ButtonClickListener listener) {
+        confirmButtonListener = listener;
     }
 
     public void setFileChosen(String fileChosen) {

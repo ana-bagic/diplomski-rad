@@ -27,6 +27,7 @@ public class UploadViewController extends BaseViewController {
     private void setupListeners() {
         view.setBackButtonListener(NavigationController.INSTANCE::pop);
         view.setFileChooserButtonListener(this::chooseFile);
+        view.setConfirmButtonListener(() -> NavigationController.INSTANCE.push(new PlayViewController()));
     }
 
     private void chooseFile() {

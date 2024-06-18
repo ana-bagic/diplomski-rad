@@ -44,7 +44,7 @@ public class BaseNavigationView extends BaseView {
         return rootPane;
     }
 
-    public void setBackButtonListener(ButtonClickListener backButtonListener) {
-        this.backButtonListener = backButtonListener;
+    public void setBackButtonListener(ButtonClickListener listener) {
+        backButtonListener = listener;
     }
 }

@@ -12,7 +12,7 @@ public class Strings {
     public static final String settingsButtonTooltip = "settings";
 
     // Upload screen
-    public static final String loadLabel = "load any .xml file";
+    public static final String loadLabel = "Load any .xml file";
     public static final String chooseFileLabel = "Choose a file";
     public static final String confirm = "Confirm";
     public static final String fileChooserXmlFiles = "XML files";
@@ -21,4 +21,10 @@ public class Strings {
                 "Please use MusicXML file with <score-partwise> root element.", fileName);
     }
     public static final String fileNotChosenError = "Error: file not chosen.";
+
+    // Library screen
+    public static final String libraryLabel = "Pick a song";
+
+    // Settings screen
+    public static final String settingsLabel = "Settings";
 }

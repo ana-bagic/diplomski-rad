@@ -5,11 +5,11 @@ import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.constants.Styles;
 import pianolearn.diplomskirad.view.BaseNavigationView;
 
-public class SettingsView extends BaseNavigationView {
+public class LibraryView extends BaseNavigationView {
 
-    private final Label headerLabel = new Label();
+    private final Label header = new Label();
 
-    public SettingsView() {
+    public LibraryView() {
         super();
         setupGUI();
     }
@@ -17,15 +17,15 @@ public class SettingsView extends BaseNavigationView {
     @Override
     protected void addViews() {
         super.addViews();
-        topHBox.getChildren().add(headerLabel);
+        topHBox.getChildren().add(header);
     }
 
     @Override
     protected void styleViews() {
         super.styleViews();
-        rootPane.getStylesheets().add(Styles.SETTINGS_VIEW_STYLE);
+        rootPane.getStylesheets().add(Styles.LIBRARY_VIEW_STYLE);
 
-        headerLabel.getStyleClass().addAll("header", "font-header");
-        headerLabel.setText(Strings.settingsLabel);
+        header.getStyleClass().addAll("header", "font-header");
+        header.setText(Strings.libraryLabel);
     }
 }

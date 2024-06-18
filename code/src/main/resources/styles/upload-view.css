@@ -1,12 +1,8 @@
 @import 'base-view.css';
 
 .center-v-box {
-    -fx-alignment: top-center;
+    -fx-alignment: center;
     -fx-spacing: 40;
-}
-
-.load-label {
-    -fx-text-fill: -secondary-color;
 }
 
 .file-chooser-h-box {
