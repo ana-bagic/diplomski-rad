@@ -1,23 +1,4 @@
-@import 'colors.css';
-@import 'fonts.css';
-
-.background {
-    -fx-background-color: -background-color;
-}
-
-.top-h-box {
-    -fx-padding: 30 50;
-    -fx-alignment: center-left;
-    -fx-spacing: 30;
-}
-
-.button {
-    -fx-background-color: -background-color;
-    -fx-max-width: 60;
-    -fx-max-height: 60;
-    -fx-min-width: 60;
-    -fx-min-height: 60;
-}
+@import 'base-view.css';
 
 .header {
     -fx-text-fill: -secondary-color;

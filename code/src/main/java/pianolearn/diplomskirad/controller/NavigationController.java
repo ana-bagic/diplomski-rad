@@ -30,4 +30,8 @@ public enum NavigationController {
             stage.setScene(sceneStack.peek());
         }
     }
+
+    public Stage getStage() {
+        return stage;
+    }
 }

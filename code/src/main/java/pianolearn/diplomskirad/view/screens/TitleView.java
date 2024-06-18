@@ -2,6 +2,7 @@ package pianolearn.diplomskirad.view.screens;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
 import pianolearn.diplomskirad.constants.Images;
 import pianolearn.diplomskirad.constants.Strings;
@@ -19,9 +20,9 @@ public class TitleView extends BaseView {
     private final Button libraryButton = new Button();
     private final Button settingsButton = new Button();
 
-    private ButtonClickListener uploadButtonClicked;
-    private ButtonClickListener libraryButtonClicked;
-    private ButtonClickListener settingsButtonClicked;
+    private ButtonClickListener uploadButtonListener;
+    private ButtonClickListener libraryButtonListener;
+    private ButtonClickListener settingsButtonListener;
 
     public TitleView() {
         super();
@@ -44,21 +45,24 @@ public class TitleView extends BaseView {
 
         buttonsStackHBox.getStyleClass().add("buttons-stack-h-box");
 
-        uploadButton.getStyleClass().add("button");
+        uploadButton.getStyleClass().add("option-button");
         bindImageToButton(Images.uploadIcon, uploadButton);
+        Tooltip.install(uploadButton, new Tooltip(Strings.uploadButtonTooltip));
 
-        libraryButton.getStyleClass().add("button");
+        libraryButton.getStyleClass().add("option-button");
         bindImageToButton(Images.musicLibraryIcon, libraryButton);
+        Tooltip.install(libraryButton, new Tooltip(Strings.libraryButtonTooltip));
 
-        settingsButton.getStyleClass().add("button");
+        settingsButton.getStyleClass().add("option-button");
         bindImageToButton(Images.settingsIcon, settingsButton);
+        Tooltip.install(settingsButton, new Tooltip(Strings.settingsButtonTooltip));
     }
 
     @Override
     protected void setupActions() {
-        uploadButton.setOnAction(e -> uploadButtonClicked.onButtonClicked());
-        libraryButton.setOnAction(e -> libraryButtonClicked.onButtonClicked());
-        settingsButton.setOnAction(e -> settingsButtonClicked.onButtonClicked());
+        uploadButton.setOnAction(e -> uploadButtonListener.onButtonClicked());
+        libraryButton.setOnAction(e -> libraryButtonListener.onButtonClicked());
+        settingsButton.setOnAction(e -> settingsButtonListener.onButtonClicked());
     }
 
     @Override
@@ -66,15 +70,15 @@ public class TitleView extends BaseView {
         return rootPane;
     }
 
-    public void setUploadButtonClicked(ButtonClickListener uploadButtonClicked) {
-        this.uploadButtonClicked = uploadButtonClicked;
+    public void setUploadButtonListener(ButtonClickListener uploadButtonListener) {
+        this.uploadButtonListener = uploadButtonListener;
     }
 
-    public void setLibraryButtonClicked(ButtonClickListener libraryButtonClicked) {
-        this.libraryButtonClicked = libraryButtonClicked;
+    public void setLibraryButtonListener(ButtonClickListener libraryButtonListener) {
+        this.libraryButtonListener = libraryButtonListener;
     }
 
-    public void setSettingsButtonClicked(ButtonClickListener settingsButtonClicked) {
-        this.settingsButtonClicked = settingsButtonClicked;
+    public void setSettingsButtonListener(ButtonClickListener settingsButtonListener) {
+        this.settingsButtonListener = settingsButtonListener;
     }
 }

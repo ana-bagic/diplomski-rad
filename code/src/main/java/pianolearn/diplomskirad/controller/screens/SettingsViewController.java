@@ -20,6 +20,6 @@ public class SettingsViewController extends BaseViewController {
     }
 
     private void setupListeners() {
-        view.setBackButtonClicked(NavigationController.INSTANCE::pop);
+        view.setBackButtonListener(NavigationController.INSTANCE::pop);
     }
 }

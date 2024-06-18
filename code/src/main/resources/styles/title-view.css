@@ -1,8 +1,6 @@
-@import 'colors.css';
-@import 'fonts.css';
+@import 'base-view.css';
 
 .background {
-    -fx-background-color: -background-color;
     -fx-alignment: center;
     -fx-spacing: 60;
 }
@@ -16,7 +14,7 @@
     -fx-spacing: 50;
 }
 
-.button {
+.option-button {
     -fx-background-color: -secondary-color;
     -fx-background-radius: 20;
     -fx-max-width: 100;

@@ -1,18 +1,24 @@
 package pianolearn.diplomskirad.view.screens;
 
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import pianolearn.diplomskirad.constants.Strings;
+import pianolearn.diplomskirad.constants.Styles;
 import pianolearn.diplomskirad.listener.ButtonClickListener;
-import pianolearn.diplomskirad.view.BaseView;
+import pianolearn.diplomskirad.view.BaseNavigationView;
 
-public class UploadView extends BaseView {
+public class UploadView extends BaseNavigationView {
 
-    private final BorderPane rootPane = new BorderPane();
+    private final VBox centerVBox = new VBox();
+    private final Label loadLabel = new Label();
+    private final HBox fileChooserHBox = new HBox();
+    private final Button fileChooserButton = new Button();
+    private final Label fileChosenLabel = new Label();
+    private final Button confirmButton = new Button();
 
-    private final Button backButton = new Button();
-
-    private ButtonClickListener backButtonClicked;
+    private ButtonClickListener fileChooserButtonListener;
 
     public UploadView() {
         super();
@@ -21,20 +27,49 @@ public class UploadView extends BaseView {
 
     @Override
     protected void addViews() {
-        rootPane.setTop(backButton);
+        super.addViews();
+        fileChooserHBox.getChildren().addAll(fileChooserButton, fileChosenLabel);
+        centerVBox.getChildren().addAll(loadLabel, fileChooserHBox, confirmButton);
+        rootPane.setCenter(centerVBox);
+    }
+
+    @Override
+    protected void styleViews() {
+        super.styleViews();
+        rootPane.getStylesheets().add(Styles.UPLOAD_VIEW_STYLE);
+
+        centerVBox.getStyleClass().add("center-v-box");
+
+        loadLabel.getStyleClass().addAll("load-label", "font-header");
+        loadLabel.setText(Strings.loadLabel);
+
+        fileChooserHBox.getStyleClass().add("file-chooser-h-box");
+
+        fileChooserButton.getStyleClass().addAll("file-chooser-button", "font-body");
+        fileChooserButton.setText(Strings.chooseFileLabel);
+
+        fileChosenLabel.getStyleClass().addAll("file-chosen-label", "font-body");
+
+        confirmButton.getStyleClass().addAll("confirm-button", "font-body");
+        confirmButton.setText(Strings.confirm);
+        confirmButton.setDisable(true);
     }
 
     @Override
     protected void setupActions() {
-        backButton.setOnAction(e -> backButtonClicked.onButtonClicked());
+        super.setupActions();
+        fileChooserButton.setOnAction(e -> fileChooserButtonListener.onButtonClicked());
     }
 
-    @Override
-    public Pane getRootPane() {
-        return rootPane;
+    public void setFileChooserButtonListener(ButtonClickListener fileChooserButtonListener) {
+        this.fileChooserButtonListener = fileChooserButtonListener;
     }
 
-    public void setBackButtonClicked(ButtonClickListener backButtonClicked) {
-        this.backButtonClicked = backButtonClicked;
+    public void setFileChosen(String fileChosen) {
+        fileChosenLabel.setText(fileChosen);
+    }
+
+    public void enableConfirmButton() {
+        confirmButton.setDisable(false);
     }
 }

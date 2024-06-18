@@ -1,0 +1,29 @@
+@import 'base-view.css';
+
+.center-v-box {
+    -fx-alignment: top-center;
+    -fx-spacing: 40;
+}
+
+.load-label {
+    -fx-text-fill: -secondary-color;
+}
+
+.file-chooser-h-box {
+    -fx-alignment: center;
+}
+
+.file-chooser-button {
+    -fx-background-color: -secondary-color;
+    -fx-text-fill: -background-color;
+}
+
+.file-chosen-label {
+    -fx-text-fill: -secondary-color;
+    -fx-label-padding: 20;
+}
+
+.confirm {
+    -fx-background-color: -secondary-color;
+    -fx-text-fill: -background-color;
+}

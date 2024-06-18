@@ -2,6 +2,16 @@ package pianolearn.diplomskirad.constants;
 
 public class Strings {
 
-    // Strings on screen
     public static final String appTitle = "Learn piano";
+
+    // Title screen
+    public static final String uploadButtonTooltip = "load file from computer";
+    public static final String libraryButtonTooltip = "play song from our library";
+    public static final String settingsButtonTooltip = "settings";
+
+    // Upload screen
+    public static final String loadLabel = "load any .xml file";
+    public static final String chooseFileLabel = "Choose a file";
+    public static final String confirm = "Confirm";
+    public static final String fileChooserXmlFiles = "XML files";
 }
