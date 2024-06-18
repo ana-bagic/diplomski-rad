@@ -27,3 +27,8 @@
     -fx-background-color: -secondary-color;
     -fx-text-fill: -background-color;
 }
+
+.error-label {
+    -fx-text-fill: -accent-color;
+    -fx-text-alignment: center;
+}

@@ -5,6 +5,7 @@ import javafx.stage.FileChooser;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
+import pianolearn.diplomskirad.music.xml.Marshaller;
 import pianolearn.diplomskirad.view.screens.UploadView;
 
 import java.io.File;
@@ -31,11 +32,25 @@ public class UploadViewController extends BaseViewController {
     private void chooseFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(Strings.chooseFileLabel);
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(Strings.fileChooserXmlFiles, "*.xml"));
+        FileChooser.ExtensionFilter xmlFilter = new FileChooser.ExtensionFilter(Strings.fileChooserXmlFiles, "*.xml");
+        fileChooser.getExtensionFilters().add(xmlFilter);
+
         File selectedFile = fileChooser.showOpenDialog(NavigationController.INSTANCE.getStage());
         if (selectedFile != null) {
-            view.setFileChosen(selectedFile.getName());
-            view.enableConfirmButton();
+            String fileName = selectedFile.getName();
+            view.setFileChosen(fileName);
+            boolean success = Marshaller.INSTANCE.unmarshall(selectedFile);
+
+            if (success) {
+                view.enableConfirm(true);
+                view.setError(Strings.empty);
+            } else {
+                view.enableConfirm(false);
+                view.setError(Strings.xmlLoadError(fileName));
+            }
+        } else {
+            view.enableConfirm(false);
+            view.setError(Strings.fileNotChosenError);
         }
     }
 }

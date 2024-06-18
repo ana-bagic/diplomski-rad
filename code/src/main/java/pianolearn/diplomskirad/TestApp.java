@@ -1,6 +1,6 @@
 package pianolearn.diplomskirad;
 
-import pianolearn.diplomskirad.midi.MidiInputReceiver;
+import pianolearn.diplomskirad.music.midi.MidiInputReceiver;
 
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;

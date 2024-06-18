@@ -17,6 +17,7 @@ public class UploadView extends BaseNavigationView {
     private final Button fileChooserButton = new Button();
     private final Label fileChosenLabel = new Label();
     private final Button confirmButton = new Button();
+    private final Label errorLabel = new Label();
 
     private ButtonClickListener fileChooserButtonListener;
 
@@ -29,7 +30,7 @@ public class UploadView extends BaseNavigationView {
     protected void addViews() {
         super.addViews();
         fileChooserHBox.getChildren().addAll(fileChooserButton, fileChosenLabel);
-        centerVBox.getChildren().addAll(loadLabel, fileChooserHBox, confirmButton);
+        centerVBox.getChildren().addAll(loadLabel, fileChooserHBox, confirmButton, errorLabel);
         rootPane.setCenter(centerVBox);
     }
 
@@ -53,6 +54,8 @@ public class UploadView extends BaseNavigationView {
         confirmButton.getStyleClass().addAll("confirm-button", "font-body");
         confirmButton.setText(Strings.confirm);
         confirmButton.setDisable(true);
+
+        errorLabel.getStyleClass().addAll("error-label", "font-micro");
     }
 
     @Override
@@ -69,7 +72,11 @@ public class UploadView extends BaseNavigationView {
         fileChosenLabel.setText(fileChosen);
     }
 
-    public void enableConfirmButton() {
-        confirmButton.setDisable(false);
+    public void enableConfirm(boolean enabled) {
+        confirmButton.setDisable(!enabled);
+    }
+
+    public void setError(String error) {
+        errorLabel.setText(error);
     }
 }

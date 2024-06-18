@@ -14,3 +14,8 @@
     -fx-font-family: "Arial";
     -fx-font-size: 20px;
 }
+
+.font-micro {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+}
