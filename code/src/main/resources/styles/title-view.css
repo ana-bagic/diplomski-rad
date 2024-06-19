@@ -2,11 +2,11 @@
 
 .background {
     -fx-alignment: center;
-    -fx-spacing: 60;
+    -fx-spacing: 70;
 }
 
 .title {
-    -fx-text-fill: -secondary-color;
+    -fx-text-fill: -primary-color;
 }
 
 .buttons-stack-h-box {
@@ -17,10 +17,10 @@
 .option-button {
     -fx-background-color: -secondary-color;
     -fx-background-radius: 20;
-    -fx-max-width: 100;
-    -fx-max-height: 100;
-    -fx-min-width: 100;
-    -fx-min-height: 100;
+    -fx-max-width: 200;
+    -fx-max-height: 200;
+    -fx-min-width: 200;
+    -fx-min-height: 200;
 }
 
 .option-button:hover {
