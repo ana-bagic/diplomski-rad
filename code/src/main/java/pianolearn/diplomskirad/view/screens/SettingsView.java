@@ -1,13 +1,15 @@
 package pianolearn.diplomskirad.view.screens;
 
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.constants.Styles;
 import pianolearn.diplomskirad.view.BaseNavigationView;
 
 public class SettingsView extends BaseNavigationView {
 
-    private final Label headerLabel = new Label();
+    private final VBox centerVBox = new VBox();
+    private final Label settingsLabel = new Label();
 
     public SettingsView() {
         super();
@@ -17,7 +19,8 @@ public class SettingsView extends BaseNavigationView {
     @Override
     protected void addViews() {
         super.addViews();
-        topHBox.getChildren().add(headerLabel);
+        centerVBox.getChildren().add(settingsLabel);
+        rootPane.setCenter(centerVBox);
     }
 
     @Override
@@ -25,7 +28,9 @@ public class SettingsView extends BaseNavigationView {
         super.styleViews();
         getStylesheets().add(Styles.SETTINGS_VIEW_STYLE);
 
-        headerLabel.getStyleClass().addAll("header", "font-header");
-        headerLabel.setText(Strings.settingsLabel);
+        centerVBox.getStyleClass().add("center-v-box");
+
+        settingsLabel.getStyleClass().addAll("header", "font-header");
+        settingsLabel.setText(Strings.settingsLabel);
     }
 }
