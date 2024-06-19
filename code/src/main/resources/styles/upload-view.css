@@ -25,6 +25,6 @@
 }
 
 .error-label {
-    -fx-text-fill: -accent-color;
+    -fx-text-fill: -error-color;
     -fx-text-alignment: center;
 }

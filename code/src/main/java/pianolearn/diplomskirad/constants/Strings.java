@@ -7,9 +7,9 @@ public class Strings {
     public static final String appTitle = "Learn piano";
 
     // Title screen
-    public static final String uploadButtonTooltip = "load file from computer";
-    public static final String libraryButtonTooltip = "play song from our library";
-    public static final String settingsButtonTooltip = "settings";
+    public static final String uploadButtonTooltip = "Load file from computer";
+    public static final String libraryButtonTooltip = "Play song from our library";
+    public static final String settingsButtonTooltip = "Settings";
 
     // Upload screen
     public static final String loadLabel = "Load any .xml file";
@@ -24,6 +24,8 @@ public class Strings {
 
     // Library screen
     public static final String libraryLabel = "Pick a song";
+    public static final String classicRow = "classic:";
+    public static final String modernRow = "modern:";
 
     // Settings screen
     public static final String settingsLabel = "Settings";

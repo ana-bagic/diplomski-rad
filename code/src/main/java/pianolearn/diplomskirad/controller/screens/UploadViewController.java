@@ -43,14 +43,14 @@ public class UploadViewController implements BaseViewController {
             boolean success = Marshaller.INSTANCE.unmarshall(selectedFile);
 
             if (success) {
-                view.enableConfirm(true);
+                view.setConfirmVisible(true);
                 view.setError(Strings.empty);
             } else {
-                view.enableConfirm(false);
+                view.setConfirmVisible(false);
                 view.setError(Strings.xmlLoadError(fileName));
             }
         } else {
-            view.enableConfirm(false);
+            view.setConfirmVisible(false);
             view.setError(Strings.fileNotChosenError);
         }
     }

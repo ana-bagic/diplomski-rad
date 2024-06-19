@@ -55,7 +55,7 @@ public class UploadView extends BaseNavigationView {
 
         confirmButton.getStyleClass().addAll("confirm-button", "font-body");
         confirmButton.setText(Strings.confirm);
-        confirmButton.setDisable(true);
+        confirmButton.setVisible(false);
 
         errorLabel.getStyleClass().addAll("error-label", "font-micro");
     }
@@ -79,8 +79,8 @@ public class UploadView extends BaseNavigationView {
         fileChosenLabel.setText(fileChosen);
     }
 
-    public void enableConfirm(boolean enabled) {
-        confirmButton.setDisable(!enabled);
+    public void setConfirmVisible(boolean visible) {
+        confirmButton.setVisible(visible);
     }
 
     public void setError(String error) {

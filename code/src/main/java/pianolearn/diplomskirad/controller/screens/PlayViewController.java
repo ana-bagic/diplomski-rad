@@ -19,7 +19,7 @@ public class PlayViewController implements BaseViewController {
         return view;
     }
 
-    public void setupListeners() {
+    private void setupListeners() {
         view.setBackButtonListener(NavigationController.INSTANCE::pop);
     }
 }

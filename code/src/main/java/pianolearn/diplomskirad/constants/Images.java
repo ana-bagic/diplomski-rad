@@ -7,12 +7,12 @@ import java.util.Objects;
 public class Images {
 
     public static final Image uploadIcon = getImage("upload.png");
-
     public static final Image musicLibraryIcon = getImage("music-library.png");
-
     public static final Image settingsIcon = getImage("settings.png");
 
     public static final Image backArrowIcon = getImage("back-arrow.png");
+
+    public static final Image beethovenImage = getImage("beethoven.jpg");
 
     private static Image getImage(String image) {
         String resource = "/images/" + image;

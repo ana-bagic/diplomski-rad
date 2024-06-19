@@ -1,2 +1,53 @@
 @import 'base-view.css';
 
+.center-v-box {
+    -fx-spacing: 20;
+}
+
+.library-row {
+    -fx-alignment: center;
+    -fx-spacing: 20;
+}
+
+.row-label {
+    -fx-text-fill: -secondary-color;
+}
+
+.library-row-item {
+    -fx-alignment: center;
+    -fx-spacing: 10;
+}
+
+.cover-button {
+    -fx-background-radius: 20;
+    -fx-pref-width: 100;
+    -fx-pref-height: 100;
+}
+
+.easy {
+    -fx-background-color: -easy-color;
+}
+
+.medium {
+    -fx-background-color: -medium-color;
+}
+
+.hard {
+    -fx-background-color: -hard-color;
+}
+
+.cover-image-view {
+    -fx-background-radius: 40;
+    -fx-pref-width: 80;
+    -fx-pref-height: 80;
+}
+
+.song-label {
+    -fx-text-fill: -secondary-color;
+    -fx-alignment: center;
+}
+
+.artist-label {
+    -fx-text-fill: -primary-color;
+    -fx-alignment: center;
+}

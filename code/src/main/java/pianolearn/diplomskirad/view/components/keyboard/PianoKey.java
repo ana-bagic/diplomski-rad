@@ -1,4 +1,4 @@
-package pianolearn.diplomskirad.view.keyboard;
+package pianolearn.diplomskirad.view.components.keyboard;
 
 import javafx.scene.shape.Rectangle;
 

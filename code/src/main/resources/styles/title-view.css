@@ -22,3 +22,7 @@
     -fx-min-width: 100;
     -fx-min-height: 100;
 }
+
+.option-button:hover {
+    -fx-background-color: -highlight-color;
+}
