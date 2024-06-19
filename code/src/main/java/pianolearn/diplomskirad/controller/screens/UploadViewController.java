@@ -32,7 +32,7 @@ public class UploadViewController implements BaseViewController {
 
     private void chooseFile() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle(Strings.chooseFileLabel);
+        fileChooser.setTitle(Strings.chooseFile);
         FileChooser.ExtensionFilter xmlFilter = new FileChooser.ExtensionFilter(Strings.fileChooserXmlFiles, "*.xml");
         fileChooser.getExtensionFilters().add(xmlFilter);
 
@@ -43,15 +43,12 @@ public class UploadViewController implements BaseViewController {
             boolean success = Marshaller.INSTANCE.unmarshall(selectedFile);
 
             if (success) {
-                view.setConfirmVisible(true);
-                view.setError(Strings.empty);
+                view.setCanConfirm(true);
+                view.clearError();
             } else {
-                view.setConfirmVisible(false);
+                view.setCanConfirm(false);
                 view.setError(Strings.xmlLoadError(fileName));
             }
-        } else {
-            view.setConfirmVisible(false);
-            view.setError(Strings.fileNotChosenError);
         }
     }
 }

@@ -1,5 +1,6 @@
 package pianolearn.diplomskirad.view;
 
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -31,5 +32,10 @@ public abstract class BaseView extends Pane {
         imageView.fitWidthProperty().bind(button.widthProperty());
         imageView.fitHeightProperty().bind(button.heightProperty());
         button.setGraphic(imageView);
+    }
+
+    protected static void showNode(Node node, boolean visible) {
+        node.setVisible(visible);
+        node.setManaged(visible);
     }
 }

@@ -11,13 +11,15 @@ import pianolearn.diplomskirad.view.BaseNavigationView;
 
 public class UploadView extends BaseNavigationView {
 
-    private final Label header = new Label();
     private final VBox centerVBox = new VBox();
-    private final HBox fileChooserHBox = new HBox();
-    private final Button fileChooserButton = new Button();
-    private final Label fileChosenLabel = new Label();
-    private final Button confirmButton = new Button();
+    private final HBox infoHBox = new HBox();
+    private final Label infoLabel = new Label();
+    private final Label chosenFileLabel = new Label();
     private final Label errorLabel = new Label();
+    private final HBox actionHBox = new HBox();
+    private final Button confirmButton = new Button();
+    private final Label orLabel = new Label();
+    private final Button fileChooserButton = new Button();
 
     private ButtonClickListener fileChooserButtonListener;
     private ButtonClickListener confirmButtonListener;
@@ -30,9 +32,9 @@ public class UploadView extends BaseNavigationView {
     @Override
     protected void addViews() {
         super.addViews();
-        topHBox.getChildren().add(header);
-        fileChooserHBox.getChildren().addAll(fileChooserButton, fileChosenLabel);
-        centerVBox.getChildren().addAll(fileChooserHBox, confirmButton, errorLabel);
+        infoHBox.getChildren().addAll(infoLabel, chosenFileLabel);
+        actionHBox.getChildren().addAll(confirmButton, orLabel, fileChooserButton);
+        centerVBox.getChildren().addAll(infoHBox, errorLabel, actionHBox);
         rootPane.setCenter(centerVBox);
     }
 
@@ -41,23 +43,31 @@ public class UploadView extends BaseNavigationView {
         super.styleViews();
         getStylesheets().add(Styles.UPLOAD_VIEW_STYLE);
 
-        header.getStyleClass().addAll("header", "font-header");
-        header.setText(Strings.loadLabel);
-
         centerVBox.getStyleClass().add("center-v-box");
 
-        fileChooserHBox.getStyleClass().add("file-chooser-h-box");
+        infoHBox.getStyleClass().add("h-box");
 
-        fileChooserButton.getStyleClass().addAll("file-chooser-button", "font-body");
-        fileChooserButton.setText(Strings.chooseFileLabel);
+        infoLabel.getStyleClass().addAll("header", "font-header");
+        infoLabel.setText(Strings.loadLabel);
 
-        fileChosenLabel.getStyleClass().addAll("file-chosen-label", "font-body");
-
-        confirmButton.getStyleClass().addAll("confirm-button", "font-body");
-        confirmButton.setText(Strings.confirm);
-        confirmButton.setVisible(false);
+        chosenFileLabel.getStyleClass().addAll("chosen-file-label", "font-header");
+        showNode(chosenFileLabel, false);
 
         errorLabel.getStyleClass().addAll("error-label", "font-micro");
+        showNode(errorLabel, false);
+
+        actionHBox.getStyleClass().add("h-box");
+
+        confirmButton.getStyleClass().addAll("text-button", "font-body");
+        confirmButton.setText(Strings.confirm);
+        showNode(confirmButton, false);
+
+        orLabel.getStyleClass().addAll("or-label", "font-body");
+        orLabel.setText(Strings.or);
+        showNode(orLabel, false);
+
+        fileChooserButton.getStyleClass().addAll("text-button", "font-body");
+        fileChooserButton.setText(Strings.chooseFile);
     }
 
     @Override
@@ -76,14 +86,24 @@ public class UploadView extends BaseNavigationView {
     }
 
     public void setFileChosen(String fileChosen) {
-        fileChosenLabel.setText(fileChosen);
+        infoLabel.setText(Strings.fileChosen);
+        chosenFileLabel.setText(fileChosen);
+        showNode(chosenFileLabel, true);
     }
 
-    public void setConfirmVisible(boolean visible) {
-        confirmButton.setVisible(visible);
+    public void setCanConfirm(boolean canConfirm) {
+        fileChooserButton.setText(Strings.loadAnotherFile);
+        showNode(confirmButton, canConfirm);
+        showNode(orLabel, canConfirm);
     }
 
     public void setError(String error) {
         errorLabel.setText(error);
+        showNode(errorLabel, true);
+    }
+
+    public void clearError() {
+        errorLabel.setText(Strings.empty);
+        showNode(errorLabel, false);
     }
 }

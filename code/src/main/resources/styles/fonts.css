@@ -6,7 +6,7 @@
 
 .font-header {
     -fx-font-family: "Retro Osar";
-    -fx-font-size: 60px;
+    -fx-font-size: 50px;
     -fx-font-weight: bold;
 }
 
@@ -16,6 +16,6 @@
 }
 
 .font-micro {
-    -fx-font-family: "Retro Osar";
-    -fx-font-size: 16px;
+    -fx-font-family: "Arial";
+    -fx-font-size: 20px;
 }

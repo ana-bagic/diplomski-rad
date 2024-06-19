@@ -1,27 +1,33 @@
 @import 'base-view.css';
 
 .center-v-box {
-    -fx-alignment: center;
-    -fx-spacing: 40;
+    -fx-alignment: top-center;
+    -fx-spacing: 80;
+    -fx-padding: 150 0 0 0;
 }
 
-.file-chooser-h-box {
+.h-box {
     -fx-alignment: center;
 }
 
-.file-chooser-button {
+.chosen-file-label {
+    -fx-text-fill: -primary-color;
+}
+
+.text-button {
     -fx-background-color: -secondary-color;
     -fx-text-fill: -background-color;
-}
-
-.file-chosen-label {
-    -fx-text-fill: -secondary-color;
     -fx-label-padding: 20;
+    -fx-background-radius: 20;
 }
 
-.confirm {
-    -fx-background-color: -secondary-color;
-    -fx-text-fill: -background-color;
+.text-button:hover {
+    -fx-background-color: -highlight-color;
+}
+
+.or-label {
+    -fx-text-fill: -secondary-color;
+    -fx-label-padding: 40;
 }
 
 .error-label {
