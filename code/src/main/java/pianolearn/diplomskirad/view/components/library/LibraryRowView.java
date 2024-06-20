@@ -42,7 +42,7 @@ public class LibraryRowView extends BaseView {
         rootPane.setMinHeight(rowPrefHeight);
         rootPane.setMaxHeight(rowPrefHeight);
 
-        rowLabel.setFont(Fonts.header);
+        rowLabel.setFont(Fonts.body);
         rowLabel.setTextFill(Colors.text);
     }
 

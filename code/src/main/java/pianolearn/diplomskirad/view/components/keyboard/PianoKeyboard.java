@@ -1,29 +1,32 @@
 package pianolearn.diplomskirad.view.components.keyboard;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.view.BaseView;
 
 public class PianoKeyboard extends BaseView {
 
-    private final StackPane root = new StackPane();
+    private final Pane root = new Pane();
 
-    private static final int WHITE_KEY_WIDTH = 10;
-    private static final int WHITE_KEY_HEIGHT = 50;
-    private static final int BLACK_KEY_WIDTH = 6;
-    private static final int BLACK_KEY_HEIGHT = 35;
+    private final double WHITE_KEY_WIDTH;
+    private final double WHITE_KEY_HEIGHT = 50;
+    private final double BLACK_KEY_WIDTH;
+    private final double BLACK_KEY_HEIGHT = 35;
 
     public PianoKeyboard(int numberOfKeys) {
         super();
+        setPrefHeight(200);
+        double frameWidth = NavigationController.INSTANCE.getStage().getWidth();
+        setPrefWidth(frameWidth);
+        WHITE_KEY_WIDTH = frameWidth / numberOfKeys;
+        BLACK_KEY_WIDTH = WHITE_KEY_WIDTH * 0.6;
         drawKeyboard(numberOfKeys);
     }
 
     private void drawKeyboard(int numberOfKeys) {
+        bindToSelf(root);
         root.getChildren().clear();
-
-        Label label = new Label("kkfkjfhjkdshfjkd");
-        root.getChildren().add(label);
 
         // Draw white keys
         for (int i = 0; i < numberOfKeys; i++) {

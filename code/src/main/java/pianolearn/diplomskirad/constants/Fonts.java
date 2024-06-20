@@ -16,10 +16,10 @@ public class Fonts {
         String resource = "/fonts/retro-osar.ttf";
         Font.loadFont(Fonts.class.getResourceAsStream(resource), 12);
 
-        title = Font.font("Retro Osar", FontWeight.BOLD, 100);
-        header = Font.font("Retro Osar", FontWeight.BOLD, 50);
+        title = Font.font("Retro Osar", 100);
+        header = Font.font("Retro Osar", 50);
         body = Font.font("Retro Osar", 24);
-        tooltip = Font.font("Retro Osar", FontWeight.BOLD, 18);
+        tooltip = Font.font("Retro Osar", 18);
         micro = Font.font("Retro Osar", 18);
     }
 }

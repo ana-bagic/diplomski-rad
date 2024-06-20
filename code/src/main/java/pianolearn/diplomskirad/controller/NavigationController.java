@@ -2,6 +2,7 @@ package pianolearn.diplomskirad.controller;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import pianolearn.diplomskirad.constants.Colors;
 
 import java.util.Stack;
 
@@ -20,6 +21,7 @@ public enum NavigationController {
 
     public void push(BaseViewController viewController) {
         Scene scene = new Scene(viewController.getView(), 1200, 800);
+        scene.setFill(Colors.background);
         sceneStack.push(scene);
         stage.setScene(scene);
     }
