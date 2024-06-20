@@ -1,5 +1,7 @@
 package pianolearn.diplomskirad.view;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -25,12 +27,12 @@ public class BaseNavigationView extends BaseView {
 
     @Override
     protected void styleViews() {
-        getStylesheets().add(Styles.BASE_VIEW_STYLE);
         rootPane.setBackground(Styles.background(Colors.background, null));
 
-        topHBox.getStyleClass().add("top-h-box");
+        topHBox.setAlignment(Pos.CENTER_LEFT);
+        topHBox.setPadding(new Insets(40));
 
-        backButton.getStyleClass().add("back-button");
+        Styles.setButtonSize(backButton, 60);
         Styles.setButtonBackground(backButton, Colors.background, null, 0);
         bindImageToButton(Images.backArrowIcon, backButton);
     }

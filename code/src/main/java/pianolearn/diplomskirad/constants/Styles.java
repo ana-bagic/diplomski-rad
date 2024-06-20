@@ -3,31 +3,14 @@ package pianolearn.diplomskirad.constants;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
-
-import java.util.Objects;
+import javafx.scene.shape.Rectangle;
 
 public class Styles {
-
-    public static final String BASE_VIEW_STYLE = getStyle("base-view");
-
-    public static final String TITLE_VIEW_STYLE = getStyle("title-view");
-
-    public static final String SETTINGS_VIEW_STYLE = getStyle("settings-view");
-
-    public static final String UPLOAD_VIEW_STYLE = getStyle("upload-view");
-
-    public static final String LIBRARY_VIEW_STYLE = getStyle("library-view");
-
-    public static final String PLAY_VIEW_STYLE = getStyle("play-view");
-
-    private static String getStyle(String style) {
-        String resource = "/styles/" + style + ".css";
-        return Objects.requireNonNull(Styles.class.getResource(resource)).toExternalForm();
-    }
 
     public static Background background(Color color, Integer radius) {
         CornerRadii backgroundRadius = radius == null ? CornerRadii.EMPTY : new CornerRadii(radius);
@@ -55,6 +38,22 @@ public class Styles {
         tooltip.setFont(Fonts.tooltip);
         tooltip.setStyle(tooltipStyle);
         Tooltip.install(button, tooltip);
+    }
+
+    public static void setButtonSize(Button button, double size) {
+        button.setMinSize(size, size);
+        button.setMaxSize(size, size);
+    }
+
+    public static void setImageViewSizeAndRadius(ImageView imageView, double size, double radius) {
+        imageView.setFitWidth(size);
+        imageView.setFitHeight(size);
+
+        Rectangle clip = new Rectangle(imageView.getFitWidth(), imageView.getFitHeight());
+        clip.setArcWidth(radius);
+        clip.setArcHeight(radius);
+
+        imageView.setClip(clip);
     }
 
     private static String getHex(Color color) {

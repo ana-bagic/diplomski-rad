@@ -1,5 +1,6 @@
 package pianolearn.diplomskirad.view.components.library;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import pianolearn.diplomskirad.constants.Colors;
@@ -32,7 +33,8 @@ public class LibraryRowView extends BaseView {
 
     @Override
     protected void styleViews() {
-        rootPane.getStyleClass().add("library-row");
+        rootPane.setAlignment(Pos.CENTER);
+        rootPane.setSpacing(20);
 
         rowLabel.setFont(Fonts.body);
         rowLabel.setTextFill(Colors.text);

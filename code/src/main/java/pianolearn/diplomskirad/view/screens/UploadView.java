@@ -1,9 +1,12 @@
 package pianolearn.diplomskirad.view.screens;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Strings;
@@ -42,11 +45,12 @@ public class UploadView extends BaseNavigationView {
     @Override
     protected void styleViews() {
         super.styleViews();
-        getStylesheets().add(Styles.UPLOAD_VIEW_STYLE);
 
-        centerVBox.getStyleClass().add("center-v-box");
+        centerVBox.setAlignment(Pos.TOP_CENTER);
+        centerVBox.setSpacing(80);
+        centerVBox.setPadding(new Insets(150, 0, 0, 0));
 
-        infoHBox.getStyleClass().add("h-box");
+        infoHBox.setAlignment(Pos.CENTER);
 
         infoLabel.setFont(Fonts.header);
         infoLabel.setTextFill(Colors.text);
@@ -56,28 +60,29 @@ public class UploadView extends BaseNavigationView {
         chosenFileLabel.setTextFill(Colors.accent);
         showNode(chosenFileLabel, false);
 
-        errorLabel.getStyleClass().addAll("error-label");
         errorLabel.setFont(Fonts.micro);
         errorLabel.setTextFill(Colors.error);
+        errorLabel.setTextAlignment(TextAlignment.CENTER);
         showNode(errorLabel, false);
 
-        actionHBox.getStyleClass().add("h-box");
+        actionHBox.setAlignment(Pos.CENTER);
 
-        confirmButton.getStyleClass().addAll("text-button");
         confirmButton.setFont(Fonts.body);
         confirmButton.setTextFill(Colors.background);
+        confirmButton.setPadding(new Insets(20));
         Styles.setButtonBackground(confirmButton, Colors.text, Colors.highlight, 20);
         confirmButton.setText(Strings.confirm);
         showNode(confirmButton, false);
 
-        orLabel.getStyleClass().addAll("or-label");
         orLabel.setFont(Fonts.body);
         orLabel.setTextFill(Colors.text);
+        orLabel.setPadding(new Insets(40));
         orLabel.setText(Strings.or);
         showNode(orLabel, false);
 
-        fileChooserButton.getStyleClass().addAll("text-button");
         fileChooserButton.setFont(Fonts.body);
+        fileChooserButton.setTextFill(Colors.background);
+        fileChooserButton.setPadding(new Insets(20));
         Styles.setButtonBackground(fileChooserButton, Colors.text, Colors.highlight, 20);
         fileChooserButton.setText(Strings.chooseFile);
     }

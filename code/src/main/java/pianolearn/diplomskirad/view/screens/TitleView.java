@@ -1,5 +1,6 @@
 package pianolearn.diplomskirad.view.screens;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -33,27 +34,28 @@ public class TitleView extends BaseView {
 
     @Override
     protected void styleViews() {
-        getStylesheets().add(Styles.TITLE_VIEW_STYLE);
         rootPane.setBackground(Styles.background(Colors.background, null));
-        rootPane.getStyleClass().add("background");
+        rootPane.setAlignment(Pos.CENTER);
+        rootPane.setSpacing(70);
 
         titleLabel.setFont(Fonts.title);
         titleLabel.setTextFill(Colors.accent);
         titleLabel.setText(Strings.appTitle);
 
-        buttonsStackHBox.getStyleClass().add("buttons-stack-h-box");
+        buttonsStackHBox.setAlignment(Pos.CENTER);
+        buttonsStackHBox.setSpacing(50);
 
-        uploadButton.getStyleClass().add("option-button");
+        Styles.setButtonSize(uploadButton, 200);
         Styles.setButtonBackground(uploadButton, Colors.text, Colors.highlight, 20);
         Styles.setButtonTooltip(uploadButton, Strings.uploadButtonTooltip);
         bindImageToButton(Images.uploadIcon, uploadButton);
 
-        libraryButton.getStyleClass().add("option-button");
+        Styles.setButtonSize(libraryButton, 200);
         Styles.setButtonBackground(libraryButton, Colors.text, Colors.highlight, 20);
         Styles.setButtonTooltip(libraryButton, Strings.libraryButtonTooltip);
         bindImageToButton(Images.musicLibraryIcon, libraryButton);
 
-        settingsButton.getStyleClass().add("option-button");
+        Styles.setButtonSize(settingsButton, 200);
         Styles.setButtonBackground(settingsButton, Colors.text, Colors.highlight, 20);
         Styles.setButtonTooltip(settingsButton, Strings.settingsButtonTooltip);
         bindImageToButton(Images.settingsIcon, settingsButton);

@@ -1,5 +1,6 @@
 package pianolearn.diplomskirad.view.components.library;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -38,19 +39,23 @@ public class LibraryRowItemView extends BaseView {
 
     @Override
     protected void styleViews() {
-        rootPane.getStyleClass().add("library-row-item");
+        rootPane.setAlignment(Pos.CENTER);
+        rootPane.setSpacing(10);
 
-        coverButton.getStyleClass().add("cover-button");
+        Styles.setButtonSize(coverButton, 300);
 
         coverImageView.getStyleClass().add("cover-image-view");
+        coverImageView.setFitWidth(80);
+        coverImageView.setFitHeight(80);
+        Styles.setImageViewSizeAndRadius(coverImageView, 100, 50);
 
-        songNameLabel.getStyleClass().addAll("song-label");
         songNameLabel.setFont(Fonts.body);
         songNameLabel.setTextFill(Colors.accent);
+        songNameLabel.setAlignment(Pos.CENTER);
 
-        artistNameLabel.getStyleClass().addAll("artist-label");
         artistNameLabel.setFont(Fonts.micro);
         artistNameLabel.setTextFill(Colors.text);
+        artistNameLabel.setAlignment(Pos.CENTER);
     }
 
     @Override
@@ -65,7 +70,7 @@ public class LibraryRowItemView extends BaseView {
     public void setItem(LibraryItem item) {
         songNameLabel.setText(item.songName());
         artistNameLabel.setText(item.artist());
-        //coverImageView.setImage(item.coverImage());
+        coverImageView.setImage(item.coverImage());
         Color buttonBackgroundColor = switch (item.difficulty()) {
             case EASY -> Colors.easy;
             case MEDIUM -> Colors.medium;
