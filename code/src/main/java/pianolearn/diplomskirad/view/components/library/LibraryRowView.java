@@ -5,7 +5,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
-import pianolearn.diplomskirad.constants.LibraryData;
 import pianolearn.diplomskirad.listener.ButtonClickWithIdListener;
 import pianolearn.diplomskirad.model.LibraryItem;
 import pianolearn.diplomskirad.view.BaseView;
@@ -16,10 +15,15 @@ public class LibraryRowView extends BaseView {
     private final Label rowLabel = new Label();
     private final LibraryRowItemView[] rowItems;
 
-    public LibraryRowView() {
-        this.rowItems = new LibraryRowItemView[LibraryData.NUMBER_OF_SONGS_PER_ROW];
-        for (int i = 0; i < rowItems.length; i++) {
-            rowItems[i] = new LibraryRowItemView();
+    private double rowPrefHeight;
+
+    public LibraryRowView(LibraryItem[] items) {
+        this.rowItems = new LibraryRowItemView[items.length];
+        for (int i = 0; i < items.length; i++) {
+            LibraryRowItemView view = new LibraryRowItemView();
+            view.setItem(items[i]);
+            rowItems[i] = view;
+            rowPrefHeight = view.getPrefHeight();
         }
         setupGUI();
     }
@@ -34,21 +38,17 @@ public class LibraryRowView extends BaseView {
     @Override
     protected void styleViews() {
         rootPane.setAlignment(Pos.CENTER);
-        rootPane.setSpacing(20);
+        rootPane.setSpacing(40);
+        rootPane.setMinHeight(rowPrefHeight);
+        rootPane.setMaxHeight(rowPrefHeight);
 
-        rowLabel.setFont(Fonts.body);
+        rowLabel.setFont(Fonts.header);
         rowLabel.setTextFill(Colors.text);
     }
 
     public void setCoverButtonListeners(ButtonClickWithIdListener listener) {
         for (LibraryRowItemView view : rowItems) {
             view.setCoverButtonListener(listener);
-        }
-    }
-
-    public void setItems(LibraryItem[] items) {
-        for (int i = 0; i < items.length; i++) {
-            rowItems[i].setItem(items[i]);
         }
     }
 

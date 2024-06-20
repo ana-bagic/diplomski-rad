@@ -60,7 +60,7 @@ public class UploadView extends BaseNavigationView {
         chosenFileLabel.setTextFill(Colors.accent);
         showNode(chosenFileLabel, false);
 
-        errorLabel.setFont(Fonts.micro);
+        errorLabel.setFont(Fonts.error);
         errorLabel.setTextFill(Colors.error);
         errorLabel.setTextAlignment(TextAlignment.CENTER);
         showNode(errorLabel, false);

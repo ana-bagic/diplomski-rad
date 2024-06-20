@@ -2,7 +2,6 @@ package pianolearn.diplomskirad.controller.screens;
 
 import javafx.scene.layout.Pane;
 import pianolearn.diplomskirad.constants.LibraryData;
-import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.constants.XmlFiles;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
@@ -13,12 +12,12 @@ import java.io.File;
 
 public class LibraryViewController implements BaseViewController {
 
-    private final LibraryView view = new LibraryView();
+    private final LibraryView view;
 
     public LibraryViewController() {
         super();
+        view = new LibraryView(LibraryData.getClassicalSongs(), LibraryData.getModernSongs());
         setupListeners();
-        addSongs();
     }
 
     @Override
@@ -29,11 +28,6 @@ public class LibraryViewController implements BaseViewController {
     private void setupListeners() {
         view.setBackButtonListener(NavigationController.INSTANCE::pop);
         view.setCoverButtonListeners(this::chooseSong);
-    }
-
-    private void addSongs() {
-        view.setClassicalSongs(LibraryData.getClassicalSongs());
-        view.setModernSongs(LibraryData.getModernSongs());
     }
 
     private void chooseSong(String fileName) {

@@ -39,15 +39,14 @@ public class LibraryRowItemView extends BaseView {
 
     @Override
     protected void styleViews() {
+        setPrefHeight(350);
+
         rootPane.setAlignment(Pos.CENTER);
         rootPane.setSpacing(10);
 
-        Styles.setButtonSize(coverButton, 300);
+        Styles.setButtonSize(coverButton, 230);
 
-        coverImageView.getStyleClass().add("cover-image-view");
-        coverImageView.setFitWidth(80);
-        coverImageView.setFitHeight(80);
-        Styles.setImageViewSizeAndRadius(coverImageView, 100, 50);
+        Styles.setImageViewSizeAndRadius(coverImageView, 200, 200);
 
         songNameLabel.setFont(Fonts.body);
         songNameLabel.setTextFill(Colors.accent);
