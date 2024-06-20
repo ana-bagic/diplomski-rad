@@ -2,6 +2,7 @@ package pianolearn.diplomskirad.view.components.library;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.LibraryData;
 import pianolearn.diplomskirad.listener.ButtonClickWithIdListener;
 import pianolearn.diplomskirad.model.LibraryItem;
@@ -18,6 +19,7 @@ public class LibraryRowView extends BaseView {
         for (int i = 0; i < rowItems.length; i++) {
             rowItems[i] = new LibraryRowItemView();
         }
+        setupGUI();
     }
 
     @Override
@@ -31,7 +33,8 @@ public class LibraryRowView extends BaseView {
     protected void styleViews() {
         rootPane.getStyleClass().add("library-row");
 
-        rowLabel.getStyleClass().addAll("row-label", "font-body");
+        rowLabel.getStyleClass().addAll("row-label");
+        rowLabel.setFont(Fonts.body);
     }
 
     public void setCoverButtonListeners(ButtonClickWithIdListener listener) {

@@ -2,6 +2,7 @@ package pianolearn.diplomskirad.view.screens;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.constants.Styles;
 import pianolearn.diplomskirad.listener.ButtonClickWithIdListener;
@@ -11,21 +12,19 @@ import pianolearn.diplomskirad.view.components.library.LibraryRowView;
 
 public class LibraryView extends BaseNavigationView {
 
-    private final Label header = new Label();
     private final VBox centerVBox = new VBox();
+    private final Label pickASongLabel = new Label();
     private final LibraryRowView classicalRowView = new LibraryRowView();
     private final LibraryRowView modernRowView = new LibraryRowView();
 
     public LibraryView() {
-        super();
         setupGUI();
     }
 
     @Override
     protected void addViews() {
         super.addViews();
-        centerVBox.getChildren().addAll(classicalRowView, modernRowView);
-        topHBox.getChildren().add(header);
+        centerVBox.getChildren().addAll(pickASongLabel, classicalRowView, modernRowView);
         rootPane.setCenter(centerVBox);
     }
 
@@ -34,10 +33,11 @@ public class LibraryView extends BaseNavigationView {
         super.styleViews();
         getStylesheets().add(Styles.LIBRARY_VIEW_STYLE);
 
-        header.getStyleClass().addAll("header", "font-header");
-        header.setText(Strings.libraryLabel);
-
         centerVBox.getStyleClass().add("center-v-box");
+
+        pickASongLabel.getStyleClass().addAll("header");
+        pickASongLabel.setFont(Fonts.header);
+        pickASongLabel.setText(Strings.libraryLabel);
 
         classicalRowView.setLabel(Strings.classicRow);
 

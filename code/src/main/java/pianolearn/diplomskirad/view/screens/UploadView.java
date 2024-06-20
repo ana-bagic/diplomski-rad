@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.constants.Styles;
 import pianolearn.diplomskirad.listener.ButtonClickListener;
@@ -25,7 +26,6 @@ public class UploadView extends BaseNavigationView {
     private ButtonClickListener confirmButtonListener;
 
     public UploadView() {
-        super();
         setupGUI();
     }
 
@@ -47,26 +47,32 @@ public class UploadView extends BaseNavigationView {
 
         infoHBox.getStyleClass().add("h-box");
 
-        infoLabel.getStyleClass().addAll("header", "font-header");
+        infoLabel.getStyleClass().addAll("header");
+        infoLabel.setFont(Fonts.header);
         infoLabel.setText(Strings.loadLabel);
 
-        chosenFileLabel.getStyleClass().addAll("chosen-file-label", "font-header");
+        chosenFileLabel.getStyleClass().addAll("chosen-file-label");
+        chosenFileLabel.setFont(Fonts.header);
         showNode(chosenFileLabel, false);
 
-        errorLabel.getStyleClass().addAll("error-label", "font-micro");
+        errorLabel.getStyleClass().addAll("error-label");
+        errorLabel.setFont(Fonts.micro);
         showNode(errorLabel, false);
 
         actionHBox.getStyleClass().add("h-box");
 
-        confirmButton.getStyleClass().addAll("text-button", "font-body");
+        confirmButton.getStyleClass().addAll("text-button");
+        confirmButton.setFont(Fonts.body);
         confirmButton.setText(Strings.confirm);
         showNode(confirmButton, false);
 
-        orLabel.getStyleClass().addAll("or-label", "font-body");
+        orLabel.getStyleClass().addAll("or-label");
+        orLabel.setFont(Fonts.body);
         orLabel.setText(Strings.or);
         showNode(orLabel, false);
 
-        fileChooserButton.getStyleClass().addAll("text-button", "font-body");
+        fileChooserButton.getStyleClass().addAll("text-button");
+        fileChooserButton.setFont(Fonts.body);
         fileChooserButton.setText(Strings.chooseFile);
     }
 

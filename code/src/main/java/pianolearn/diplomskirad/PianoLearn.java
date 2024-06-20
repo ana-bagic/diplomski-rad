@@ -12,7 +12,6 @@ public class PianoLearn extends Application {
     @Override
     public void start(Stage stage) {
         stage.setTitle(Strings.appTitle);
-        Config.setup();
 
         TitleViewController controller = new TitleViewController();
         NavigationController.INSTANCE.init(stage, controller);

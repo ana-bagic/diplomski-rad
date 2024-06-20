@@ -6,7 +6,6 @@ import pianolearn.diplomskirad.view.BaseNavigationView;
 public class PlayView extends BaseNavigationView {
 
     public PlayView() {
-        super();
         setupGUI();
     }
 

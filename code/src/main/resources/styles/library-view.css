@@ -1,6 +1,8 @@
 @import 'base-view.css';
 
 .center-v-box {
+    -fx-alignment: top-center;
+    -fx-padding: 20 0 0 0;
     -fx-spacing: 20;
 }
 
@@ -20,8 +22,10 @@
 
 .cover-button {
     -fx-background-radius: 20;
-    -fx-pref-width: 100;
-    -fx-pref-height: 100;
+    -fx-min-width: 300;
+    -fx-min-height: 300;
+    -fx-max-width: 300;
+    -fx-max-height: 300;
 }
 
 .easy {

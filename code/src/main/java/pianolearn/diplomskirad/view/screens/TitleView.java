@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
+import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Images;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.constants.Styles;
@@ -24,7 +25,6 @@ public class TitleView extends BaseView {
     private ButtonClickListener settingsButtonListener;
 
     public TitleView() {
-        super();
         setupGUI();
     }
 
@@ -40,7 +40,8 @@ public class TitleView extends BaseView {
         getStylesheets().add(Styles.TITLE_VIEW_STYLE);
         rootPane.getStyleClass().add("background");
 
-        titleLabel.getStyleClass().addAll("title", "font-title");
+        titleLabel.getStyleClass().addAll("title");
+        titleLabel.setFont(Fonts.title);
         titleLabel.setText(Strings.appTitle);
 
         buttonsStackHBox.getStyleClass().add("buttons-stack-h-box");

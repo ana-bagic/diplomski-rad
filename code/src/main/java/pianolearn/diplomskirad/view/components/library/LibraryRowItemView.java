@@ -2,13 +2,12 @@ package pianolearn.diplomskirad.view.components.library;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.listener.ButtonClickWithIdListener;
 import pianolearn.diplomskirad.model.LibraryItem;
-import pianolearn.diplomskirad.model.SongDifficulty;
 import pianolearn.diplomskirad.view.BaseView;
 
 public class LibraryRowItemView extends BaseView {
@@ -22,6 +21,10 @@ public class LibraryRowItemView extends BaseView {
 
     private ButtonClickWithIdListener coverButtonListener;
     private String fileName;
+
+    public LibraryRowItemView() {
+        setupGUI();
+    }
 
     @Override
     protected void addViews() {
@@ -38,9 +41,11 @@ public class LibraryRowItemView extends BaseView {
 
         coverImageView.getStyleClass().add("cover-image-view");
 
-        songNameLabel.getStyleClass().addAll("song-label", "font-body");
+        songNameLabel.getStyleClass().addAll("song-label");
+        songNameLabel.setFont(Fonts.body);
 
-        artistNameLabel.getStyleClass().addAll("artist-label", "font-micro");
+        artistNameLabel.getStyleClass().addAll("artist-label");
+        artistNameLabel.setFont(Fonts.micro);
     }
 
     @Override
@@ -55,7 +60,7 @@ public class LibraryRowItemView extends BaseView {
     public void setItem(LibraryItem item) {
         songNameLabel.setText(item.songName());
         artistNameLabel.setText(item.artist());
-        coverImageView.setImage(item.coverImage());
+        //coverImageView.setImage(item.coverImage());
         coverButton.getStyleClass().add(switch (item.difficulty()) {
             case EASY -> "easy";
             case MEDIUM -> "medium";
