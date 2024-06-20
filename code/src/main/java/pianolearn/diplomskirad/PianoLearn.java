@@ -2,7 +2,6 @@ package pianolearn.diplomskirad;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import pianolearn.diplomskirad.constants.Config;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.controller.screens.TitleViewController;
