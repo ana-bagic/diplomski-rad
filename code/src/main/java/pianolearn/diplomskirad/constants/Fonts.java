@@ -1,7 +1,6 @@
 package pianolearn.diplomskirad.constants;
 
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 public class Fonts {
 

@@ -1,6 +1,5 @@
 package pianolearn.diplomskirad.view.screens;
 
-import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.view.BaseNavigationView;
 import pianolearn.diplomskirad.view.components.keyboard.PianoKeyboard;
 
