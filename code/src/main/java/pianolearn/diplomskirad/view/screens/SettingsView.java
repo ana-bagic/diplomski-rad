@@ -2,6 +2,7 @@ package pianolearn.diplomskirad.view.screens;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.constants.Styles;
@@ -30,8 +31,8 @@ public class SettingsView extends BaseNavigationView {
 
         centerVBox.getStyleClass().add("center-v-box");
 
-        settingsLabel.getStyleClass().addAll("header");
         settingsLabel.setFont(Fonts.header);
+        settingsLabel.setTextFill(Colors.text);
         settingsLabel.setText(Strings.settingsLabel);
     }
 }

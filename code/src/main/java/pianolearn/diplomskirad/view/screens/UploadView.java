@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.constants.Styles;
@@ -47,32 +48,37 @@ public class UploadView extends BaseNavigationView {
 
         infoHBox.getStyleClass().add("h-box");
 
-        infoLabel.getStyleClass().addAll("header");
         infoLabel.setFont(Fonts.header);
+        infoLabel.setTextFill(Colors.text);
         infoLabel.setText(Strings.loadLabel);
 
-        chosenFileLabel.getStyleClass().addAll("chosen-file-label");
         chosenFileLabel.setFont(Fonts.header);
+        chosenFileLabel.setTextFill(Colors.accent);
         showNode(chosenFileLabel, false);
 
         errorLabel.getStyleClass().addAll("error-label");
         errorLabel.setFont(Fonts.micro);
+        errorLabel.setTextFill(Colors.error);
         showNode(errorLabel, false);
 
         actionHBox.getStyleClass().add("h-box");
 
         confirmButton.getStyleClass().addAll("text-button");
         confirmButton.setFont(Fonts.body);
+        confirmButton.setTextFill(Colors.background);
+        Styles.setButtonBackground(confirmButton, Colors.text, Colors.highlight, 20);
         confirmButton.setText(Strings.confirm);
         showNode(confirmButton, false);
 
         orLabel.getStyleClass().addAll("or-label");
         orLabel.setFont(Fonts.body);
+        orLabel.setTextFill(Colors.text);
         orLabel.setText(Strings.or);
         showNode(orLabel, false);
 
         fileChooserButton.getStyleClass().addAll("text-button");
         fileChooserButton.setFont(Fonts.body);
+        Styles.setButtonBackground(fileChooserButton, Colors.text, Colors.highlight, 20);
         fileChooserButton.setText(Strings.chooseFile);
     }
 

@@ -5,7 +5,10 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
+import pianolearn.diplomskirad.constants.Styles;
 import pianolearn.diplomskirad.listener.ButtonClickWithIdListener;
 import pianolearn.diplomskirad.model.LibraryItem;
 import pianolearn.diplomskirad.view.BaseView;
@@ -43,9 +46,11 @@ public class LibraryRowItemView extends BaseView {
 
         songNameLabel.getStyleClass().addAll("song-label");
         songNameLabel.setFont(Fonts.body);
+        songNameLabel.setTextFill(Colors.accent);
 
         artistNameLabel.getStyleClass().addAll("artist-label");
         artistNameLabel.setFont(Fonts.micro);
+        artistNameLabel.setTextFill(Colors.text);
     }
 
     @Override
@@ -61,11 +66,12 @@ public class LibraryRowItemView extends BaseView {
         songNameLabel.setText(item.songName());
         artistNameLabel.setText(item.artist());
         //coverImageView.setImage(item.coverImage());
-        coverButton.getStyleClass().add(switch (item.difficulty()) {
-            case EASY -> "easy";
-            case MEDIUM -> "medium";
-            case HARD -> "hard";
-        });
+        Color buttonBackgroundColor = switch (item.difficulty()) {
+            case EASY -> Colors.easy;
+            case MEDIUM -> Colors.medium;
+            case HARD -> Colors.hard;
+        };
+        coverButton.setBackground(Styles.background(buttonBackgroundColor, 20));
         fileName = item.fileName();
     }
 }

@@ -5,24 +5,14 @@
     -fx-spacing: 70;
 }
 
-.title {
-    -fx-text-fill: -primary-color;
-}
-
 .buttons-stack-h-box {
     -fx-alignment: center;
     -fx-spacing: 50;
 }
 
 .option-button {
-    -fx-background-color: -secondary-color;
-    -fx-background-radius: 20;
     -fx-max-width: 200;
     -fx-max-height: 200;
     -fx-min-width: 200;
     -fx-min-height: 200;
-}
-
-.option-button:hover {
-    -fx-background-color: -highlight-color;
 }

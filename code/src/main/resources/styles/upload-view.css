@@ -10,27 +10,14 @@
     -fx-alignment: center;
 }
 
-.chosen-file-label {
-    -fx-text-fill: -primary-color;
-}
-
 .text-button {
-    -fx-background-color: -secondary-color;
-    -fx-text-fill: -background-color;
     -fx-label-padding: 20;
-    -fx-background-radius: 20;
-}
-
-.text-button:hover {
-    -fx-background-color: -highlight-color;
 }
 
 .or-label {
-    -fx-text-fill: -secondary-color;
     -fx-label-padding: 40;
 }
 
 .error-label {
-    -fx-text-fill: -error-color;
     -fx-text-alignment: center;
 }

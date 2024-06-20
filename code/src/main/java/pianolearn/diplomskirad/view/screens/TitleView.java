@@ -2,12 +2,8 @@ package pianolearn.diplomskirad.view.screens;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
-import pianolearn.diplomskirad.constants.Fonts;
-import pianolearn.diplomskirad.constants.Images;
-import pianolearn.diplomskirad.constants.Strings;
-import pianolearn.diplomskirad.constants.Styles;
+import pianolearn.diplomskirad.constants.*;
 import pianolearn.diplomskirad.listener.ButtonClickListener;
 import pianolearn.diplomskirad.view.BaseView;
 
@@ -38,25 +34,29 @@ public class TitleView extends BaseView {
     @Override
     protected void styleViews() {
         getStylesheets().add(Styles.TITLE_VIEW_STYLE);
+        rootPane.setBackground(Styles.background(Colors.background, null));
         rootPane.getStyleClass().add("background");
 
-        titleLabel.getStyleClass().addAll("title");
         titleLabel.setFont(Fonts.title);
+        titleLabel.setTextFill(Colors.accent);
         titleLabel.setText(Strings.appTitle);
 
         buttonsStackHBox.getStyleClass().add("buttons-stack-h-box");
 
         uploadButton.getStyleClass().add("option-button");
+        Styles.setButtonBackground(uploadButton, Colors.text, Colors.highlight, 20);
+        Styles.setButtonTooltip(uploadButton, Strings.uploadButtonTooltip);
         bindImageToButton(Images.uploadIcon, uploadButton);
-        Tooltip.install(uploadButton, new Tooltip(Strings.uploadButtonTooltip));
 
         libraryButton.getStyleClass().add("option-button");
+        Styles.setButtonBackground(libraryButton, Colors.text, Colors.highlight, 20);
+        Styles.setButtonTooltip(libraryButton, Strings.libraryButtonTooltip);
         bindImageToButton(Images.musicLibraryIcon, libraryButton);
-        Tooltip.install(libraryButton, new Tooltip(Strings.libraryButtonTooltip));
 
         settingsButton.getStyleClass().add("option-button");
+        Styles.setButtonBackground(settingsButton, Colors.text, Colors.highlight, 20);
+        Styles.setButtonTooltip(settingsButton, Strings.settingsButtonTooltip);
         bindImageToButton(Images.settingsIcon, settingsButton);
-        Tooltip.install(settingsButton, new Tooltip(Strings.settingsButtonTooltip));
     }
 
     @Override

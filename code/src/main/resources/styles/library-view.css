@@ -11,33 +11,16 @@
     -fx-spacing: 20;
 }
 
-.row-label {
-    -fx-text-fill: -secondary-color;
-}
-
 .library-row-item {
     -fx-alignment: center;
     -fx-spacing: 10;
 }
 
 .cover-button {
-    -fx-background-radius: 20;
     -fx-min-width: 300;
     -fx-min-height: 300;
     -fx-max-width: 300;
     -fx-max-height: 300;
-}
-
-.easy {
-    -fx-background-color: -easy-color;
-}
-
-.medium {
-    -fx-background-color: -medium-color;
-}
-
-.hard {
-    -fx-background-color: -hard-color;
 }
 
 .cover-image-view {
@@ -47,11 +30,9 @@
 }
 
 .song-label {
-    -fx-text-fill: -secondary-color;
     -fx-alignment: center;
 }
 
 .artist-label {
-    -fx-text-fill: -primary-color;
     -fx-alignment: center;
 }
