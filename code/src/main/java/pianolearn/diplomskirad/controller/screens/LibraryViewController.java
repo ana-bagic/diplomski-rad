@@ -15,7 +15,6 @@ public class LibraryViewController implements BaseViewController {
     private final LibraryView view;
 
     public LibraryViewController() {
-        super();
         view = new LibraryView(LibraryData.getClassicalSongs(), LibraryData.getModernSongs());
         setupListeners();
     }

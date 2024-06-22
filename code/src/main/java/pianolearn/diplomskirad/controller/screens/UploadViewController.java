@@ -15,7 +15,6 @@ public class UploadViewController implements BaseViewController {
     private final UploadView view = new UploadView();
 
     public UploadViewController() {
-        super();
         setupListeners();
     }
 

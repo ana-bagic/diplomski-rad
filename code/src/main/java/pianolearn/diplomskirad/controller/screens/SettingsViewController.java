@@ -10,7 +10,6 @@ public class SettingsViewController implements BaseViewController {
     private final SettingsView view = new SettingsView();
 
     public SettingsViewController() {
-        super();
         setupListeners();
     }
 

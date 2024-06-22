@@ -10,7 +10,6 @@ public class TitleViewController implements BaseViewController {
     private final TitleView view = new TitleView();
 
     public TitleViewController() {
-        super();
         setupListeners();
     }
 

@@ -1,11 +1,9 @@
 package pianolearn.diplomskirad.view.screens;
 
 import pianolearn.diplomskirad.view.BaseNavigationView;
-import pianolearn.diplomskirad.view.components.keyboard.PianoKeyboardView;
+import pianolearn.diplomskirad.view.BaseView;
 
 public class PlayView extends BaseNavigationView {
-
-    private final PianoKeyboardView keyboard = new PianoKeyboardView();
 
     public PlayView() {
         setupGUI();
@@ -14,11 +12,14 @@ public class PlayView extends BaseNavigationView {
     @Override
     protected void addViews() {
         super.addViews();
-        rootPane.setBottom(keyboard);
     }
 
     @Override
     protected void styleViews() {
         super.styleViews();
+    }
+
+    public void setBottom(BaseView view) {
+        rootPane.setBottom(view);
     }
 }
