@@ -10,7 +10,6 @@ public class Colors {
     public static final Color highlight = Color.web("#F1C40F");
     public static final Color error = Color.web("#E74C3C");
 
-    public static final Color easy =  Color.web("#4CAF50");
-    public static final Color medium =  Color.web("#FFC107");
-    public static final Color hard =  Color.web("#F44336");
+    public static final Color whiteKey =  Color.web("#F8F8F8");
+    public static final Color blackKey =  Color.web("#2F2F2F");
 }

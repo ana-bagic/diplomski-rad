@@ -1,11 +1,11 @@
 package pianolearn.diplomskirad.view.screens;
 
 import pianolearn.diplomskirad.view.BaseNavigationView;
-import pianolearn.diplomskirad.view.components.keyboard.PianoKeyboard;
+import pianolearn.diplomskirad.view.components.keyboard.PianoKeyboardView;
 
 public class PlayView extends BaseNavigationView {
 
-    private final PianoKeyboard keyboard = new PianoKeyboard();
+    private final PianoKeyboardView keyboard = new PianoKeyboardView();
 
     public PlayView() {
         setupGUI();
