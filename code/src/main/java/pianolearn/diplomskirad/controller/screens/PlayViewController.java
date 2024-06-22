@@ -1,9 +1,9 @@
 package pianolearn.diplomskirad.controller.screens;
 
-import javafx.scene.layout.Pane;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.controller.components.PianoKeyboardController;
+import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.screens.PlayView;
 
 public class PlayViewController implements BaseViewController {
@@ -18,7 +18,7 @@ public class PlayViewController implements BaseViewController {
     }
 
     @Override
-    public Pane getView() {
+    public BaseView getView() {
         return view;
     }
 

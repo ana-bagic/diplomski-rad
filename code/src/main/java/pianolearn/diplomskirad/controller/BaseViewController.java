@@ -1,8 +1,8 @@
 package pianolearn.diplomskirad.controller;
 
-import javafx.scene.layout.Pane;
+import pianolearn.diplomskirad.view.BaseView;
 
 public interface BaseViewController {
 
-    Pane getView();
+    BaseView getView();
 }

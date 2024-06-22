@@ -1,8 +1,8 @@
 package pianolearn.diplomskirad.controller.screens;
 
-import javafx.scene.layout.Pane;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
+import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.screens.SettingsView;
 
 public class SettingsViewController implements BaseViewController {
@@ -14,7 +14,7 @@ public class SettingsViewController implements BaseViewController {
     }
 
     @Override
-    public Pane getView() {
+    public BaseView getView() {
         return view;
     }
 
