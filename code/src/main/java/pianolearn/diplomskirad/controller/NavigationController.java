@@ -2,7 +2,6 @@ package pianolearn.diplomskirad.controller;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import pianolearn.diplomskirad.constants.Colors;
 
 import java.util.Stack;
 
@@ -11,32 +10,24 @@ public enum NavigationController {
     INSTANCE;
 
     private Stage stage;
-    private final Stack<Scene> sceneStack = new Stack<>();
+    private final Stack<BaseViewController> controllerStack = new Stack<>();
 
     public void init(Stage stage, BaseViewController viewController) {
         this.stage = stage;
-        push(viewController);
+        controllerStack.push(viewController);
+        stage.setScene(new Scene(viewController.getView(), 1200, 800));
         stage.show();
     }
 
     public void push(BaseViewController viewController) {
-        double sceneWidth = 1200;
-        double sceneHeight = 800;
-        if (!sceneStack.isEmpty()) {
-            sceneWidth = sceneStack.peek().getWidth();
-            sceneHeight = sceneStack.peek().getHeight();
-        }
-
-        Scene scene = new Scene(viewController.getView(), sceneWidth, sceneHeight);
-        scene.setFill(Colors.background);
-        sceneStack.push(scene);
-        stage.setScene(scene);
+        controllerStack.push(viewController);
+        stage.getScene().setRoot(viewController.getView());
     }
 
     public void pop() {
-        if (!sceneStack.isEmpty()) {
-            sceneStack.pop();
-            stage.setScene(sceneStack.peek());
+        if (!controllerStack.isEmpty()) {
+            controllerStack.pop();
+            stage.getScene().setRoot(controllerStack.peek().getView());
         }
     }
 
