@@ -6,8 +6,8 @@ public class PianoKey extends Rectangle {
 
     private final int keyIndex;
 
-    public PianoKey(double width, double height, int keyIndex) {
-        super(width, height);
+    public PianoKey(int keyIndex) {
+        super();
         this.keyIndex = keyIndex;
     }
 

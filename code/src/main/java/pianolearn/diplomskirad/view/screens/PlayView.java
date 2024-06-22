@@ -5,7 +5,7 @@ import pianolearn.diplomskirad.view.components.keyboard.PianoKeyboard;
 
 public class PlayView extends BaseNavigationView {
 
-    private final PianoKeyboard keyboard = new PianoKeyboard(50);
+    private final PianoKeyboard keyboard = new PianoKeyboard();
 
     public PlayView() {
         setupGUI();

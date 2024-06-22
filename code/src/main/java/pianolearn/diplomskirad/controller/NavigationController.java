@@ -20,7 +20,14 @@ public enum NavigationController {
     }
 
     public void push(BaseViewController viewController) {
-        Scene scene = new Scene(viewController.getView(), 1200, 800);
+        double sceneWidth = 1200;
+        double sceneHeight = 800;
+        if (!sceneStack.isEmpty()) {
+            sceneWidth = sceneStack.peek().getWidth();
+            sceneHeight = sceneStack.peek().getHeight();
+        }
+
+        Scene scene = new Scene(viewController.getView(), sceneWidth, sceneHeight);
         scene.setFill(Colors.background);
         sceneStack.push(scene);
         stage.setScene(scene);

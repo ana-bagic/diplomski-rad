@@ -14,7 +14,9 @@ public class PianoKeyboard extends BaseView {
     private final double BLACK_KEY_WIDTH;
     private final double BLACK_KEY_HEIGHT = 35;
 
-    public PianoKeyboard(int numberOfKeys) {
+    private final int numberOfKeys = 52;
+
+    public PianoKeyboard() {
         super();
         setPrefHeight(200);
         double frameWidth = NavigationController.INSTANCE.getStage().getWidth();
@@ -30,7 +32,8 @@ public class PianoKeyboard extends BaseView {
 
         // Draw white keys
         for (int i = 0; i < numberOfKeys; i++) {
-            PianoKey whiteKey = new PianoKey(WHITE_KEY_WIDTH, WHITE_KEY_HEIGHT, i);
+            PianoKey whiteKey = new PianoKey(i);
+            //whiteKey.widthProperty().bind();
             whiteKey.setFill(Color.WHITE);
             whiteKey.setStroke(Color.BLACK);
             whiteKey.setX(i * WHITE_KEY_WIDTH);
@@ -40,7 +43,7 @@ public class PianoKeyboard extends BaseView {
         // Draw black keys
         for (int i = 0; i < numberOfKeys; i++) {
             if (i % 7 != 2 && i % 7 != 6) { // Skip where there are no black keys
-                PianoKey blackKey = new PianoKey(BLACK_KEY_WIDTH, BLACK_KEY_HEIGHT, i);
+                PianoKey blackKey = new PianoKey(i);
                 blackKey.setFill(Color.BLACK);
                 blackKey.setX(i * WHITE_KEY_WIDTH + (WHITE_KEY_WIDTH - BLACK_KEY_WIDTH / 2));
                 root.getChildren().add(blackKey);
