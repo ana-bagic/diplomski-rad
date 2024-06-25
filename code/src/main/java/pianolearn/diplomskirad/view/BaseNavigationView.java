@@ -31,6 +31,7 @@ public class BaseNavigationView extends BaseView {
 
         topHBox.setAlignment(Pos.CENTER_LEFT);
         topHBox.setPadding(new Insets(30, 0, 0, 50));
+        topHBox.setSpacing(60);
 
         Styles.setButtonSize(backButton, 60);
         Styles.setButtonBackground(backButton, Colors.background, null, 0);

@@ -31,4 +31,31 @@ public enum Marshaller {
         marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.marshal(score, System.out);
     }
+
+    public ScorePartwise getScore() {
+        return score;
+    }
+
+    //    private void test() {
+//        ScorePartwise score = Marshaller.INSTANCE.getScore();
+//        ScorePartwise.Part part = score.getPart().getFirst();
+//
+//        for (ScorePartwise.Part.Measure measure: part.getMeasure()) {
+//            for (Object object: measure.getNoteOrBackupOrForward()) {
+//                try {
+//                    Note note = (Note) object;
+//                    Pitch pitch = note.getPitch();
+//                    if (pitch != null) {
+//                        System.out.println(PitchHelper.pitchToString(note.getPitch()));
+//                    } else if (note.getUnpitched() != null) {
+//                        System.out.println("Unpitched: " + note.getUnpitched());
+//                    } else if (note.getRest() != null) {
+//                        System.out.println("Rest: " + note.getRest());
+//                    }
+//                } catch (ClassCastException e) {
+//                    System.out.println("class cast exception " + object);
+//                }
+//            }
+//        }
+//    }
 }
