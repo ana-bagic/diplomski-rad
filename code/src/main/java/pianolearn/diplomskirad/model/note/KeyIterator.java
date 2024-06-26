@@ -3,9 +3,9 @@ package pianolearn.diplomskirad.model.note;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class KeyIterator implements Iterator<String> {
+public class KeyIterator implements Iterator<Pitch> {
 
-    private final Pitch currentPitch;
+    private Pitch currentPitch;
     private final Pitch lastPitch;
 
     public KeyIterator(Pitch firstPitch, Pitch lastPitch) {
@@ -19,10 +19,10 @@ public class KeyIterator implements Iterator<String> {
     }
 
     @Override
-    public String next() {
+    public Pitch next() {
         if (!hasNext()) throw new NoSuchElementException();
-        String next = currentPitch.toString();
-        currentPitch.increase();
-        return next;
+        Pitch pitch = currentPitch;
+        currentPitch = currentPitch.getIncreased();
+        return pitch;
     }
 }

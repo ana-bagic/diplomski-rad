@@ -3,7 +3,7 @@ package pianolearn.diplomskirad.view.components.keyboard;
 import javafx.scene.shape.Rectangle;
 import pianolearn.diplomskirad.constants.Colors;
 
-public class PianoKey extends Rectangle {
+public class PianoKeyView extends Rectangle {
 
     private boolean isWhite;
 
@@ -11,8 +11,8 @@ public class PianoKey extends Rectangle {
         return isWhite;
     }
 
-    public static PianoKey whiteKey() {
-        PianoKey key = new PianoKey();
+    public static PianoKeyView whiteKey() {
+        PianoKeyView key = new PianoKeyView();
         key.isWhite = true;
         key.setFill(Colors.whiteKey);
         key.setStroke(Colors.blackKey);
@@ -20,10 +20,14 @@ public class PianoKey extends Rectangle {
         return key;
     }
 
-    public static PianoKey blackKey() {
-        PianoKey key = new PianoKey();
+    public static PianoKeyView blackKey() {
+        PianoKeyView key = new PianoKeyView();
         key.isWhite = false;
         key.setFill(Colors.blackKey);
         return key;
+    }
+
+    public void addLabel(String text) {
+
     }
 }

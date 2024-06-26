@@ -1,28 +1,9 @@
 package pianolearn.diplomskirad.model.note;
 
-import java.util.Objects;
-
-public class Pitch {
-
-    private NoteAlphabet key;
-    private int octave;
-
-    public Pitch(NoteAlphabet key, int octave) {
-        this.key = key;
-        this.octave = octave;
-    }
+public record Pitch(NoteAlphabet key, int octave) {
 
     public NoteAlphabet getKey() {
         return key;
-    }
-
-    public int getOctave() {
-        return octave;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(key, octave);
     }
 
     @Override
@@ -47,11 +28,10 @@ public class Pitch {
         return octave < pitch.octave;
     }
 
-    public void increase() {
+    public Pitch getIncreased() {
         int nextChromaNumber = (key.getChromaNumber() + 1) % NoteAlphabet.KEYS.length;
-        key = NoteAlphabet.KEYS[nextChromaNumber];
-        if (key == NoteAlphabet.C) {
-            octave++;
-        }
+        NoteAlphabet newKey = NoteAlphabet.KEYS[nextChromaNumber];
+        int newOctave = octave + (newKey == NoteAlphabet.C ? 1 : 0);
+        return new Pitch(newKey, newOctave);
     }
 }

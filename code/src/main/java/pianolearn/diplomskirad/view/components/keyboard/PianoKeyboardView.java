@@ -6,6 +6,8 @@ import javafx.scene.layout.*;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.model.KeyboardModel;
 import pianolearn.diplomskirad.model.note.KeyIterator;
+import pianolearn.diplomskirad.model.note.NoteAlphabet;
+import pianolearn.diplomskirad.model.note.Pitch;
 import pianolearn.diplomskirad.view.BaseView;
 
 import java.util.HashMap;
@@ -18,41 +20,47 @@ public class PianoKeyboardView extends BaseView {
     private final StackPane rootPane = new StackPane();
     private final HBox whiteKeysHBox = new HBox();
     private final Pane blackKeysHBox = new Pane();
-    private final PianoKey[] keys;
+    private final PianoKeyView[] keys;
 
-    private final HashMap<String, PianoKey> keysMap = new HashMap<>();
+    private final HashMap<String, PianoKeyView> keysMap = new HashMap<>();
     private final KeyboardModel model;
     private final Scene scene = NavigationController.INSTANCE.getStage().getScene();
 
     public PianoKeyboardView(KeyboardModel model) {
         this.model = model;
-        keys = new PianoKey[model.getNumberOfWhiteKeys() * 2 - 1];
+        keys = new PianoKeyView[model.getNumberOfWhiteKeys() * 2 - 1];
         setupGUI();
     }
 
     @Override
     protected void addViews() {
-        Iterator<String> keysIterator = new KeyIterator(model.getFirstPitch(), model.getLastPitch());
+        Iterator<Pitch> keysIterator = new KeyIterator(model.getFirstPitch(), model.getLastPitch());
         boolean isCurrentWhite = true;
+        NoteAlphabet lastWhiteKey = null;
         int i = 0;
 
         while (keysIterator.hasNext()) {
             if (isCurrentWhite) {
-                PianoKey key = PianoKey.whiteKey();
+                PianoKeyView key = PianoKeyView.whiteKey();
                 whiteKeysHBox.getChildren().add(key);
                 keys[i] = key;
 
-                String keyCode = keysIterator.next();
-                keysMap.put(keyCode, key);
+                Pitch pitch = keysIterator.next();
+                lastWhiteKey = pitch.getKey();
+                keysMap.put(pitch.toString(), key);
+
+                if (pitch.getKey() == NoteAlphabet.C) {
+                    key.addLabel(pitch.toString());
+                }
             } else {
-                PianoKey key = PianoKey.blackKey();
+                PianoKeyView key = PianoKeyView.blackKey();
                 blackKeysHBox.getChildren().add(key);
                 keys[i] = key;
 
-                if (i % 14 == model.getIndexSkip1() || i % 14 == model.getIndexSkip2()) {
+                if (lastWhiteKey == NoteAlphabet.E || lastWhiteKey == NoteAlphabet.B) {
                     key.setVisible(false);
                 } else {
-                    String keyCode = keysIterator.next();
+                    String keyCode = keysIterator.next().toString();
                     keysMap.put(keyCode, key);
                 }
             }
@@ -86,7 +94,7 @@ public class PianoKeyboardView extends BaseView {
         rootPane.setMaxHeight(whiteKeyHeight);
 
         double prevWhiteKeyX = 0;
-        for (PianoKey key : keys) {
+        for (PianoKeyView key : keys) {
             if (key.isWhite()) {
                 double addOn = remainingWidth > 0 ? 1 : 0;
                 remainingWidth -= addOn;
