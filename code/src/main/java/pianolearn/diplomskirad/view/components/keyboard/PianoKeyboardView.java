@@ -1,6 +1,5 @@
 package pianolearn.diplomskirad.view.components.keyboard;
 
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import pianolearn.diplomskirad.controller.NavigationController;
@@ -15,10 +14,8 @@ import java.util.Iterator;
 
 public class PianoKeyboardView extends BaseView {
 
-    public static final double STROKE_WIDTH = 1;
-
     private final StackPane rootPane = new StackPane();
-    private final HBox whiteKeysHBox = new HBox();
+    private final Pane whiteKeysHBox = new Pane();
     private final Pane blackKeysHBox = new Pane();
     private final PianoKeyView[] keys;
 
@@ -75,8 +72,6 @@ public class PianoKeyboardView extends BaseView {
 
     @Override
     protected void styleViews() {
-        rootPane.setAlignment(Pos.TOP_CENTER);
-
         changeSize();
         scene.widthProperty().addListener(e -> changeSize());
         scene.heightProperty().addListener(e -> changeSize());
@@ -85,30 +80,35 @@ public class PianoKeyboardView extends BaseView {
     private void changeSize() {
         double sceneWidth = scene.getWidth();
         int numberOfKeys = model.getNumberOfWhiteKeys();
-        double whiteKeyWidth = Math.floor((sceneWidth - STROKE_WIDTH * numberOfKeys) / numberOfKeys);
+        double whiteKeyWidth = Math.floor(sceneWidth / numberOfKeys);
         double whiteKeyHeight = whiteKeyWidth * 5;
-        double remainingWidth = sceneWidth - (whiteKeyWidth * numberOfKeys + STROKE_WIDTH * numberOfKeys);
-        double blackKeyWidth = Math.floor(whiteKeyWidth * 0.7);
-        double blackKeyHeight = blackKeyWidth * 5;
+        double remainingWidth = sceneWidth - (whiteKeyWidth * numberOfKeys);
+        double blackKeyWidth = whiteKeyWidth * 0.7;
+        double blackKeyHeight = Math.ceil(blackKeyWidth * 4.5);
 
+        rootPane.setMinHeight(whiteKeyHeight);
         rootPane.setMaxHeight(whiteKeyHeight);
 
-        double prevWhiteKeyX = 0;
+        double whiteKeyX = 0;
         for (PianoKeyView key : keys) {
             if (key.isWhite()) {
                 double addOn = remainingWidth > 0 ? 1 : 0;
                 remainingWidth -= addOn;
                 double width = whiteKeyWidth + addOn;
-                prevWhiteKeyX += width + STROKE_WIDTH;
 
                 key.setWidth(width);
                 key.setHeight(whiteKeyHeight);
+
+                key.setLayoutX(whiteKeyX + width/2);
+                key.setLayoutY(whiteKeyHeight);
+
+                whiteKeyX += width;
             } else {
                 key.setWidth(blackKeyWidth);
                 key.setHeight(blackKeyHeight);
 
-                double blackKeyX = prevWhiteKeyX - (blackKeyWidth / 2);
-                key.setX(blackKeyX);
+                key.setLayoutX(whiteKeyX);
+                key.setLayoutY(blackKeyHeight);
             }
         }
     }

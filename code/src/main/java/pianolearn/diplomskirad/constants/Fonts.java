@@ -10,6 +10,7 @@ public class Fonts {
     public static final Font tooltip;
     public static final Font micro;
     public static final Font error = Font.font("Arial", 20);
+    public static final Font key = Font.font("Arial", 12);
 
     static {
         String resource = "/fonts/retro-osar.ttf";
