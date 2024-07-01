@@ -1,6 +1,4 @@
-package pianolearn.diplomskirad;
-
-import pianolearn.diplomskirad.music.midi.MidiInputReceiver;
+package pianolearn.diplomskirad.music.midi;
 
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
@@ -10,9 +8,9 @@ import java.util.List;
 
 import static pianolearn.diplomskirad.constants.Config.DEBUG;
 
-public class TestApp {
+public class MidiDeviceManager {
 
-    public static void main(String[] args) throws MidiUnavailableException {
+    public static MidiInputReceiver getReceiver() {
         MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
 
         for (int i = 0; i < infos.length; i++) {
@@ -20,13 +18,26 @@ public class TestApp {
             System.out.printf("%2d. %s%n    Opis: %s%n", i + 1, info.getVendor(), info.getDescription());
         }
 
-        MidiDevice device = MidiSystem.getMidiDevice(infos[3]);
+        MidiDevice device = null;
+        try {
+            device = MidiSystem.getMidiDevice(infos[3]);
+            device.open();
+        } catch (MidiUnavailableException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("Device: " + device.getDeviceInfo().getDescription());
-        device.open();
 
-        Transmitter transmitter = device.getTransmitter();
+        Transmitter transmitter = null;
+        try {
+            transmitter = device.getTransmitter();
+        } catch (MidiUnavailableException e) {
+            throw new RuntimeException(e);
+        }
         List<Transmitter> transmitters = device.getTransmitters();
         if (DEBUG) System.out.println("Broj postojećih transmittera: " + transmitters.size());
-        transmitter.setReceiver(new MidiInputReceiver());
+
+        MidiInputReceiver receiver = new MidiInputReceiver();
+        transmitter.setReceiver(receiver);
+        return receiver;
     }
 }

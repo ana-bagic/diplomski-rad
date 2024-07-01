@@ -2,6 +2,7 @@ package pianolearn.diplomskirad.view.components.keyboard;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.model.KeyboardModel;
 import pianolearn.diplomskirad.model.note.KeyIterator;
@@ -111,5 +112,13 @@ public class PianoKeyboardView extends BaseView {
                 key.setLayoutY(blackKeyHeight);
             }
         }
+    }
+
+    public void setHighlight(String keyCode, Color color) {
+        keysMap.get(keyCode).setHighlight(color);
+    }
+
+    public void removeHighlight(String keyCode) {
+        keysMap.get(keyCode).removeHighlight();
     }
 }

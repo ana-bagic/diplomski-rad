@@ -2,6 +2,12 @@ package pianolearn.diplomskirad.model.note;
 
 public record Pitch(NoteAlphabet key, int octave) {
 
+    public static Pitch fromMidi(int midiKey) {
+        int octave = midiKey / 12 - 1;
+        int chromaNumber = midiKey % 12;
+        return new Pitch(NoteAlphabet.KEYS[chromaNumber], octave);
+    }
+
     public NoteAlphabet getKey() {
         return key;
     }

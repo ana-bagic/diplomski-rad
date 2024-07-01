@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import pianolearn.diplomskirad.constants.Colors;
@@ -42,6 +43,10 @@ public class PianoKeyView extends StackPane {
         return key;
     }
 
+    public boolean isWhite() {
+        return isWhite;
+    }
+
     public void addLabel(String text) {
         Label label = new Label(text);
         label.setFont(Fonts.key);
@@ -59,7 +64,11 @@ public class PianoKeyView extends StackPane {
         rectangle.setHeight(height);
     }
 
-    public boolean isWhite() {
-        return isWhite;
+    public void setHighlight(Color color) {
+        rectangle.setFill(color);
+    }
+
+    public void removeHighlight() {
+        rectangle.setFill(isWhite ? Colors.whiteKey : Colors.blackKey);
     }
 }

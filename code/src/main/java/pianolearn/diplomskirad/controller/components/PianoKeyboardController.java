@@ -1,5 +1,6 @@
 package pianolearn.diplomskirad.controller.components;
 
+import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.model.KeyboardModel;
 import pianolearn.diplomskirad.model.note.NoteAlphabet;
@@ -20,5 +21,15 @@ public class PianoKeyboardController implements BaseViewController {
     @Override
     public BaseView getView() {
         return view;
+    }
+
+    public void keyPressed(int midiKey) {
+        Pitch key = Pitch.fromMidi(midiKey);
+        view.setHighlight(key.toString(), Colors.accent);
+    }
+
+    public void keyReleased(int midiKey) {
+        Pitch key = Pitch.fromMidi(midiKey);
+        view.removeHighlight(key.toString());
     }
 }
