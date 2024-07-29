@@ -4,7 +4,7 @@ import javafx.stage.FileChooser;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
-import pianolearn.diplomskirad.music.xml.Marshaller;
+import pianolearn.diplomskirad.music.xml.XMLConverter;
 import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.screens.UploadView;
 
@@ -39,7 +39,7 @@ public class UploadViewController implements BaseViewController {
         if (selectedFile != null) {
             String fileName = selectedFile.getName();
             view.setFileChosen(fileName);
-            boolean success = Marshaller.INSTANCE.unmarshall(selectedFile);
+            boolean success = XMLConverter.INSTANCE.unmarshall(selectedFile);
 
             if (success) {
                 view.setCanConfirm(true);
