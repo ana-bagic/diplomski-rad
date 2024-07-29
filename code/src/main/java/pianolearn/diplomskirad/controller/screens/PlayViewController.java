@@ -1,10 +1,16 @@
 package pianolearn.diplomskirad.controller.screens;
 
+import org.audiveris.proxymusic.Note;
+import org.audiveris.proxymusic.Pitch;
+import org.audiveris.proxymusic.ScorePartwise;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.controller.components.PianoKeyboardController;
+import pianolearn.diplomskirad.music.PitchHelper;
 import pianolearn.diplomskirad.music.midi.MidiDeviceManager;
 import pianolearn.diplomskirad.music.midi.MidiInputReceiver;
+import pianolearn.diplomskirad.music.xml.XMLConverter;
+import pianolearn.diplomskirad.music.xml.ScorePartIterator;
 import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.screens.PlayView;
 
@@ -19,6 +25,7 @@ public class PlayViewController implements BaseViewController {
     public PlayViewController() {
         setupViews();
         setupListeners();
+        play();
     }
 
     @Override
@@ -43,5 +50,28 @@ public class PlayViewController implements BaseViewController {
 
     private void keyReleased(int midiKey) {
         pianoKeyboardController.keyReleased(midiKey);
+    }
+
+    private void play() {
+        ScorePartwise score = XMLConverter.INSTANCE.getScore();
+        ScorePartwise.Part part = score.getPart().getFirst();
+        ScorePartIterator iterator = new ScorePartIterator(part);
+
+        while (iterator.hasNext()) {
+            Note note = iterator.next();
+            if (note != null) {
+                Pitch pitch = note.getPitch();
+
+                if (pitch != null) {
+                    System.out.println(PitchHelper.pitchToString(note.getPitch()) + " " + note.getType().getValue());
+                } else if (note.getUnpitched() != null) {
+                    System.out.println("Unpitched: " + note.getUnpitched());
+                } else if (note.getRest() != null) {
+                    System.out.println("\t" + note.getType().getValue());
+                } else {
+                    System.out.println("Something else");
+                }
+            }
+        }
     }
 }
