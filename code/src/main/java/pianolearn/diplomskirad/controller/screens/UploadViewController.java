@@ -4,7 +4,7 @@ import javafx.stage.FileChooser;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
-import pianolearn.diplomskirad.music.xml.XMLConverter;
+import pianolearn.diplomskirad.helper.xml.XMLConverter;
 import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.screens.UploadView;
 

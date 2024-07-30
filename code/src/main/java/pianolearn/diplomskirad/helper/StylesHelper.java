@@ -1,4 +1,4 @@
-package pianolearn.diplomskirad.constants;
+package pianolearn.diplomskirad.helper;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -9,8 +9,10 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import pianolearn.diplomskirad.constants.Colors;
+import pianolearn.diplomskirad.constants.Fonts;
 
-public class Styles {
+public class StylesHelper {
 
     public static Background background(Color color, Integer radius) {
         CornerRadii backgroundRadius = radius == null ? CornerRadii.EMPTY : new CornerRadii(radius);

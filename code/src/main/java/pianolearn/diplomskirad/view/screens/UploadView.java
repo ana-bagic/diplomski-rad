@@ -10,7 +10,7 @@ import javafx.scene.text.TextAlignment;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Strings;
-import pianolearn.diplomskirad.constants.Styles;
+import pianolearn.diplomskirad.helper.StylesHelper;
 import pianolearn.diplomskirad.listener.ButtonClickListener;
 import pianolearn.diplomskirad.view.BaseNavigationView;
 
@@ -70,7 +70,7 @@ public class UploadView extends BaseNavigationView {
         confirmButton.setFont(Fonts.body);
         confirmButton.setTextFill(Colors.background);
         confirmButton.setPadding(new Insets(20));
-        Styles.setButtonBackground(confirmButton, Colors.text, Colors.highlight, 20);
+        StylesHelper.setButtonBackground(confirmButton, Colors.text, Colors.highlight, 20);
         confirmButton.setText(Strings.confirm);
         showNode(confirmButton, false);
 
@@ -83,7 +83,7 @@ public class UploadView extends BaseNavigationView {
         fileChooserButton.setFont(Fonts.body);
         fileChooserButton.setTextFill(Colors.background);
         fileChooserButton.setPadding(new Insets(20));
-        Styles.setButtonBackground(fileChooserButton, Colors.text, Colors.highlight, 20);
+        StylesHelper.setButtonBackground(fileChooserButton, Colors.text, Colors.highlight, 20);
         fileChooserButton.setText(Strings.chooseFile);
     }
 

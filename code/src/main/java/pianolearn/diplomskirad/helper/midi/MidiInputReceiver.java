@@ -1,4 +1,4 @@
-package pianolearn.diplomskirad.music.midi;
+package pianolearn.diplomskirad.helper.midi;
 
 import pianolearn.diplomskirad.listener.PianoKeyInteractListener;
 

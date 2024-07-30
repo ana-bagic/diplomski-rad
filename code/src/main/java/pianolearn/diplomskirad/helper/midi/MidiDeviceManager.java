@@ -1,4 +1,4 @@
-package pianolearn.diplomskirad.music.midi;
+package pianolearn.diplomskirad.helper.midi;
 
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;

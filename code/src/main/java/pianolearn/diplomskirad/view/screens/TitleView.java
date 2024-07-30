@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import pianolearn.diplomskirad.constants.*;
+import pianolearn.diplomskirad.helper.StylesHelper;
 import pianolearn.diplomskirad.listener.ButtonClickListener;
 import pianolearn.diplomskirad.view.BaseView;
 
@@ -34,7 +35,7 @@ public class TitleView extends BaseView {
 
     @Override
     protected void styleViews() {
-        rootPane.setBackground(Styles.background(Colors.background, null));
+        rootPane.setBackground(StylesHelper.background(Colors.background, null));
         rootPane.setAlignment(Pos.CENTER);
         rootPane.setSpacing(70);
 
@@ -45,19 +46,19 @@ public class TitleView extends BaseView {
         buttonsStackHBox.setAlignment(Pos.CENTER);
         buttonsStackHBox.setSpacing(50);
 
-        Styles.setButtonSize(uploadButton, 200);
-        Styles.setButtonBackground(uploadButton, Colors.text, Colors.highlight, 20);
-        Styles.setButtonTooltip(uploadButton, Strings.uploadButtonTooltip);
+        StylesHelper.setButtonSize(uploadButton, 200);
+        StylesHelper.setButtonBackground(uploadButton, Colors.text, Colors.highlight, 20);
+        StylesHelper.setButtonTooltip(uploadButton, Strings.uploadButtonTooltip);
         bindImageToButton(Images.uploadIcon, uploadButton);
 
-        Styles.setButtonSize(libraryButton, 200);
-        Styles.setButtonBackground(libraryButton, Colors.text, Colors.highlight, 20);
-        Styles.setButtonTooltip(libraryButton, Strings.libraryButtonTooltip);
+        StylesHelper.setButtonSize(libraryButton, 200);
+        StylesHelper.setButtonBackground(libraryButton, Colors.text, Colors.highlight, 20);
+        StylesHelper.setButtonTooltip(libraryButton, Strings.libraryButtonTooltip);
         bindImageToButton(Images.musicLibraryIcon, libraryButton);
 
-        Styles.setButtonSize(settingsButton, 200);
-        Styles.setButtonBackground(settingsButton, Colors.text, Colors.highlight, 20);
-        Styles.setButtonTooltip(settingsButton, Strings.settingsButtonTooltip);
+        StylesHelper.setButtonSize(settingsButton, 200);
+        StylesHelper.setButtonBackground(settingsButton, Colors.text, Colors.highlight, 20);
+        StylesHelper.setButtonTooltip(settingsButton, Strings.settingsButtonTooltip);
         bindImageToButton(Images.settingsIcon, settingsButton);
     }
 

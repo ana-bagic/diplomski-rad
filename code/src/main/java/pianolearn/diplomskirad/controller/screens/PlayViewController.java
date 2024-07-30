@@ -6,11 +6,11 @@ import org.audiveris.proxymusic.ScorePartwise;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.controller.components.PianoKeyboardController;
-import pianolearn.diplomskirad.music.PitchHelper;
-import pianolearn.diplomskirad.music.midi.MidiDeviceManager;
-import pianolearn.diplomskirad.music.midi.MidiInputReceiver;
-import pianolearn.diplomskirad.music.xml.XMLConverter;
-import pianolearn.diplomskirad.music.xml.ScorePartIterator;
+import pianolearn.diplomskirad.helper.PitchHelper;
+import pianolearn.diplomskirad.helper.midi.MidiDeviceManager;
+import pianolearn.diplomskirad.helper.midi.MidiInputReceiver;
+import pianolearn.diplomskirad.helper.xml.XMLConverter;
+import pianolearn.diplomskirad.helper.xml.ScorePartIterator;
 import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.screens.PlayView;
 

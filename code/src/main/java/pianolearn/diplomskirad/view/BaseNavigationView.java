@@ -7,7 +7,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Images;
-import pianolearn.diplomskirad.constants.Styles;
+import pianolearn.diplomskirad.helper.StylesHelper;
 import pianolearn.diplomskirad.listener.ButtonClickListener;
 
 public class BaseNavigationView extends BaseView {
@@ -27,14 +27,14 @@ public class BaseNavigationView extends BaseView {
 
     @Override
     protected void styleViews() {
-        rootPane.setBackground(Styles.background(Colors.background, null));
+        rootPane.setBackground(StylesHelper.background(Colors.background, null));
 
         topHBox.setAlignment(Pos.CENTER_LEFT);
         topHBox.setPadding(new Insets(30, 0, 0, 50));
         topHBox.setSpacing(60);
 
-        Styles.setButtonSize(backButton, 60);
-        Styles.setButtonBackground(backButton, Colors.background, null, 0);
+        StylesHelper.setButtonSize(backButton, 60);
+        StylesHelper.setButtonBackground(backButton, Colors.background, null, 0);
         bindImageToButton(Images.backArrowIcon, backButton);
     }
 

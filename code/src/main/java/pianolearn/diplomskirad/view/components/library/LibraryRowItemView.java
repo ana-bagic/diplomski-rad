@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
-import pianolearn.diplomskirad.constants.Styles;
+import pianolearn.diplomskirad.helper.StylesHelper;
 import pianolearn.diplomskirad.listener.ButtonClickWithIdListener;
 import pianolearn.diplomskirad.model.LibraryItem;
 import pianolearn.diplomskirad.view.BaseView;
@@ -44,10 +44,10 @@ public class LibraryRowItemView extends BaseView {
         rootPane.setAlignment(Pos.CENTER);
         rootPane.setSpacing(10);
 
-        Styles.setButtonSize(coverButton, 160);
-        Styles.setButtonBackground(coverButton, Colors.text, Colors.highlight, 20);
+        StylesHelper.setButtonSize(coverButton, 160);
+        StylesHelper.setButtonBackground(coverButton, Colors.text, Colors.highlight, 20);
 
-        Styles.setImageViewSizeAndRadius(coverImageView, 130, 130);
+        StylesHelper.setImageViewSizeAndRadius(coverImageView, 130, 130);
         coverImageView.setMouseTransparent(true);
 
         songNameLabel.setFont(Fonts.body);
