@@ -30,6 +30,10 @@ public class StaffView extends BaseView {
 
     @Override
     protected void styleViews() {
+        double staffHeight = 4 * STAFF_LINE_SPACING + 1;
+        setMinHeight(staffHeight);
+        setMaxHeight(staffHeight);
+
         for (Line line : lines) {
             line.setStroke(Colors.blackKey);
             line.setStrokeWidth(1);

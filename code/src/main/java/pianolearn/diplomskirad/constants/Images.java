@@ -14,6 +14,9 @@ public class Images {
 
     public static final Image backArrowIcon = getImage(iconsPath + "back-arrow.png");
 
+    public static final Image leftHandIcon = getImage(iconsPath + "left-hand.png");
+    public static final Image rightHandIcon = getImage(iconsPath + "right-hand.png");
+
     public static final Image beethovenImage = getImage("beethoven.jpg");
 
     private static Image getImage(String image) {

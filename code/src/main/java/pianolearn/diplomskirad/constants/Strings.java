@@ -31,4 +31,8 @@ public class Strings {
 
     // Settings screen
     public static final String settingsLabel = "Settings";
+
+    // Play screen
+    public static final String leftHandButtonTooltip = "Left hand";
+    public static final String rightHandButtonTooltip = "Right hand";
 }
