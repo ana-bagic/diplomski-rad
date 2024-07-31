@@ -13,6 +13,8 @@ import pianolearn.diplomskirad.view.BaseView;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import static pianolearn.diplomskirad.constants.Config.*;
+
 public class PianoKeyboardView extends BaseView {
 
     private final StackPane rootPane = new StackPane();
@@ -44,10 +46,10 @@ public class PianoKeyboardView extends BaseView {
                 keys[i] = key;
 
                 Pitch pitch = keysIterator.next();
-                lastWhiteKey = pitch.getKey();
+                lastWhiteKey = pitch.key();
                 keysMap.put(pitch.toString(), key);
 
-                if (pitch.getKey() == NoteAlphabet.C) {
+                if (pitch.key() == NoteAlphabet.C) {
                     key.addLabel(pitch.toString());
                 }
             } else {
@@ -82,10 +84,10 @@ public class PianoKeyboardView extends BaseView {
         double sceneWidth = scene.getWidth();
         int numberOfKeys = model.getNumberOfWhiteKeys();
         double whiteKeyWidth = Math.floor(sceneWidth / numberOfKeys);
-        double whiteKeyHeight = whiteKeyWidth * 5;
+        double whiteKeyHeight = whiteKeyWidth * WHITE_KEY_HEIGHT_MULTIPLIER;
         double remainingWidth = sceneWidth - (whiteKeyWidth * numberOfKeys);
-        double blackKeyWidth = whiteKeyWidth * 0.7;
-        double blackKeyHeight = Math.ceil(blackKeyWidth * 4.5);
+        double blackKeyWidth = whiteKeyWidth * BLACK_KEY_WIDTH_MULTIPLIER;
+        double blackKeyHeight = Math.ceil(blackKeyWidth * BLACK_KEY_HEIGHT_MULTIPLIER);
 
         rootPane.setMinHeight(whiteKeyHeight);
         rootPane.setMaxHeight(whiteKeyHeight);

@@ -8,10 +8,6 @@ public record Pitch(NoteAlphabet key, int octave) {
         return new Pitch(NoteAlphabet.KEYS[chromaNumber], octave);
     }
 
-    public NoteAlphabet getKey() {
-        return key;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -28,6 +24,7 @@ public record Pitch(NoteAlphabet key, int octave) {
     public boolean lessThanOrEquals(Pitch pitch) {
         if (equals(pitch)) return true;
         if (pitch == null) return false;
+
         if (octave == pitch.octave) {
             return key.getChromaNumber() < pitch.key.getChromaNumber();
         }

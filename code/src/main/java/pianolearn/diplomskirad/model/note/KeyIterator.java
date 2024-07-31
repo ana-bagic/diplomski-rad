@@ -21,6 +21,7 @@ public class KeyIterator implements Iterator<Pitch> {
     @Override
     public Pitch next() {
         if (!hasNext()) throw new NoSuchElementException();
+
         Pitch pitch = currentPitch;
         currentPitch = currentPitch.getIncreased();
         return pitch;

@@ -6,6 +6,7 @@ import pianolearn.diplomskirad.view.BaseView;
 public class SheetMusicPartView extends BaseView {
 
     private final StackPane rootPane = new StackPane();
+    private final StaffView staffView = new StaffView();
 
     public SheetMusicPartView() {
         setupGUI();
@@ -13,6 +14,7 @@ public class SheetMusicPartView extends BaseView {
 
     @Override
     protected void addViews() {
+        rootPane.getChildren().add(staffView);
         bindToSelf(rootPane);
     }
 }
