@@ -6,6 +6,7 @@ import org.audiveris.proxymusic.ScorePartwise;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.controller.components.PianoKeyboardController;
+import pianolearn.diplomskirad.controller.components.SheetMusicController;
 import pianolearn.diplomskirad.helper.PitchHelper;
 import pianolearn.diplomskirad.helper.midi.MidiDeviceManager;
 import pianolearn.diplomskirad.helper.midi.MidiInputReceiver;
@@ -18,6 +19,7 @@ public class PlayViewController implements BaseViewController {
 
     private final PlayView view = new PlayView();
 
+    private final SheetMusicController sheetMusicController = new SheetMusicController();
     private final PianoKeyboardController pianoKeyboardController = new PianoKeyboardController();
 
     private final MidiInputReceiver midiInputReceiver = MidiDeviceManager.getReceiver();
@@ -34,7 +36,8 @@ public class PlayViewController implements BaseViewController {
     }
 
     private void setupViews() {
-        view.setBottom(pianoKeyboardController.getView());
+        view.setSheetMusicView(sheetMusicController.getView());
+        view.setPianoKeyboardView(pianoKeyboardController.getView());
     }
 
     private void setupListeners() {

@@ -16,7 +16,7 @@ public class Fonts {
     static {
         String retroOsarFont = "/fonts/retro-osar.ttf";
         Font.loadFont(Fonts.class.getResourceAsStream(retroOsarFont), 12);
-        String bravuraFont = "/fonts/bravura.ttf";
+        String bravuraFont = "/fonts/bravura.otf";
         Font.loadFont(Fonts.class.getResourceAsStream(bravuraFont), 12);
 
         title = Font.font("Retro Osar", 100);

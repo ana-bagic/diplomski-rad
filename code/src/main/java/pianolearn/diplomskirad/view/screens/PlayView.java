@@ -40,7 +40,11 @@ public class PlayView extends BaseNavigationView {
         handHBox.setSpacing(20);
     }
 
-    public void setBottom(BaseView view) {
+    public void setSheetMusicView(BaseView view) {
+        rootPane.setCenter(view);
+    }
+
+    public void setPianoKeyboardView(BaseView view) {
         rootPane.setBottom(view);
     }
 }

@@ -10,7 +10,7 @@ import pianolearn.diplomskirad.view.components.keyboard.PianoKeyboardView;
 
 public class PianoKeyboardController implements BaseViewController {
 
-    public PianoKeyboardView view;
+    private final PianoKeyboardView view;
 
     public PianoKeyboardController() {
         Pitch firstPitch = new Pitch(NoteAlphabet.A, 0);
