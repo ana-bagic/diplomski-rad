@@ -2,10 +2,12 @@ package pianolearn.diplomskirad.view.components.sheetmusic;
 
 import javafx.scene.layout.VBox;
 import pianolearn.diplomskirad.view.BaseView;
+import pianolearn.diplomskirad.view.components.SongMetadataView;
 
 public class SheetMusicView extends BaseView {
 
     private final VBox rootPane = new VBox();
+    private final SongMetadataView songMetadataView = new SongMetadataView();
     private final SheetMusicPartView rightHandPartView = new SheetMusicPartView();
     private final SheetMusicPartView leftHandPartView = new SheetMusicPartView();
 
@@ -15,7 +17,7 @@ public class SheetMusicView extends BaseView {
 
     @Override
     protected void addViews() {
-        rootPane.getChildren().addAll(rightHandPartView, leftHandPartView);
+        rootPane.getChildren().addAll(songMetadataView, rightHandPartView, leftHandPartView);
         bindToSelf(rootPane);
     }
 }

@@ -35,4 +35,6 @@ public class Strings {
     // Play screen
     public static final String leftHandButtonTooltip = "Left hand";
     public static final String rightHandButtonTooltip = "Right hand";
+    public static final String titlePlaceholder = "Title";
+    public static final String artistPlaceholder = "Artist";
 }
