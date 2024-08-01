@@ -23,6 +23,10 @@ public class Strings {
         return String.format("Error: file %s can't be properly loaded for this app.\n" +
                 "Please use MusicXML file with <score-partwise> root element.", fileName);
     }
+    public static String xmlPartsError(String fileName, int parts) {
+        return String.format("Error: file %s has wrong number of parts: %d.\n" +
+                "Please use file with 1 or 2 parts.", fileName, parts);
+    }
 
     // Library screen
     public static final String libraryLabel = "Pick a song";

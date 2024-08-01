@@ -10,6 +10,7 @@ import pianolearn.diplomskirad.controller.components.SheetMusicController;
 import pianolearn.diplomskirad.helper.PitchHelper;
 import pianolearn.diplomskirad.helper.midi.MidiDeviceManager;
 import pianolearn.diplomskirad.helper.midi.MidiInputReceiver;
+import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.helper.xml.XMLConverter;
 import pianolearn.diplomskirad.helper.xml.ScorePartIterator;
 import pianolearn.diplomskirad.view.BaseView;
@@ -56,8 +57,9 @@ public class PlayViewController implements BaseViewController {
     }
 
     private void play() {
-        ScorePartwise score = XMLConverter.INSTANCE.getScore();
-        ScorePartwise.Part part = score.getPart().getFirst();
+        ScorePartwise.Part part = Score.getRightHandPart();
+        if (part == null) return;
+
         ScorePartIterator iterator = new ScorePartIterator(part);
 
         while (iterator.hasNext()) {

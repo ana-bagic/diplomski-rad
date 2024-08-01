@@ -4,6 +4,7 @@ import javafx.stage.FileChooser;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
+import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.helper.xml.XMLConverter;
 import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.screens.UploadView;
@@ -32,7 +33,7 @@ public class UploadViewController implements BaseViewController {
     private void chooseFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(Strings.chooseFile);
-        FileChooser.ExtensionFilter xmlFilter = new FileChooser.ExtensionFilter(Strings.fileChooserXmlFiles, "*.xml");
+        FileChooser.ExtensionFilter xmlFilter = new FileChooser.ExtensionFilter(Strings.fileChooserXmlFiles, "*.xml", "*.musicxml");
         fileChooser.getExtensionFilters().add(xmlFilter);
 
         File selectedFile = fileChooser.showOpenDialog(NavigationController.INSTANCE.getStage());
@@ -42,6 +43,13 @@ public class UploadViewController implements BaseViewController {
             boolean success = XMLConverter.INSTANCE.unmarshall(selectedFile);
 
             if (success) {
+                int parts = Score.numberOfParts();
+                if (parts < 1 || parts > 2) {
+                    view.setCanConfirm(false);
+                    view.setError(Strings.xmlPartsError(fileName, parts));
+                    return;
+                }
+
                 view.setCanConfirm(true);
                 view.clearError();
             } else {

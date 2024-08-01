@@ -48,7 +48,7 @@ public class UploadView extends BaseNavigationView {
 
         centerVBox.setAlignment(Pos.TOP_CENTER);
         centerVBox.setSpacing(80);
-        centerVBox.setPadding(new Insets(150, 0, 0, 0));
+        centerVBox.setPadding(new Insets(150, 20, 0, 20));
 
         infoHBox.setAlignment(Pos.CENTER);
 
