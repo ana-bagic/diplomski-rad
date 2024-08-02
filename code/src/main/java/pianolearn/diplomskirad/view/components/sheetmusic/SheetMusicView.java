@@ -1,6 +1,7 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
 import javafx.scene.layout.VBox;
+import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.components.SongMetadataView;
 
@@ -19,5 +20,12 @@ public class SheetMusicView extends BaseView {
     protected void addViews() {
         rootPane.getChildren().addAll(songMetadataView, rightHandPartView, leftHandPartView);
         bindToSelf(rootPane);
+    }
+
+    @Override
+    protected void styleViews() {
+        if (Score.numberOfParts() == 1) {
+            leftHandPartView.setVisible(false);
+        }
     }
 }

@@ -3,5 +3,6 @@ module pianolearn.diplomskirad {
     requires java.desktop;
     requires proxymusic;
     requires java.xml.bind;
+    requires java.prefs;
     exports pianolearn.diplomskirad;
 }

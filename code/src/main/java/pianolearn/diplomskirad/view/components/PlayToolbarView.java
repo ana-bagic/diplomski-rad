@@ -7,6 +7,7 @@ import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Images;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.helper.StylesHelper;
+import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.listener.ButtonClickListener;
 import pianolearn.diplomskirad.view.BaseView;
 
@@ -56,6 +57,10 @@ public class PlayToolbarView extends BaseView {
         StylesHelper.setButtonBackground(rightHandButton, Colors.text, Colors.highlight, 10);
         StylesHelper.setButtonTooltip(rightHandButton, Strings.rightHandButtonTooltip);
         bindImageToButton(Images.rightHandIcon, rightHandButton);
+
+        if (Score.numberOfParts() == 1) {
+            handHBox.setVisible(false);
+        }
     }
 
     @Override

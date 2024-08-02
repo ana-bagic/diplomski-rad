@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
@@ -17,7 +18,7 @@ import pianolearn.diplomskirad.view.BaseNavigationView;
 public class UploadView extends BaseNavigationView {
 
     private final VBox centerVBox = new VBox();
-    private final HBox infoHBox = new HBox();
+    private final FlowPane infoFlowPane = new FlowPane();
     private final Label infoLabel = new Label();
     private final Label chosenFileLabel = new Label();
     private final Label errorLabel = new Label();
@@ -36,9 +37,9 @@ public class UploadView extends BaseNavigationView {
     @Override
     protected void addViews() {
         super.addViews();
-        infoHBox.getChildren().addAll(infoLabel, chosenFileLabel);
+        infoFlowPane.getChildren().addAll(infoLabel, chosenFileLabel);
         actionHBox.getChildren().addAll(confirmButton, orLabel, fileChooserButton);
-        centerVBox.getChildren().addAll(infoHBox, errorLabel, actionHBox);
+        centerVBox.getChildren().addAll(infoFlowPane, errorLabel, actionHBox);
         rootPane.setCenter(centerVBox);
     }
 
@@ -50,7 +51,7 @@ public class UploadView extends BaseNavigationView {
         centerVBox.setSpacing(80);
         centerVBox.setPadding(new Insets(150, 20, 0, 20));
 
-        infoHBox.setAlignment(Pos.CENTER);
+        infoFlowPane.setAlignment(Pos.CENTER);
 
         infoLabel.setFont(Fonts.header);
         infoLabel.setTextFill(Colors.text);
@@ -58,6 +59,7 @@ public class UploadView extends BaseNavigationView {
 
         chosenFileLabel.setFont(Fonts.header);
         chosenFileLabel.setTextFill(Colors.accent);
+        chosenFileLabel.maxWidthProperty().bind(widthProperty().add(-40));
         showNode(chosenFileLabel, false);
 
         errorLabel.setFont(Fonts.error);
