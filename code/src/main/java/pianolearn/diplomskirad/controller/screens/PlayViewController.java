@@ -11,7 +11,6 @@ import pianolearn.diplomskirad.helper.PitchHelper;
 import pianolearn.diplomskirad.helper.midi.MidiDeviceManager;
 import pianolearn.diplomskirad.helper.midi.MidiInputReceiver;
 import pianolearn.diplomskirad.helper.xml.Score;
-import pianolearn.diplomskirad.helper.xml.XMLConverter;
 import pianolearn.diplomskirad.helper.xml.ScorePartIterator;
 import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.screens.PlayView;
@@ -28,7 +27,7 @@ public class PlayViewController implements BaseViewController {
     public PlayViewController() {
         setupViews();
         setupListeners();
-        play();
+        //play();
     }
 
     @Override

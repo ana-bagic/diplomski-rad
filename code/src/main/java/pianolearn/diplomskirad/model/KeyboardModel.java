@@ -1,9 +1,9 @@
 package pianolearn.diplomskirad.model;
 
-import pianolearn.diplomskirad.model.note.NoteAlphabet;
-import pianolearn.diplomskirad.model.note.Pitch;
+import pianolearn.diplomskirad.model.score.NoteAlphabet;
+import pianolearn.diplomskirad.model.score.Pitch;
 
-import static pianolearn.diplomskirad.model.note.NoteAlphabet.*;
+import static pianolearn.diplomskirad.model.score.NoteAlphabet.*;
 
 public class KeyboardModel {
 

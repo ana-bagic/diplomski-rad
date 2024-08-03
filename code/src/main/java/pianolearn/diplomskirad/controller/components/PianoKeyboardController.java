@@ -3,7 +3,7 @@ package pianolearn.diplomskirad.controller.components;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Config;
 import pianolearn.diplomskirad.controller.BaseViewController;
-import pianolearn.diplomskirad.model.note.Pitch;
+import pianolearn.diplomskirad.model.score.Pitch;
 import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.components.keyboard.PianoKeyboardView;
 

@@ -24,6 +24,6 @@ public class Fonts {
         body = Font.font("Retro Osar", 24);
         tooltip = Font.font("Retro Osar", 18);
         micro = Font.font("Retro Osar", 18);
-        music = Font.font("Bravura Text", 50);
+        music = Font.font("Bravura Text", 80);
     }
 }

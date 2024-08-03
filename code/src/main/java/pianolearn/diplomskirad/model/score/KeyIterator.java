@@ -1,4 +1,4 @@
-package pianolearn.diplomskirad.model.note;
+package pianolearn.diplomskirad.model.score;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

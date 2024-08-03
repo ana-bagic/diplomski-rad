@@ -5,9 +5,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.model.KeyboardModel;
-import pianolearn.diplomskirad.model.note.KeyIterator;
-import pianolearn.diplomskirad.model.note.NoteAlphabet;
-import pianolearn.diplomskirad.model.note.Pitch;
+import pianolearn.diplomskirad.model.score.KeyIterator;
+import pianolearn.diplomskirad.model.score.NoteAlphabet;
+import pianolearn.diplomskirad.model.score.Pitch;
 import pianolearn.diplomskirad.view.BaseView;
 
 import java.util.HashMap;
