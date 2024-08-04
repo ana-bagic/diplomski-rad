@@ -30,9 +30,9 @@ public class ClefTimeKeyView extends BaseView {
 
         clefText.putAfter(barLineText, 1);
 
-        timeNumeratorText.raiseBy(2);
+        timeNumeratorText.raiseBy(6);
 
-        timeDenominatorText.raiseBy(6);
+        timeDenominatorText.raiseBy(2);
     }
 
     public void setModel(ClefTimeKey model) {

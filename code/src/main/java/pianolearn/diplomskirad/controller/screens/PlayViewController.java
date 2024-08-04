@@ -56,7 +56,7 @@ public class PlayViewController implements BaseViewController {
     }
 
     private void play() {
-        ScorePartwise.Part part = Score.getRightHandPart();
+        ScorePartwise.Part part = Score.rightHandPart();
         if (part == null) return;
 
         ScorePartIterator iterator = new ScorePartIterator(part);
