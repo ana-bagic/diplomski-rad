@@ -1,18 +1,26 @@
 package pianolearn.diplomskirad.model.score;
 
-public record Pitch(NoteAlphabet key, int octave) {
+import org.audiveris.proxymusic.Pitch;
 
-    public static Pitch fromMidi(int midiKey) {
+public record PitchModel(NoteAlphabet key, int octave) {
+
+    public static PitchModel fromMidi(int midiKey) {
+        NoteAlphabet noteAlphabet = NoteAlphabet.KEYS[midiKey % 12];
         int octave = midiKey / 12 - 1;
-        int chromaNumber = midiKey % 12;
-        return new Pitch(NoteAlphabet.KEYS[chromaNumber], octave);
+        return new PitchModel(noteAlphabet, octave);
+    }
+
+    public static PitchModel fromPitch(Pitch pitch) {
+        NoteAlphabet noteAlphabet = NoteAlphabet.fromStep(pitch.getStep());
+        int octave = pitch.getOctave();
+        return new PitchModel(noteAlphabet, octave);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        Pitch pitch = (Pitch) obj;
+        PitchModel pitch = (PitchModel) obj;
         return key == pitch.key && octave == pitch.octave;
     }
 
@@ -21,7 +29,7 @@ public record Pitch(NoteAlphabet key, int octave) {
         return key.getName() + octave;
     }
 
-    public boolean lessThanOrEquals(Pitch pitch) {
+    public boolean lessThanOrEquals(PitchModel pitch) {
         if (equals(pitch)) return true;
         if (pitch == null) return false;
 
@@ -31,10 +39,10 @@ public record Pitch(NoteAlphabet key, int octave) {
         return octave < pitch.octave;
     }
 
-    public Pitch getIncreased() {
+    public PitchModel getIncreased() {
         int nextChromaNumber = (key.getChromaNumber() + 1) % NoteAlphabet.KEYS.length;
         NoteAlphabet newKey = NoteAlphabet.KEYS[nextChromaNumber];
         int newOctave = octave + (newKey == NoteAlphabet.C ? 1 : 0);
-        return new Pitch(newKey, newOctave);
+        return new PitchModel(newKey, newOctave);
     }
 }

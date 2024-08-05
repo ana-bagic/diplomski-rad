@@ -3,12 +3,12 @@ package pianolearn.diplomskirad.model.score;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class KeyIterator implements Iterator<Pitch> {
+public class KeyIterator implements Iterator<PitchModel> {
 
-    private Pitch currentPitch;
-    private final Pitch lastPitch;
+    private PitchModel currentPitch;
+    private final PitchModel lastPitch;
 
-    public KeyIterator(Pitch firstPitch, Pitch lastPitch) {
+    public KeyIterator(PitchModel firstPitch, PitchModel lastPitch) {
         currentPitch =  firstPitch;
         this.lastPitch = lastPitch;
     }
@@ -19,10 +19,10 @@ public class KeyIterator implements Iterator<Pitch> {
     }
 
     @Override
-    public Pitch next() {
+    public PitchModel next() {
         if (!hasNext()) throw new NoSuchElementException();
 
-        Pitch pitch = currentPitch;
+        PitchModel pitch = currentPitch;
         currentPitch = currentPitch.getIncreased();
         return pitch;
     }

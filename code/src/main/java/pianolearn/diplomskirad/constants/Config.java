@@ -2,7 +2,7 @@ package pianolearn.diplomskirad.constants;
 
 import pianolearn.diplomskirad.model.KeyboardModel;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
-import pianolearn.diplomskirad.model.score.Pitch;
+import pianolearn.diplomskirad.model.score.PitchModel;
 
 public class Config {
 
@@ -11,7 +11,7 @@ public class Config {
     public static final boolean KEYBOARD_CONNECTED = false;
 
     public static final KeyboardModel KEYBOARD_MODEL =
-            new KeyboardModel(new Pitch(NoteAlphabet.A, 0), new Pitch(NoteAlphabet.C, 8));
+            new KeyboardModel(new PitchModel(NoteAlphabet.A, 0), new PitchModel(NoteAlphabet.C, 8));
 
     // maybe put font sizes here
 

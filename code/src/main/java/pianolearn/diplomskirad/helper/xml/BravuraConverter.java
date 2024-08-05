@@ -1,19 +1,10 @@
 package pianolearn.diplomskirad.helper.xml;
 
 import org.audiveris.proxymusic.ClefSign;
-import pianolearn.diplomskirad.model.score.Pitch;
-
-import java.util.List;
 
 import static pianolearn.diplomskirad.constants.SheetMusicSymbols.*;
-import static pianolearn.diplomskirad.model.score.NoteAlphabet.*;
 
 public class BravuraConverter {
-
-    private static final List<Integer> sharpAccidentalTreblePositions = List.of(4, 1, 5, 2, -1, 3, 0);
-    private static final List<Integer> flatAccidentalTreblePositions = List.of(0, 3, -1, 2, -2, 1, -3);
-    private static final List<Integer> sharpAccidentalBassPositions = List.of(2, -1, 3, 0, -3, 1, -2);
-    private static final List<Integer> flatAccidentalBassPositions = List.of(-2, 1, -3, 0, -4, -1, -5);
     
     public static String getBravuraClef(ClefSign clef) {
         return clef == ClefSign.F ? bassClef : trebleClef;
@@ -33,39 +24,31 @@ public class BravuraConverter {
         };
     }
 
-    public static String getBravuraAccidental(int fifths, boolean trebleClef, List<Integer> accidentals) {
-        boolean isSharp = fifths >= 0;
-
-        if (trebleClef) {
-            if (isSharp) {
-                accidentals.addAll(sharpAccidentalTreblePositions.subList(0, fifths));
-            } else {
-                accidentals.addAll(flatAccidentalTreblePositions.subList(0, -fifths));
-            }
-        } else {
-            if (isSharp) {
-                accidentals.addAll(sharpAccidentalBassPositions.subList(0, fifths));
-            } else {
-                accidentals.addAll(flatAccidentalBassPositions.subList(0, -fifths));
-            }
-        }
-
-        return isSharp ? sharp : flat;
+    public static String getBravuraAccidental(int fifths) {
+        return fifths >= 0 ? sharp : flat;
     }
 
-    // treble: B4 is position 0, C6 is position 8, A3 is position -8
-    // bass: D3 is position 0, E4 is position 8, C2 is position -8
-    private static Integer fromPitchToPosition(Pitch pitch, boolean trebleClef) {
-        if (trebleClef) {
-            if (pitch.lessThanOrEquals(new Pitch(G, 3)) || !pitch.lessThanOrEquals(new Pitch(C, 6))) {
-                return null;
-            }
-            return ScaleHelper.getInterval(new Pitch(A, 3), pitch) + 8;
-        } else {
-            if (pitch.lessThanOrEquals(new Pitch(B, 1)) || !pitch.lessThanOrEquals(new Pitch(E, 4))) {
-                return null;
-            }
-            return ScaleHelper.getInterval(new Pitch(C, 2), pitch) + 8;
-        }
+    public static String getBravuraRest(String type) {
+        return switch (type) {
+            default -> wholeRest;
+            case "half" -> halfRest;
+            case "quarter" -> quarterRest;
+            case "eighth" -> rest8;
+            case "16th" -> rest16;
+            case "32nd" -> rest32;
+            case "64th" -> rest64;
+        };
+    }
+
+    public static String getBravuraNote(String type, boolean up) {
+        return switch (type) {
+            default -> wholeNote;
+            case "half" -> up ? halfNoteUp : halfNoteDown;
+            case "quarter" -> up ? quarterNoteUp : quarterNoteDown;
+            case "eighth" -> up ? note8Up : note8Down;
+            case "16th" -> up ? note16Up : note16Down;
+            case "32nd" -> up ? note32Up : note32Down;
+            case "64th" -> up ? note64Up : note64Down;
+        };
     }
 }

@@ -1,7 +1,7 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
 import javafx.scene.layout.Pane;
-import pianolearn.diplomskirad.model.score.ClefTimeKey;
+import pianolearn.diplomskirad.model.score.ClefTimeKeyModel;
 import pianolearn.diplomskirad.view.BaseView;
 
 public class NotesView extends BaseView {
@@ -20,7 +20,7 @@ public class NotesView extends BaseView {
         bindToSelf(rootPane);
     }
 
-    public void setClefTimeKey(ClefTimeKey model) {
+    public void setClefTimeKey(ClefTimeKeyModel model) {
         clefTimeKeyView.setModel(model);
     }
 }

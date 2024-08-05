@@ -1,7 +1,7 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
 import javafx.scene.layout.Pane;
-import pianolearn.diplomskirad.model.score.ClefTimeKey;
+import pianolearn.diplomskirad.model.score.ClefTimeKeyModel;
 import pianolearn.diplomskirad.view.BaseView;
 
 import static pianolearn.diplomskirad.constants.SheetMusicSymbols.barLine;
@@ -9,10 +9,10 @@ import static pianolearn.diplomskirad.constants.SheetMusicSymbols.barLine;
 public class ClefTimeKeyView extends BaseView {
 
     private final Pane rootPane = new Pane();
-    private final MusicNode barLineText = new MusicNode();
-    private final MusicNode clefText = new MusicNode();
-    private final MusicNode timeNumeratorText = new MusicNode();
-    private final MusicNode timeDenominatorText = new MusicNode();
+    private final MusicNodeView barLineNode = new MusicNodeView();
+    private final MusicNodeView clefNode = new MusicNodeView();
+    private final MusicNodeView timeNumeratorNode = new MusicNodeView();
+    private final MusicNodeView timeDenominatorNode = new MusicNodeView();
 
     public ClefTimeKeyView() {
         setupGUI();
@@ -20,38 +20,37 @@ public class ClefTimeKeyView extends BaseView {
 
     @Override
     protected void addViews() {
-        rootPane.getChildren().addAll(barLineText, clefText, timeNumeratorText, timeDenominatorText);
+        rootPane.getChildren().addAll(barLineNode, clefNode, timeNumeratorNode, timeDenominatorNode);
         bindToSelf(rootPane);
     }
 
     @Override
     protected void styleViews() {
-        barLineText.setText(barLine);
+        barLineNode.setText(barLine);
 
-        clefText.putAfter(barLineText, 1);
+        clefNode.putAfter(barLineNode, 1);
 
-        timeNumeratorText.raiseBy(6);
+        timeNumeratorNode.position(6);
 
-        timeDenominatorText.raiseBy(2);
+        timeDenominatorNode.position(2);
     }
 
-    public void setModel(ClefTimeKey model) {
-        clefText.setText(model.clef());
-        timeNumeratorText.setText(model.numerator());
-        timeDenominatorText.setText(model.denominator());
+    public void setModel(ClefTimeKeyModel model) {
+        clefNode.setText(model.clef());
+        timeNumeratorNode.setText(model.numerator());
+        timeDenominatorNode.setText(model.denominator());
 
-        timeNumeratorText.putAfter(clefText, 1);
-        timeDenominatorText.putAfter(clefText, 1);
+        timeNumeratorNode.putAfter(clefNode, 1);
+        timeDenominatorNode.putAfter(clefNode, 1);
 
-        MusicNode prevAcc = null;
-        for (Integer accidental : model.accidentals()) {
-            MusicNode acc = new MusicNode(model.accidental());
+        MusicNodeView prevAcc = null;
+        for (Integer position : model.accidentalPositions()) {
+            MusicNodeView acc = new MusicNodeView(model.accidental(), position);
             if (prevAcc == null) {
-                acc.putAfter(timeNumeratorText, 2.5);
+                acc.putAfter(timeNumeratorNode, 2.5);
             } else {
                 acc.putAfter(prevAcc, 0);
             }
-            acc.raiseBy(accidental);
             rootPane.getChildren().add(acc);
             prevAcc = acc;
         }

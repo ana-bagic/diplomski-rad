@@ -7,7 +7,7 @@ import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.model.KeyboardModel;
 import pianolearn.diplomskirad.model.score.KeyIterator;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
-import pianolearn.diplomskirad.model.score.Pitch;
+import pianolearn.diplomskirad.model.score.PitchModel;
 import pianolearn.diplomskirad.view.BaseView;
 
 import java.util.HashMap;
@@ -34,7 +34,7 @@ public class PianoKeyboardView extends BaseView {
 
     @Override
     protected void addViews() {
-        Iterator<Pitch> keysIterator = new KeyIterator(model.getFirstPitch(), model.getLastPitch());
+        Iterator<PitchModel> keysIterator = new KeyIterator(model.getFirstPitch(), model.getLastPitch());
         boolean isCurrentWhite = true;
         NoteAlphabet lastWhiteKey = null;
         int i = 0;
@@ -45,7 +45,7 @@ public class PianoKeyboardView extends BaseView {
                 whiteKeysHBox.getChildren().add(key);
                 keys[i] = key;
 
-                Pitch pitch = keysIterator.next();
+                PitchModel pitch = keysIterator.next();
                 lastWhiteKey = pitch.key();
                 keysMap.put(pitch.toString(), key);
 

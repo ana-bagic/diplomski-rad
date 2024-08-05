@@ -1,10 +1,12 @@
 package pianolearn.diplomskirad.helper.xml;
 
 import org.audiveris.proxymusic.*;
-import pianolearn.diplomskirad.model.score.ClefTimeKey;
+import pianolearn.diplomskirad.model.score.*;
+import pianolearn.diplomskirad.model.score.PitchModel;
 
 import javax.xml.bind.JAXBElement;
 import java.lang.String;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -57,11 +59,11 @@ public class Score {
         return score.getPart().get(1);
     }
 
-    public static ClefTimeKey clefTimeKey(ScorePartwise.Part.Measure measure) {
+    public static ClefTimeKeyModel clefTimeKey(ScorePartwise.Part.Measure measure) {
         String clef = trebleClef;
         String numerator = time4;
         String denominator = time4;
-        List<Integer> accidentals = new LinkedList<>();
+        List<Integer> accidentalPositions = Collections.emptyList();
         String accidental = sharp;
 
         Optional<Object> object = measure.getNoteOrBackupOrForward()
@@ -93,10 +95,55 @@ public class Score {
             List<Key> keys = attributes.getKey();
             if (keys != null && !keys.isEmpty()) {
                 int fifths = keys.getFirst().getFifths().intValue();
-                accidental = BravuraConverter.getBravuraAccidental(fifths, clef.equals(trebleClef), accidentals);
+                accidentalPositions = ScaleHelper.getAccidentalPositions(fifths, clef.equals(trebleClef));
+                accidental = BravuraConverter.getBravuraAccidental(fifths);
             }
         }
 
-        return new ClefTimeKey(clef, numerator, denominator, accidentals, accidental);
+        return new ClefTimeKeyModel(clef, numerator, denominator, accidentalPositions, accidental);
+    }
+
+    public static MeasureModel measure(ScorePartwise.Part.Measure measure, boolean trebleClef) {
+        if (measure == null) return null;
+
+        List<MusicNodeModel> elements = new LinkedList<>();
+        List<Note> notes = measure.getNoteOrBackupOrForward()
+                .stream().filter(o -> o instanceof Note).map(o -> (Note) o).toList();
+        for (Note note : notes) {
+            if (note.getGrace() != null || note.getCue() != null) {
+                continue;
+            }
+
+            MusicNodeModel node = musicNode(note, trebleClef);
+            if (node != null) {
+                elements.add(node);
+            }
+        }
+
+        return new MeasureModel(elements);
+    }
+
+    private static MusicNodeModel musicNode(Note note, boolean trebleClef) {
+        if (note.getType() == null) return null;
+        String noteType = note.getType().getValue();
+
+        Pitch pitch = note.getPitch();
+        if (pitch != null) {
+            String type = BravuraConverter.getBravuraNote(noteType, true);
+            PitchModel pitchModel = PitchModel.fromPitch(pitch);
+            Integer position = ScaleHelper.getPositionFromPitch(pitchModel, trebleClef);
+            if (position == null) {
+                return null;
+            } else {
+                return new MusicNodeModel(type, position);
+            }
+        }
+
+        if (note.getRest() != null) {
+            String type = BravuraConverter.getBravuraRest(noteType);
+            return new MusicNodeModel(type, 0);
+        }
+
+        return null;
     }
 }

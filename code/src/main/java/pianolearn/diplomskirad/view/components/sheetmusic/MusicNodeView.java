@@ -6,25 +6,18 @@ import pianolearn.diplomskirad.constants.Fonts;
 
 import static pianolearn.diplomskirad.constants.Config.*;
 
-public class MusicNode extends Text {
+public class MusicNodeView extends Text {
 
-    public MusicNode() {
-        this("");
+    public MusicNodeView() {
+        this("", 0);
     }
 
-    public MusicNode(String text) {
+    public MusicNodeView(String text, int position) {
         super(text);
         setFont(Fonts.music);
         setTextOrigin(VPos.CENTER);
         setY(STAFF_HEIGHT / 2 + FONT_CENTER_FIX);
-    }
-
-    public void raiseBy(int positions) {
-        translate(-positions);
-    }
-
-    public void lowerBy(int positions) {
-        translate(positions);
+        position(position);
     }
 
     public void putAfter(Text prevNode, double space) {
@@ -32,7 +25,7 @@ public class MusicNode extends Text {
         setX(xPosition);
     }
 
-    private void translate(int positions) {
-        setTranslateY(positions * NOTE_PITCH_SPACING);
+    public void position(int position) {
+        setTranslateY(-position * NOTE_PITCH_SPACING);
     }
 }

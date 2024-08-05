@@ -3,7 +3,7 @@ package pianolearn.diplomskirad.view.components.sheetmusic;
 import javafx.scene.layout.StackPane;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.helper.StylesHelper;
-import pianolearn.diplomskirad.model.score.ClefTimeKey;
+import pianolearn.diplomskirad.model.score.ClefTimeKeyModel;
 import pianolearn.diplomskirad.view.BaseView;
 
 import static pianolearn.diplomskirad.constants.Config.STAFF_HEIGHT;
@@ -35,7 +35,7 @@ public class SheetMusicPartView extends BaseView {
         notesView.setMaxHeight(STAFF_HEIGHT);
     }
 
-    public void setClefTimeKey(ClefTimeKey model) {
+    public void setClefTimeKey(ClefTimeKeyModel model) {
         notesView.setClefTimeKey(model);
     }
 }
