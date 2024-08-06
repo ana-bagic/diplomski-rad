@@ -34,6 +34,7 @@ public class PlayToolbarView extends BaseView {
     private ButtonClickListener rightHandButtonListener;
 
     private boolean isPlay = true;
+    private int oldSliderValue = 0;
 
     public PlayToolbarView() {
         setupGUI();
@@ -79,7 +80,7 @@ public class PlayToolbarView extends BaseView {
     @Override
     protected void setupActions() {
         playPauseButton.setOnAction(e -> playPauseClicked());
-        speedSlider.valueProperty().addListener((o, oldValue, newValue) -> sliderChanged(oldValue.intValue(), newValue.intValue()));
+        speedSlider.setOnMouseReleased(e -> sliderChanged());
         leftHandButton.setOnAction(e -> leftHandButtonListener.onButtonClicked());
         rightHandButton.setOnAction(e -> rightHandButtonListener.onButtonClicked());
     }
@@ -102,8 +103,12 @@ public class PlayToolbarView extends BaseView {
         }
     }
 
-    private void sliderChanged(int oldValue, int newValue) {
-        System.out.println("oldValue: " + oldValue + " newValue: " + newValue);
+    private void sliderChanged() {
+        int value = speedSlider.valueProperty().intValue();
+        if (value != oldSliderValue) {
+            System.out.println("oldValue: " + oldSliderValue + " newValue: " + value);
+            oldSliderValue = value;
+        }
     }
 
     public void setLeftHandButtonListener(ButtonClickListener listener) {
