@@ -37,6 +37,14 @@ public class Strings {
     public static final String settingsLabel = "Settings";
 
     // Play screen
+    public static final String playButtonTooltip = "Play";
+    public static final String pauseButtonTooltip = "Pause";
+    public static final String stopButtonTooltip = "Stop";
+    public static final String speedLabel = "Select the speed";
+    public static final String sliderWait = "wait";
+    public static final String sliderSpeed50 = "50%";
+    public static final String sliderSpeed80 = "80%";
+    public static final String sliderSpeed100 = "100%";
     public static final String leftHandButtonTooltip = "Left hand";
     public static final String rightHandButtonTooltip = "Right hand";
     public static final String titlePlaceholder = "Title";

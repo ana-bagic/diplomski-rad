@@ -21,7 +21,7 @@ public class PianoLearn extends Application {
 
         NavigationController.INSTANCE.init(stage, new TitleViewController());
 
-        File file = XmlFiles.getXmlFile(XmlFiles.echigoJishi);
+        File file = XmlFiles.getXmlFile(XmlFiles.furElise);
         XMLConverter.INSTANCE.unmarshall(file);
         NavigationController.INSTANCE.push(new PlayViewController());
     }

@@ -14,6 +14,9 @@ public class Images {
 
     public static final Image backArrowIcon = getImage(iconsPath + "back-arrow.png");
 
+    public static final Image playIcon = getImage(iconsPath + "play.png");
+    public static final Image pauseIcon = getImage(iconsPath + "pause.png");
+    public static final Image stopIcon = getImage(iconsPath + "stop.png");
     public static final Image leftHandIcon = getImage(iconsPath + "left-hand.png");
     public static final Image rightHandIcon = getImage(iconsPath + "right-hand.png");
 

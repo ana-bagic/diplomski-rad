@@ -3,6 +3,7 @@ package pianolearn.diplomskirad.view.screens;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import pianolearn.diplomskirad.constants.*;
 import pianolearn.diplomskirad.helper.StylesHelper;
@@ -46,20 +47,9 @@ public class TitleView extends BaseView {
         buttonsStackHBox.setAlignment(Pos.CENTER);
         buttonsStackHBox.setSpacing(50);
 
-        StylesHelper.setButtonSize(uploadButton, 200);
-        StylesHelper.setButtonBackground(uploadButton, Colors.text, Colors.highlight, 20);
-        StylesHelper.setButtonTooltip(uploadButton, Strings.uploadButtonTooltip);
-        bindImageToButton(Images.uploadIcon, uploadButton);
-
-        StylesHelper.setButtonSize(libraryButton, 200);
-        StylesHelper.setButtonBackground(libraryButton, Colors.text, Colors.highlight, 20);
-        StylesHelper.setButtonTooltip(libraryButton, Strings.libraryButtonTooltip);
-        bindImageToButton(Images.musicLibraryIcon, libraryButton);
-
-        StylesHelper.setButtonSize(settingsButton, 200);
-        StylesHelper.setButtonBackground(settingsButton, Colors.text, Colors.highlight, 20);
-        StylesHelper.setButtonTooltip(settingsButton, Strings.settingsButtonTooltip);
-        bindImageToButton(Images.settingsIcon, settingsButton);
+        setupButton(uploadButton, Strings.uploadButtonTooltip, Images.uploadIcon);
+        setupButton(libraryButton, Strings.libraryButtonTooltip, Images.musicLibraryIcon);
+        setupButton(settingsButton, Strings.settingsButtonTooltip, Images.settingsIcon);
     }
 
     @Override
@@ -67,6 +57,13 @@ public class TitleView extends BaseView {
         uploadButton.setOnAction(e -> uploadButtonListener.onButtonClicked());
         libraryButton.setOnAction(e -> libraryButtonListener.onButtonClicked());
         settingsButton.setOnAction(e -> settingsButtonListener.onButtonClicked());
+    }
+
+    private void setupButton(Button button, String tooltipText, Image image) {
+        StylesHelper.setButtonSize(button, 200);
+        StylesHelper.setButtonBackground(button, Colors.text, Colors.highlight, 20);
+        StylesHelper.setButtonTooltip(button, tooltipText);
+        bindImageToButton(image, button);
     }
 
     public void setUploadButtonListener(ButtonClickListener listener) {

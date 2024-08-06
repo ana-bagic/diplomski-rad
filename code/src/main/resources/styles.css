@@ -1,0 +1,5 @@
+.slider .axis {
+    -fx-tick-label-font-size: 16px;
+    -fx-tick-label-fill: #ECF0F1;
+    -fx-tick-label-font-family: "Retro Osar";
+}

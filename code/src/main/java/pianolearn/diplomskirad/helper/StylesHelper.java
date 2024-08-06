@@ -2,6 +2,7 @@ package pianolearn.diplomskirad.helper;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -9,6 +10,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.StringConverter;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
 
@@ -56,6 +58,37 @@ public class StylesHelper {
         clip.setArcHeight(radius);
 
         imageView.setClip(clip);
+    }
+
+    public static void setupLabelSlider(Slider slider, String[] labels) {
+        slider.setMin(0);
+        slider.setMax(labels.length - 1);
+        slider.setValue(0);
+
+        slider.setMinWidth(300);
+
+        slider.setShowTickLabels(true);
+        slider.setShowTickMarks(true);
+        slider.setMajorTickUnit(1);
+        slider.setMinorTickCount(0);
+        slider.setSnapToTicks(true);
+
+        slider.setLabelFormatter(new StringConverter<>() {
+            @Override
+            public String toString(Double aDouble) {
+                int index = (int) Math.round(aDouble);
+                try {
+                    return labels[index];
+                } catch (Exception e) {
+                    return labels[0];
+                }
+            }
+
+            @Override
+            public Double fromString(String s) {
+                return 0.0;
+            }
+        });
     }
 
     private static String getHex(Color color) {

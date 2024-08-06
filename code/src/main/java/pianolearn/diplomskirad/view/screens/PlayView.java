@@ -1,6 +1,6 @@
 package pianolearn.diplomskirad.view.screens;
 
-import javafx.geometry.Insets;
+import javafx.scene.layout.*;
 import pianolearn.diplomskirad.listener.ButtonClickListener;
 import pianolearn.diplomskirad.view.BaseNavigationView;
 import pianolearn.diplomskirad.view.BaseView;
@@ -17,14 +17,15 @@ public class PlayView extends BaseNavigationView {
     @Override
     protected void addViews() {
         super.addViews();
-        topHBox.getChildren().add(playToolbarView);
+        topStackPane.getChildren().add(playToolbarView);
     }
 
     @Override
     protected void styleViews() {
         super.styleViews();
-        Insets insets = topHBox.getPadding();
-        topHBox.setPadding(new Insets(20, insets.getRight(), 20, insets.getLeft()));
+
+        playToolbarView.setMinWidth(HBox.USE_PREF_SIZE);
+        playToolbarView.setMaxWidth(HBox.USE_PREF_SIZE);
     }
 
     public void setSheetMusicView(BaseView view) {
