@@ -1,7 +1,6 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
 import javafx.scene.layout.VBox;
-import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.model.score.ClefTimeKeyModel;
 import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.components.SongMetadataView;
@@ -23,11 +22,12 @@ public class SheetMusicView extends BaseView {
         bindToSelf(rootPane);
     }
 
-    @Override
-    protected void styleViews() {
-        if (Score.numberOfParts() == 1) {
-            leftHandPartView.setVisible(false);
-        }
+    public void showRightHandPart(boolean show) {
+        showNode(rightHandPartView, show);
+    }
+
+    public void showLeftHandPart(boolean show) {
+        showNode(leftHandPartView, show);
     }
 
     public void setRightHandClefTimeKey(ClefTimeKeyModel model) {

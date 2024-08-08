@@ -1,27 +1,41 @@
 package pianolearn.diplomskirad.controller;
 
+import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import org.audiveris.proxymusic.Note;
 import org.audiveris.proxymusic.Pitch;
 import org.audiveris.proxymusic.ScorePartwise;
 import pianolearn.diplomskirad.helper.xml.PitchHelper;
 import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.helper.xml.ScorePartIterator;
+import pianolearn.diplomskirad.listener.HandChangeListener;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
+import pianolearn.diplomskirad.model.score.ClefTimeKeyModel;
 
 public enum MainEngine {
 
     INSTANCE;
 
     private boolean usesOneHand;
+    private ClefTimeKeyModel leftHandClefTimeKeyModel;
+    private ClefTimeKeyModel rightHandClefTimeKeyModel;
 
     private boolean isPlaying = false;
     private PlaybackSpeed playbackSpeed = PlaybackSpeed.WAIT;
-    private boolean leftHandShown;
-    private boolean rightHandShown = true;
+    private boolean leftHandShows;
+    private boolean rightHandShows = true;
+
+    private HandChangeListener leftHandChangedListener;
+    private HandChangeListener rightHandChangedListener;
 
     public void init() {
         usesOneHand = Score.numberOfParts() == 1;
-        leftHandShown = !usesOneHand;
+        leftHandShows = !usesOneHand;
+
+        leftHandClefTimeKeyModel = Score.clefTimeKey(Score.leftHandPart());
+        rightHandClefTimeKeyModel = Score.clefTimeKey(Score.rightHandPart());
+
+        tempKeyPress();
     }
 
     public void playPauseButtonClicked() {
@@ -40,17 +54,44 @@ public enum MainEngine {
     }
 
     public void leftHandButtonClicked() {
-        leftHandShown = !leftHandShown;
-        System.out.println("left hand " + leftHandShown);
+        leftHandShows = !leftHandShows;
+        leftHandChangedListener.onHandChanged(leftHandShows);
     }
 
     public void rightHandButtonClicked() {
-        rightHandShown = !rightHandShown;
-        System.out.println("right hand " + rightHandShown);
+        rightHandShows = !rightHandShows;
+        rightHandChangedListener.onHandChanged(rightHandShows);
     }
 
     public boolean usesOneHand() {
         return usesOneHand;
+    }
+
+    public ClefTimeKeyModel getLeftHandClefTimeKeyModel() {
+        return leftHandClefTimeKeyModel;
+    }
+
+    public ClefTimeKeyModel getRightHandClefTimeKeyModel() {
+        return rightHandClefTimeKeyModel;
+    }
+
+    public void setLeftHandChangedListener(HandChangeListener listener) {
+        leftHandChangedListener = listener;
+    }
+
+    public void setRightHandChangedListener(HandChangeListener listener) {
+        rightHandChangedListener = listener;
+    }
+
+    private void tempKeyPress() {
+        Scene scene = NavigationController.INSTANCE.getStage().getScene();
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.T) {
+                System.out.println("Key 'T' was pressed!");
+            } else if (event.getCode() == KeyCode.F) {
+                System.out.println("Key 'F' was pressed!");
+            }
+        });
     }
 
     private void play() {

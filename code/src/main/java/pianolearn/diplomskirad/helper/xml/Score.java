@@ -7,10 +7,7 @@ import pianolearn.diplomskirad.model.score.PitchModel;
 
 import javax.xml.bind.JAXBElement;
 import java.lang.String;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static pianolearn.diplomskirad.constants.SheetMusicSymbols.*;
 
@@ -60,45 +57,50 @@ public class Score {
         return score.getPart().get(1);
     }
 
-    public static ClefTimeKeyModel clefTimeKey(ScorePartwise.Part.Measure measure) {
+    public static ClefTimeKeyModel clefTimeKey(ScorePartwise.Part part) {
         String clef = trebleClef;
         String numerator = time4;
         String denominator = time4;
         List<Integer> accidentalPositions = Collections.emptyList();
         String accidental = sharp;
+        ClefTimeKeyModel defaultModel = new ClefTimeKeyModel(clef, numerator, denominator, accidentalPositions, accidental);
+
+        if (part == null || part.getMeasure().isEmpty()) return defaultModel;
+
+        ScorePartwise.Part.Measure measure = part.getMeasure().getFirst();
+        if (measure == null) return defaultModel;
 
         Optional<Object> object = measure.getNoteOrBackupOrForward()
                 .stream().filter(n -> n instanceof Attributes).findAny();
+        if (object.isEmpty()) return defaultModel;
 
-        if (object.isPresent()) {
-            Attributes attributes = (Attributes) object.get();
+        Attributes attributes = (Attributes) object.get();
 
-            List<Clef> clefs = attributes.getClef();
-            if (clefs != null && !clefs.isEmpty()) {
-                clef = BravuraConverter.getBravuraClef(clefs.getFirst().getSign());
-            }
+        List<Clef> clefs = attributes.getClef();
+        if (clefs != null && !clefs.isEmpty()) {
+            clef = BravuraConverter.getBravuraClef(clefs.getFirst().getSign());
+        }
 
-            List<Time> times = attributes.getTime();
-            if (times != null && !times.isEmpty()) {
-                List<JAXBElement<String>> time = times.getFirst().getTimeSignature();
-                if (time != null) {
-                    for (JAXBElement<String> element : time) {
-                        String localName = element.getName().getLocalPart();
-                        if (localName.equals("beats")) {
-                            numerator = BravuraConverter.getBravuraTime(element.getValue());
-                        } else if (localName.equals("beat-type")) {
-                            denominator = BravuraConverter.getBravuraTime(element.getValue());
-                        }
+        List<Time> times = attributes.getTime();
+        if (times != null && !times.isEmpty()) {
+            List<JAXBElement<String>> time = times.getFirst().getTimeSignature();
+            if (time != null) {
+                for (JAXBElement<String> element : time) {
+                    String localName = element.getName().getLocalPart();
+                    if (localName.equals("beats")) {
+                        numerator = BravuraConverter.getBravuraTime(element.getValue());
+                    } else if (localName.equals("beat-type")) {
+                        denominator = BravuraConverter.getBravuraTime(element.getValue());
                     }
                 }
             }
+        }
 
-            List<Key> keys = attributes.getKey();
-            if (keys != null && !keys.isEmpty()) {
-                int fifths = keys.getFirst().getFifths().intValue();
-                accidentalPositions = ScaleHelper.getAccidentalPositions(fifths, clef.equals(trebleClef));
-                accidental = BravuraConverter.getBravuraAccidental(fifths);
-            }
+        List<Key> keys = attributes.getKey();
+        if (keys != null && !keys.isEmpty()) {
+            int fifths = keys.getFirst().getFifths().intValue();
+            accidentalPositions = ScaleHelper.getAccidentalPositions(fifths, clef.equals(trebleClef));
+            accidental = BravuraConverter.getBravuraAccidental(fifths);
         }
 
         return new ClefTimeKeyModel(clef, numerator, denominator, accidentalPositions, accidental);
