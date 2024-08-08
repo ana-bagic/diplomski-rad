@@ -21,6 +21,8 @@ public class Config {
     public static final double FONT_CENTER_FIX = 8;
     public static final double NOTE_PITCH_SPACING = STAFF_LINE_SPACING / 2;
     public static final double ELEMENTS_SPACING = 16;
+    public static final double CONTROL_LINE_X = 400;
+    public static final double CONTROL_LINE_WIDTH = 30;
 
     // keyboard
     public static final double WHITE_KEY_HEIGHT_MULTIPLIER = 5;

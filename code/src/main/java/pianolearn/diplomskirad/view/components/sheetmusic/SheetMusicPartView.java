@@ -1,18 +1,22 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.helper.StylesHelper;
 import pianolearn.diplomskirad.model.score.ClefTimeKeyModel;
 import pianolearn.diplomskirad.view.BaseView;
 
-import static pianolearn.diplomskirad.constants.Config.STAFF_HEIGHT;
+import static pianolearn.diplomskirad.constants.Config.*;
 
 public class SheetMusicPartView extends BaseView {
 
     private final StackPane rootPane = new StackPane();
     private final StaffView staffView = new StaffView();
     private final NotesView notesView = new NotesView();
+    private final Pane controlLineContainer = new Pane();
+    private final Rectangle controlLine = new Rectangle();
 
     public SheetMusicPartView() {
         setupGUI();
@@ -20,7 +24,8 @@ public class SheetMusicPartView extends BaseView {
 
     @Override
     protected void addViews() {
-        rootPane.getChildren().addAll(staffView, notesView);
+        controlLineContainer.getChildren().add(controlLine);
+        rootPane.getChildren().addAll(staffView, notesView, controlLineContainer);
         bindToSelf(rootPane);
     }
 
@@ -33,6 +38,12 @@ public class SheetMusicPartView extends BaseView {
 
         notesView.setMinHeight(STAFF_HEIGHT);
         notesView.setMaxHeight(STAFF_HEIGHT);
+
+        controlLine.setLayoutX(CONTROL_LINE_X);
+        controlLine.setLayoutY(0);
+        controlLine.setWidth(CONTROL_LINE_WIDTH);
+        controlLine.setHeight(STAFF_HEIGHT);
+        controlLine.setFill(Colors.controlLine);
     }
 
     public void setClefTimeKey(ClefTimeKeyModel model) {
