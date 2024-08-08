@@ -1,4 +1,4 @@
-package pianolearn.diplomskirad.helper.xml;
+package pianolearn.diplomskirad.helper;
 
 import pianolearn.diplomskirad.helper.custom.BidirectionalMap;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;

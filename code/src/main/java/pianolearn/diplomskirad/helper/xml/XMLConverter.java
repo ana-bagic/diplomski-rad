@@ -10,7 +10,7 @@ public enum XMLConverter {
 
     INSTANCE;
 
-    private ScorePartwise score;
+    private ScorePartwise score = null;
 
     public boolean unmarshall(File file) {
         try (InputStream inputStream = new FileInputStream(file)) {

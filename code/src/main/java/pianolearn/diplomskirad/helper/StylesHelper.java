@@ -13,6 +13,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.StringConverter;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
+import pianolearn.diplomskirad.model.PlaybackSpeed;
 
 public class StylesHelper {
 
@@ -60,9 +61,9 @@ public class StylesHelper {
         imageView.setClip(clip);
     }
 
-    public static void setupLabelSlider(Slider slider, String[] labels) {
+    public static void setupLabelSlider(Slider slider, PlaybackSpeed[] speeds) {
         slider.setMin(0);
-        slider.setMax(labels.length - 1);
+        slider.setMax(speeds.length - 1);
         slider.setValue(0);
 
         slider.setMinWidth(300);
@@ -77,11 +78,7 @@ public class StylesHelper {
             @Override
             public String toString(Double aDouble) {
                 int index = (int) Math.round(aDouble);
-                try {
-                    return labels[index];
-                } catch (Exception e) {
-                    return labels[0];
-                }
+                return speeds[index].getLabel();
             }
 
             @Override

@@ -1,6 +1,7 @@
 package pianolearn.diplomskirad.helper.xml;
 
 import org.audiveris.proxymusic.ClefSign;
+import pianolearn.diplomskirad.model.score.NoteType;
 
 import static pianolearn.diplomskirad.constants.SheetMusicSymbols.*;
 
@@ -29,26 +30,28 @@ public class BravuraConverter {
     }
 
     public static String getBravuraRest(String type) {
-        return switch (type) {
-            default -> wholeRest;
-            case "half" -> halfRest;
-            case "quarter" -> quarterRest;
-            case "eighth" -> rest8;
-            case "16th" -> rest16;
-            case "32nd" -> rest32;
-            case "64th" -> rest64;
+        NoteType noteType = NoteType.fromType(type);
+        return switch (noteType) {
+            case WHOLE -> wholeRest;
+            case HALF -> halfRest;
+            case QUARTER, OTHER -> quarterRest;
+            case EIGHTH -> rest8;
+            case TYPE16 -> rest16;
+            case TYPE32 -> rest32;
+            case TYPE64 -> rest64;
         };
     }
 
     public static String getBravuraNote(String type, boolean up) {
-        return switch (type) {
-            default -> wholeNote;
-            case "half" -> up ? halfNoteUp : halfNoteDown;
-            case "quarter" -> up ? quarterNoteUp : quarterNoteDown;
-            case "eighth" -> up ? note8Up : note8Down;
-            case "16th" -> up ? note16Up : note16Down;
-            case "32nd" -> up ? note32Up : note32Down;
-            case "64th" -> up ? note64Up : note64Down;
+        NoteType noteType = NoteType.fromType(type);
+        return switch (noteType) {
+            case WHOLE -> wholeNote;
+            case HALF -> up ? halfNoteUp : halfNoteDown;
+            case QUARTER, OTHER -> up ? quarterNoteUp : quarterNoteDown;
+            case EIGHTH -> up ? note8Up : note8Down;
+            case TYPE16 -> up ? note16Up : note16Down;
+            case TYPE32 -> up ? note32Up : note32Down;
+            case TYPE64 -> up ? note64Up : note64Down;
         };
     }
 }

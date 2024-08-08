@@ -1,4 +1,4 @@
-package pianolearn.diplomskirad.helper;
+package pianolearn.diplomskirad.helper.xml;
 
 import org.audiveris.proxymusic.Pitch;
 

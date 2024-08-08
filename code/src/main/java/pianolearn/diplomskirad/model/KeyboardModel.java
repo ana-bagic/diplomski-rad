@@ -1,6 +1,6 @@
 package pianolearn.diplomskirad.model;
 
-import pianolearn.diplomskirad.helper.xml.ScaleHelper;
+import pianolearn.diplomskirad.helper.ScaleHelper;
 import pianolearn.diplomskirad.model.score.PitchModel;
 
 public class KeyboardModel {

@@ -1,6 +1,7 @@
 package pianolearn.diplomskirad.helper.xml;
 
 import org.audiveris.proxymusic.*;
+import pianolearn.diplomskirad.helper.ScaleHelper;
 import pianolearn.diplomskirad.model.score.*;
 import pianolearn.diplomskirad.model.score.PitchModel;
 
