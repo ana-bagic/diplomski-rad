@@ -13,7 +13,9 @@ public class SheetMusicController implements BaseViewController {
 
     public SheetMusicController() {
         setupView();
-        setupListeners();
+        if (!engine.usesOneHand()) {
+            setupListeners();
+        }
     }
 
     @Override
@@ -24,7 +26,9 @@ public class SheetMusicController implements BaseViewController {
     private void setupView() {
         view.showLeftHandPart(!engine.usesOneHand());
         view.setRightHandClefTimeKey(engine.getRightHandClefTimeKeyModel());
-        view.setLeftHandClefTimeKey(engine.getLeftHandClefTimeKeyModel());
+        if (!engine.usesOneHand()) {
+            view.setLeftHandClefTimeKey(engine.getLeftHandClefTimeKeyModel());
+        }
     }
 
     private void setupListeners() {

@@ -8,13 +8,18 @@ import pianolearn.diplomskirad.helper.StylesHelper;
 import pianolearn.diplomskirad.model.score.ClefTimeKeyModel;
 import pianolearn.diplomskirad.view.BaseView;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import static pianolearn.diplomskirad.constants.Config.*;
 
 public class SheetMusicPartView extends BaseView {
 
     private final StackPane rootPane = new StackPane();
     private final StaffView staffView = new StaffView();
-    private final NotesView notesView = new NotesView();
+    private final Pane notesView = new Pane();
+    private final ClefTimeKeyView clefTimeKeyView = new ClefTimeKeyView();
+    private final List<MeasureView> measureViews = new LinkedList<>();
     private final Pane controlLineContainer = new Pane();
     private final Rectangle controlLine = new Rectangle();
 
@@ -24,6 +29,7 @@ public class SheetMusicPartView extends BaseView {
 
     @Override
     protected void addViews() {
+        notesView.getChildren().add(clefTimeKeyView);
         controlLineContainer.getChildren().add(controlLine);
         rootPane.getChildren().addAll(staffView, notesView, controlLineContainer);
         bindToSelf(rootPane);
@@ -47,6 +53,6 @@ public class SheetMusicPartView extends BaseView {
     }
 
     public void setClefTimeKey(ClefTimeKeyModel model) {
-        notesView.setClefTimeKey(model);
+        clefTimeKeyView.setModel(model);
     }
 }

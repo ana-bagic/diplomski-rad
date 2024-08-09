@@ -45,14 +45,14 @@ public class Score {
 
     public static ScorePartwise.Part rightHandPart() {
         ScorePartwise score = XMLConverter.INSTANCE.getScore();
-        if (score == null) return null;
+        if (score == null || score.getPart().isEmpty()) return null;
 
         return score.getPart().getFirst();
     }
 
     public static ScorePartwise.Part leftHandPart() {
         ScorePartwise score = XMLConverter.INSTANCE.getScore();
-        if (score == null || score.getPart().size() < 2) return null;
+        if (score == null || numberOfParts() < 2) return null;
 
         return score.getPart().get(1);
     }
