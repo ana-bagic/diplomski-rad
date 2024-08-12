@@ -2,12 +2,9 @@ package pianolearn.diplomskirad.controller;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import org.audiveris.proxymusic.Note;
-import org.audiveris.proxymusic.Pitch;
 import org.audiveris.proxymusic.ScorePartwise;
-import pianolearn.diplomskirad.helper.xml.PitchHelper;
+import pianolearn.diplomskirad.constants.SheetMusicSymbols;
 import pianolearn.diplomskirad.helper.xml.Score;
-import pianolearn.diplomskirad.helper.xml.ScorePartIterator;
 import pianolearn.diplomskirad.listener.HandChangeListener;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
 import pianolearn.diplomskirad.model.score.ClefTimeKeyModel;
@@ -16,9 +13,13 @@ public enum MainEngine {
 
     INSTANCE;
 
+    private ScorePartwise.Part part;
+
     private boolean usesOneHand;
     private ClefTimeKeyModel leftHandClefTimeKeyModel;
     private ClefTimeKeyModel rightHandClefTimeKeyModel;
+    private boolean leftHandIsTreble = false;
+    private boolean rightHandIsTreble = true;
 
     private boolean isPlaying = false;
     private PlaybackSpeed playbackSpeed = PlaybackSpeed.WAIT;
@@ -29,11 +30,17 @@ public enum MainEngine {
     private HandChangeListener rightHandChangedListener;
 
     public void init() {
-        usesOneHand = Score.numberOfParts() == 1;
+        part = Score.pianoPart();
+
+        usesOneHand = Score.numberOfStaves(part) == 1;
         leftHandShows = !usesOneHand;
 
-        leftHandClefTimeKeyModel = Score.clefTimeKey(Score.leftHandPart());
-        rightHandClefTimeKeyModel = Score.clefTimeKey(Score.rightHandPart());
+        if (leftHandShows) {
+            leftHandClefTimeKeyModel = Score.clefTimeKey(part, false);
+            leftHandIsTreble = leftHandClefTimeKeyModel.clef().equals(SheetMusicSymbols.trebleClef);
+        }
+        rightHandClefTimeKeyModel = Score.clefTimeKey(part, true);
+        rightHandIsTreble = rightHandClefTimeKeyModel.clef().equals(SheetMusicSymbols.trebleClef);
 
         tempKeyPress();
     }
@@ -67,12 +74,12 @@ public enum MainEngine {
         return usesOneHand;
     }
 
-    public ClefTimeKeyModel getLeftHandClefTimeKeyModel() {
-        return leftHandClefTimeKeyModel;
+    public ClefTimeKeyModel getClefTimeKey(boolean rightHandPart) {
+        return rightHandPart ? rightHandClefTimeKeyModel : leftHandClefTimeKeyModel;
     }
 
-    public ClefTimeKeyModel getRightHandClefTimeKeyModel() {
-        return rightHandClefTimeKeyModel;
+    public boolean isPartTreble(boolean rightHandPart) {
+        return rightHandPart ? rightHandIsTreble : leftHandIsTreble;
     }
 
     public void setLeftHandChangedListener(HandChangeListener listener) {
@@ -94,27 +101,27 @@ public enum MainEngine {
         });
     }
 
-    private void play() {
-        ScorePartwise.Part part = Score.rightHandPart();
-        if (part == null) return;
-
-        ScorePartIterator iterator = new ScorePartIterator(part);
-
-        while (iterator.hasNext()) {
-            Note note = iterator.next();
-            if (note != null) {
-                Pitch pitch = note.getPitch();
-
-                if (pitch != null) {
-                    System.out.println(PitchHelper.pitchToString(note.getPitch()) + " " + note.getType().getValue());
-                } else if (note.getUnpitched() != null) {
-                    System.out.println("Unpitched: " + note.getUnpitched());
-                } else if (note.getRest() != null) {
-                    System.out.println("\t" + note.getType().getValue());
-                } else {
-                    System.out.println("Something else");
-                }
-            }
-        }
-    }
+//    private void play() {
+//        ScorePartwise.Part part = Score.rightHandPart();
+//        if (part == null) return;
+//
+//        ScorePartIterator iterator = new ScorePartIterator(part);
+//
+//        while (iterator.hasNext()) {
+//            Note note = iterator.next();
+//            if (note != null) {
+//                Pitch pitch = note.getPitch();
+//
+//                if (pitch != null) {
+//                    System.out.println(PitchHelper.pitchToString(note.getPitch()) + " " + note.getType().getValue());
+//                } else if (note.getUnpitched() != null) {
+//                    System.out.println("Unpitched: " + note.getUnpitched());
+//                } else if (note.getRest() != null) {
+//                    System.out.println("\t" + note.getType().getValue());
+//                } else {
+//                    System.out.println("Something else");
+//                }
+//            }
+//        }
+//    }
 }

@@ -24,15 +24,16 @@ public class SheetMusicController implements BaseViewController {
     }
 
     private void setupView() {
-        view.showLeftHandPart(!engine.usesOneHand());
-        view.setRightHandClefTimeKey(engine.getRightHandClefTimeKeyModel());
+        view.showPart(false, !engine.usesOneHand());
+
+        view.setClefTimeKey(true, engine.getClefTimeKey(true));
         if (!engine.usesOneHand()) {
-            view.setLeftHandClefTimeKey(engine.getLeftHandClefTimeKeyModel());
+            view.setClefTimeKey(false, engine.getClefTimeKey(false));
         }
     }
 
     private void setupListeners() {
-        engine.setLeftHandChangedListener(view::showLeftHandPart);
-        engine.setRightHandChangedListener(view::showRightHandPart);
+        engine.setLeftHandChangedListener(show -> view.showPart(false, show));
+        engine.setRightHandChangedListener(show -> view.showPart(true, show));
     }
 }

@@ -40,22 +40,27 @@ public class UploadViewController implements BaseViewController {
         if (selectedFile != null) {
             String fileName = selectedFile.getName();
             view.setFileChosen(fileName);
+            view.setCanConfirm(false);
             boolean success = XMLConverter.INSTANCE.unmarshall(selectedFile);
 
-            if (success) {
-                int parts = Score.numberOfParts();
-                if (parts < 1 || parts > 2) {
-                    view.setCanConfirm(false);
-                    view.setError(Strings.xmlPartsError(fileName, parts));
-                    return;
-                }
-
-                view.setCanConfirm(true);
-                view.clearError();
-            } else {
-                view.setCanConfirm(false);
+            if (!success) {
                 view.setError(Strings.xmlLoadError(fileName));
+                return;
             }
+
+            if (Score.noPianoPart()) {
+                view.setError(Strings.xmlPartsError(fileName));
+                return;
+            }
+
+            int staves = Score.numberOfStaves(Score.pianoPart());
+            if (staves > 2) {
+                view.setError(Strings.xmlStavesError(fileName, staves));
+                return;
+            }
+            
+            view.setCanConfirm(true);
+            view.clearError();
         }
     }
 }

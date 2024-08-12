@@ -21,11 +21,15 @@ public class Strings {
     public static final String fileChooserXmlFiles = "XML files";
     public static String xmlLoadError(String fileName) {
         return String.format("Error: file %s can't be properly loaded for this app.\n" +
-                "Please use MusicXML file with <score-partwise> root element.", fileName);
+                "Please choose MusicXML file with <score-partwise> root element.", fileName);
     }
-    public static String xmlPartsError(String fileName, int parts) {
-        return String.format("Error: file %s has wrong number of parts: %d.\n" +
-                "Please use file with 1 or 2 parts.", fileName, parts);
+    public static String xmlPartsError(String fileName) {
+        return String.format("Error: file %s does not contain piano part.\n" +
+                "Please choose file with only 1 part or one that contains part with \"Piano\" in name.", fileName);
+    }
+    public static String xmlStavesError(String fileName, int staves) {
+        return String.format("Error: file %s contains too much staves: %d.\n" +
+                "Please choose file with 1 or 2 staves (score uses 1 hand or both).", fileName, staves);
     }
 
     // Library screen

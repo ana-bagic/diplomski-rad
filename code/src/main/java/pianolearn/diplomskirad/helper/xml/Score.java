@@ -7,6 +7,7 @@ import pianolearn.diplomskirad.model.score.PitchModel;
 
 import javax.xml.bind.JAXBElement;
 import java.lang.String;
+import java.math.BigInteger;
 import java.util.*;
 
 import static pianolearn.diplomskirad.constants.SheetMusicSymbols.*;
@@ -38,53 +39,56 @@ public class Score {
         return null;
     }
 
-    public static int numberOfParts() {
+    public static boolean noPianoPart() {
         ScorePartwise score = XMLConverter.INSTANCE.getScore();
-        if (score == null) return 0;
+        if (score == null) return true;
 
-        int parts = 0;
+        if (score.getPart().size() == 1) return false;
+
         for (Object part : score.getPartList().getPartGroupOrScorePart()) {
-            if (part instanceof ScorePart) parts++;
+            if (isPiano(part)) return false;
         }
-        return parts;
+        return true;
     }
 
-    public static ScorePartwise.Part rightHandPart() {
+    public static ScorePartwise.Part pianoPart() {
         ScorePartwise score = XMLConverter.INSTANCE.getScore();
-        if (score == null || score.getPart().isEmpty()) return null;
+        if (noPianoPart()) return null;
 
-        return score.getPart().getFirst();
+        if (score.getPart().size() == 1) return score.getPart().getFirst();
+
+        for (Object part : score.getPartList().getPartGroupOrScorePart()) {
+            if (!isPiano(part)) continue;
+
+            String partId = ((ScorePart) part).getId();
+            return score.getPart()
+                    .stream().filter(p -> ((ScorePart) p.getId()).getId().equals(partId)).findFirst().orElse(null);
+        }
+        return null;
     }
 
-    public static ScorePartwise.Part leftHandPart() {
-        ScorePartwise score = XMLConverter.INSTANCE.getScore();
-        if (score == null || numberOfParts() < 2) return null;
+    public static int numberOfStaves(ScorePartwise.Part part) {
+        Attributes attributes = attributes(part);
+        if (attributes == null) return 1;
 
-        return score.getPart().get(1);
+        BigInteger staves = attributes.getStaves();
+        return staves == null ? 1 : staves.intValue();
     }
 
-    public static ClefTimeKeyModel clefTimeKey(ScorePartwise.Part part) {
+    public static ClefTimeKeyModel clefTimeKey(ScorePartwise.Part part, boolean rightHand) {
         String clef = trebleClef;
         String numerator = time4;
         String denominator = time4;
         List<Integer> accidentalPositions = Collections.emptyList();
         String accidental = sharp;
-        ClefTimeKeyModel defaultModel = new ClefTimeKeyModel(clef, numerator, denominator, accidentalPositions, accidental);
 
-        if (part == null || part.getMeasure().isEmpty()) return defaultModel;
-
-        ScorePartwise.Part.Measure measure = part.getMeasure().getFirst();
-        if (measure == null) return defaultModel;
-
-        Optional<Object> object = measure.getNoteOrBackupOrForward()
-                .stream().filter(n -> n instanceof Attributes).findAny();
-        if (object.isEmpty()) return defaultModel;
-
-        Attributes attributes = (Attributes) object.get();
+        Attributes attributes = attributes(part);
+        if (attributes == null) return new ClefTimeKeyModel(clef, numerator, denominator, accidentalPositions, accidental);
 
         List<Clef> clefs = attributes.getClef();
         if (clefs != null && !clefs.isEmpty()) {
-            clef = BravuraConverter.getBravuraClef(clefs.getFirst().getSign());
+            ClefSign clefSign = clefs.get(rightHand ? 0 : 1).getSign();
+            clef = BravuraConverter.getBravuraClef(clefSign);
         }
 
         List<Time> times = attributes.getTime();
@@ -130,6 +134,26 @@ public class Score {
         }
 
         return new MeasureModel(elements);
+    }
+
+    private static boolean isPiano(Object part) {
+        if (part instanceof ScorePart scorePart) {
+            String partName = scorePart.getPartName().getValue();
+            return partName.toUpperCase().contains("PIANO");
+        }
+        return false;
+    }
+
+    private static Attributes attributes(ScorePartwise.Part part) {
+        if (part == null || part.getMeasure().isEmpty()) return null;
+
+        ScorePartwise.Part.Measure measure = part.getMeasure().getFirst();
+        if (measure == null) return null;
+
+        Optional<Object> object = measure.getNoteOrBackupOrForward()
+                .stream().filter(n -> n instanceof Attributes).findAny();
+        return (Attributes) object.orElse(null);
+
     }
 
     private static MusicNodeModel musicNode(Note note, boolean trebleClef) {

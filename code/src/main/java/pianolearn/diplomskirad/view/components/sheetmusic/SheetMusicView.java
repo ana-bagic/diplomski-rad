@@ -22,19 +22,14 @@ public class SheetMusicView extends BaseView {
         bindToSelf(rootPane);
     }
 
-    public void showRightHandPart(boolean show) {
-        showNode(rightHandPartView, show);
+    public void showPart(boolean rightHandPart, boolean show) {
+        showNode(rightHandPart ? rightHandPartView : leftHandPartView, show);
     }
 
-    public void showLeftHandPart(boolean show) {
-        showNode(leftHandPartView, show);
+    public void setClefTimeKey(boolean rightHandPart, ClefTimeKeyModel model) {
+        if (rightHandPart) {
+            rightHandPartView.setClefTimeKey(model);
+        } else {
+            leftHandPartView.setClefTimeKey(model);
+        }
     }
-
-    public void setRightHandClefTimeKey(ClefTimeKeyModel model) {
-        rightHandPartView.setClefTimeKey(model);
-    }
-
-    public void setLeftHandClefTimeKey(ClefTimeKeyModel model) {
-        leftHandPartView.setClefTimeKey(model);
-    }
-}
