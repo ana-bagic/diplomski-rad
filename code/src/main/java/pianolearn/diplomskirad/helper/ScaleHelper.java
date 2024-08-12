@@ -75,12 +75,12 @@ public class ScaleHelper {
             if (pitch.lessThanOrEquals(new PitchModel(G, 3)) || !pitch.lessThanOrEquals(new PitchModel(C, 6))) {
                 return null;
             }
-            return ScaleHelper.getInterval(new PitchModel(A, 3), pitch) + 8;
+            return ScaleHelper.getInterval(new PitchModel(A, 3), pitch) - 8;
         } else {
             if (pitch.lessThanOrEquals(new PitchModel(B, 1)) || !pitch.lessThanOrEquals(new PitchModel(E, 4))) {
                 return null;
             }
-            return ScaleHelper.getInterval(new PitchModel(C, 2), pitch) + 8;
+            return ScaleHelper.getInterval(new PitchModel(C, 2), pitch) - 8;
         }
     }
 }

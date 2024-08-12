@@ -15,7 +15,13 @@ public class Score {
 
     public static String title() {
         ScorePartwise score = XMLConverter.INSTANCE.getScore();
-        return score == null ? null : score.getMovementTitle();
+        if (score == null) return null;
+
+        if (score.getMovementTitle() != null) return score.getMovementTitle();
+        Work work = score.getWork();
+        if (work != null && work.getWorkTitle() != null) return work.getWorkTitle();
+
+        return null;
     }
 
     public static String artist() {

@@ -9,15 +9,19 @@ import static pianolearn.diplomskirad.constants.Config.*;
 public class MusicNodeView extends Text {
 
     public MusicNodeView() {
-        this("", 0);
+        setupNode();
     }
 
     public MusicNodeView(String text, int position) {
         super(text);
+        setupNode();
+        position(position);
+    }
+
+    private void setupNode() {
         setFont(Fonts.music);
         setTextOrigin(VPos.CENTER);
         setY(STAFF_HEIGHT / 2 + FONT_CENTER_FIX);
-        position(position);
     }
 
     public void putAfter(Text prevNode, double space) {
