@@ -1,4 +1,4 @@
-package pianolearn.diplomskirad.model.score;
+package pianolearn.diplomskirad.model.viewmodel;
 
 import java.util.List;
 

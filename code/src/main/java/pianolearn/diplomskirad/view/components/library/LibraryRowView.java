@@ -6,7 +6,7 @@ import javafx.scene.layout.HBox;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.listener.ButtonClickWithIdListener;
-import pianolearn.diplomskirad.model.LibraryItem;
+import pianolearn.diplomskirad.model.viewmodel.LibraryItem;
 import pianolearn.diplomskirad.view.BaseView;
 
 public class LibraryRowView extends BaseView {

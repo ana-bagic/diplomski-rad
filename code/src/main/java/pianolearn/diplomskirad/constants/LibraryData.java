@@ -1,6 +1,6 @@
 package pianolearn.diplomskirad.constants;
 
-import pianolearn.diplomskirad.model.LibraryItem;
+import pianolearn.diplomskirad.model.viewmodel.LibraryItem;
 
 public class LibraryData {
 

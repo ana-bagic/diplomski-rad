@@ -23,6 +23,8 @@ public class Config {
     public static final double ELEMENTS_SPACING = 16;
     public static final double CONTROL_LINE_X = 400;
     public static final double CONTROL_LINE_WIDTH = 30;
+    public static final double CTRL_LINE_MEASURE_DISTANCE = 400;
+    public static final double MEASURE_START_X = CONTROL_LINE_X + CTRL_LINE_MEASURE_DISTANCE;
 
     // keyboard
     public static final double WHITE_KEY_HEIGHT_MULTIPLIER = 5;

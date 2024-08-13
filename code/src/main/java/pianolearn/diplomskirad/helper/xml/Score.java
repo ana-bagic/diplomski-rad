@@ -1,9 +1,10 @@
 package pianolearn.diplomskirad.helper.xml;
 
 import org.audiveris.proxymusic.*;
+import pianolearn.diplomskirad.controller.MainEngine;
 import pianolearn.diplomskirad.helper.ScaleHelper;
-import pianolearn.diplomskirad.model.score.*;
 import pianolearn.diplomskirad.model.score.PitchModel;
+import pianolearn.diplomskirad.model.viewmodel.*;
 
 import javax.xml.bind.JAXBElement;
 import java.lang.String;
@@ -31,7 +32,7 @@ public class Score {
 
         List<TypedText> creators = score.getIdentification().getCreator();
         for (TypedText creator : creators) {
-            if (creator.getType().equals("composer")) {
+            if (creator.getType().equalsIgnoreCase("composer")) {
                 return creator.getValue();
             }
         }
@@ -97,9 +98,9 @@ public class Score {
             if (time != null) {
                 for (JAXBElement<String> element : time) {
                     String localName = element.getName().getLocalPart();
-                    if (localName.equals("beats")) {
+                    if (localName.equalsIgnoreCase("beats")) {
                         numerator = BravuraConverter.getBravuraTime(element.getValue());
-                    } else if (localName.equals("beat-type")) {
+                    } else if (localName.equalsIgnoreCase("beat-type")) {
                         denominator = BravuraConverter.getBravuraTime(element.getValue());
                     }
                 }
@@ -116,24 +117,64 @@ public class Score {
         return new ClefTimeKeyModel(clef, numerator, denominator, accidentalPositions, accidental);
     }
 
-    public static MeasureModel measure(ScorePartwise.Part.Measure measure, boolean trebleClef) {
+    public static MeasurePair measures(ScorePartwise.Part.Measure measure) {
         if (measure == null) return null;
 
-        List<MusicNodeModel> elements = new LinkedList<>();
-        List<Note> notes = measure.getNoteOrBackupOrForward()
-                .stream().filter(o -> o instanceof Note).map(o -> (Note) o).toList();
-        for (Note note : notes) {
-            if (note.getGrace() != null || note.getCue() != null) {
-                continue;
+        LinkedList<Object> nbfList = new LinkedList<>(measure.getNoteOrBackupOrForward());
+        MeasureModel rightHandMeasure = measureModel(nbfList, true);
+
+        boolean hasBothHands = !nbfList.isEmpty();
+        MeasureModel leftHandMeasure = measureModel(nbfList, false);
+
+        return new MeasurePair(hasBothHands, rightHandMeasure, leftHandMeasure);
+    }
+
+    private static MeasureModel measureModel(LinkedList<Object> nbfList, boolean rightHand) {
+        boolean isTreble = MainEngine.INSTANCE.isPartTreble(rightHand);
+        List<MusicNodeModel> nodes = new LinkedList<>();
+        MusicNodeModel musicNodeModel = new MusicNodeModel();
+        boolean isNextNoteInChord = false;
+
+        while (!nbfList.isEmpty()) {
+            Object nbf = nbfList.peek();
+            if (rightHand && nbf instanceof Note note) {
+                BigInteger staff = note.getStaff();
+                if (staff != null && staff.intValue() == 2) {
+                    break;
+                }
             }
 
-            MusicNodeModel node = musicNode(note, trebleClef);
-            if (node != null) {
-                elements.add(node);
+            nbf = nbfList.pop();
+            if (nbf instanceof Note note) {
+                if (note.getGrace() != null || note.getCue() != null) {
+                    continue;
+                }
+
+                if (note.getChord() != null) {
+                    isNextNoteInChord = true;
+                }
+
+                NoteModel noteModel = noteModel(note, isTreble);
+                if (noteModel == null) continue;
+
+                if (!isNextNoteInChord) {
+                    if (!musicNodeModel.isEmpty()) {
+                        nodes.add(musicNodeModel);
+                        musicNodeModel = new MusicNodeModel();
+                    }
+                }
+
+                musicNodeModel.addNote(noteModel);
+
+                isNextNoteInChord = false;
+            } else if (nbf instanceof Backup backup) {
+                int duration = backup.getDuration().intValue();
+                isNextNoteInChord = true;
             }
         }
 
-        return new MeasureModel(elements);
+        nodes.add(musicNodeModel);
+        return new MeasureModel(nodes);
     }
 
     private static boolean isPiano(Object part) {
@@ -156,27 +197,33 @@ public class Score {
 
     }
 
-    private static MusicNodeModel musicNode(Note note, boolean trebleClef) {
+    private static NoteModel noteModel(Note note, boolean trebleClef) {
         if (note.getType() == null) return null;
         String noteType = note.getType().getValue();
 
         Pitch pitch = note.getPitch();
         if (pitch != null) {
-            String type = BravuraConverter.getBravuraNote(noteType, true);
+            String type = BravuraConverter.getBravuraNote(noteType, isStemUp(note));
             PitchModel pitchModel = PitchModel.fromPitch(pitch);
             Integer position = ScaleHelper.getPositionFromPitch(pitchModel, trebleClef);
             if (position == null) {
                 return null;
             } else {
-                return new MusicNodeModel(type, position);
+                return new NoteModel(type, position, pitchModel);
             }
         }
 
         if (note.getRest() != null) {
             String type = BravuraConverter.getBravuraRest(noteType);
-            return new MusicNodeModel(type, 0);
+            return new NoteModel(type, 0, null);
         }
 
         return null;
+    }
+
+    private static boolean isStemUp(Note note) {
+        Stem stem = note.getStem();
+        if (stem == null) return true;
+        return stem.getValue().value().equalsIgnoreCase("up");
     }
 }

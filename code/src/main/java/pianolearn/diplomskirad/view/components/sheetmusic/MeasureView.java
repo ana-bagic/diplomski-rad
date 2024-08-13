@@ -1,21 +1,21 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import pianolearn.diplomskirad.model.score.MeasureModel;
-import pianolearn.diplomskirad.model.score.MusicNodeModel;
+import pianolearn.diplomskirad.model.viewmodel.MeasureModel;
+import pianolearn.diplomskirad.model.viewmodel.MusicNodeModel;
 import pianolearn.diplomskirad.view.BaseView;
-
-import java.util.Objects;
 
 import static pianolearn.diplomskirad.constants.SheetMusicSymbols.barLine;
 
 public class MeasureView extends BaseView {
 
     private final Pane rootPane = new Pane();
-    private final MusicNodeView barLineNode = new MusicNodeView();
+    private final NoteView barLineNode = new NoteView();
 
-    public MeasureView() {
+    public MeasureView(MeasureModel model) {
         setupGUI();
+        setModel(model);
     }
 
     @Override
@@ -29,11 +29,11 @@ public class MeasureView extends BaseView {
         barLineNode.setText(barLine);
     }
 
-    public void setModel(MeasureModel model) {
-        MusicNodeView prevNode = null;
+    private void setModel(MeasureModel model) {
+        Node prevNode = barLineNode;
         for (MusicNodeModel node : model.elements()) {
-            MusicNodeView nodeView = new MusicNodeView(node.type(), node.position());
-            nodeView.putAfter(Objects.requireNonNullElse(prevNode, barLineNode), 1);
+            MusicNodeView nodeView = new MusicNodeView(node);
+            nodeView.putAfter(prevNode, node.getDistanceFromPrev());
             rootPane.getChildren().add(nodeView);
             prevNode = nodeView;
         }

@@ -137,8 +137,8 @@ public class PlayToolbarView extends BaseView {
         bindImageToButton(isPlay ? Images.playIcon : Images.pauseIcon, playPauseButton);
     }
 
-    public void setUsesOneHand(boolean usesOneHand) {
-        if (usesOneHand) {
+    public void setUsesBothHands(boolean usesBothHands) {
+        if (!usesBothHands) {
             showNode(leftHandButton, false);
             showNode(rightHandButton, false);
         }

@@ -1,4 +1,4 @@
-package pianolearn.diplomskirad.model;
+package pianolearn.diplomskirad.model.viewmodel;
 
 import javafx.scene.image.Image;
 

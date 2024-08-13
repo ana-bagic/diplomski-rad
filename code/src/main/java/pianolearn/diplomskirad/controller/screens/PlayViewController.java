@@ -35,7 +35,7 @@ public class PlayViewController implements BaseViewController {
     }
 
     private void setupViews() {
-        view.setUsesOneHand(engine.usesOneHand());
+        view.setUsesBothHands(engine.usesBothHands());
         view.setSheetMusicView(sheetMusicController.getView());
         view.setPianoKeyboardView(pianoKeyboardController.getView());
     }

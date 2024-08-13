@@ -7,7 +7,7 @@ import pianolearn.diplomskirad.constants.SheetMusicSymbols;
 import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.listener.HandChangeListener;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
-import pianolearn.diplomskirad.model.score.ClefTimeKeyModel;
+import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
 
 public enum MainEngine {
 
@@ -15,7 +15,7 @@ public enum MainEngine {
 
     private ScorePartwise.Part part;
 
-    private boolean usesOneHand;
+    private boolean usesBothHands;
     private ClefTimeKeyModel leftHandClefTimeKeyModel;
     private ClefTimeKeyModel rightHandClefTimeKeyModel;
     private boolean leftHandIsTreble = false;
@@ -32,8 +32,8 @@ public enum MainEngine {
     public void init() {
         part = Score.pianoPart();
 
-        usesOneHand = Score.numberOfStaves(part) == 1;
-        leftHandShows = !usesOneHand;
+        usesBothHands = Score.numberOfStaves(part) == 2;
+        leftHandShows = usesBothHands;
 
         if (leftHandShows) {
             leftHandClefTimeKeyModel = Score.clefTimeKey(part, false);
@@ -70,8 +70,12 @@ public enum MainEngine {
         rightHandChangedListener.onHandChanged(rightHandShows);
     }
 
-    public boolean usesOneHand() {
-        return usesOneHand;
+    public ScorePartwise.Part getPart() {
+        return part;
+    }
+
+    public boolean usesBothHands() {
+        return usesBothHands;
     }
 
     public ClefTimeKeyModel getClefTimeKey(boolean rightHandPart) {

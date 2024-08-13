@@ -10,7 +10,7 @@ import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.helper.StylesHelper;
 import pianolearn.diplomskirad.listener.ButtonClickWithIdListener;
-import pianolearn.diplomskirad.model.LibraryItem;
+import pianolearn.diplomskirad.model.viewmodel.LibraryItem;
 import pianolearn.diplomskirad.view.BaseNavigationView;
 import pianolearn.diplomskirad.view.components.library.LibraryRowView;
 

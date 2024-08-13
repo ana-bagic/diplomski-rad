@@ -37,8 +37,8 @@ public class PlayView extends BaseNavigationView {
         rootPane.setBottom(view);
     }
 
-    public void setUsesOneHand(boolean usesOneHand) {
-        playToolbarView.setUsesOneHand(usesOneHand);
+    public void setUsesBothHands(boolean usesBothHands) {
+        playToolbarView.setUsesBothHands(usesBothHands);
     }
 
     public void setPlayPauseButtonListener(ButtonClickListener listener) {

@@ -1,7 +1,7 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
 import javafx.scene.layout.Pane;
-import pianolearn.diplomskirad.model.score.ClefTimeKeyModel;
+import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
 import pianolearn.diplomskirad.view.BaseView;
 
 import static pianolearn.diplomskirad.constants.SheetMusicSymbols.barLine;
@@ -9,10 +9,10 @@ import static pianolearn.diplomskirad.constants.SheetMusicSymbols.barLine;
 public class ClefTimeKeyView extends BaseView {
 
     private final Pane rootPane = new Pane();
-    private final MusicNodeView barLineNode = new MusicNodeView();
-    private final MusicNodeView clefNode = new MusicNodeView();
-    private final MusicNodeView timeNumeratorNode = new MusicNodeView();
-    private final MusicNodeView timeDenominatorNode = new MusicNodeView();
+    private final NoteView barLineNode = new NoteView();
+    private final NoteView clefNode = new NoteView();
+    private final NoteView timeNumeratorNode = new NoteView();
+    private final NoteView timeDenominatorNode = new NoteView();
 
     public ClefTimeKeyView() {
         setupGUI();
@@ -43,9 +43,9 @@ public class ClefTimeKeyView extends BaseView {
         timeNumeratorNode.putAfter(clefNode, 1);
         timeDenominatorNode.putAfter(clefNode, 1);
 
-        MusicNodeView prevAcc = null;
+        NoteView prevAcc = null;
         for (Integer position : model.accidentalPositions()) {
-            MusicNodeView acc = new MusicNodeView(model.accidental(), position);
+            NoteView acc = new NoteView(model.accidental(), position);
             if (prevAcc == null) {
                 acc.putAfter(timeNumeratorNode, 2.5);
             } else {

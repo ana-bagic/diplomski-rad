@@ -1,35 +1,29 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
-import javafx.geometry.VPos;
-import javafx.scene.text.Text;
-import pianolearn.diplomskirad.constants.Fonts;
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
+import pianolearn.diplomskirad.model.viewmodel.MusicNodeModel;
+import pianolearn.diplomskirad.model.viewmodel.NoteModel;
+import pianolearn.diplomskirad.view.BaseView;
 
-import static pianolearn.diplomskirad.constants.Config.*;
+public class MusicNodeView extends BaseView {
 
-public class MusicNodeView extends Text {
+    private final Pane rootPane = new Pane();
 
-    public MusicNodeView() {
-        setupNode();
+    public MusicNodeView(MusicNodeModel model) {
+        for (NoteModel note : model.getNotes()) {
+            NoteView noteView = new NoteView(note);
+            rootPane.getChildren().add(noteView);
+        }
     }
 
-    public MusicNodeView(String text, int position) {
-        super(text);
-        setupNode();
-        position(position);
+    @Override
+    protected void addViews() {
+        bindToSelf(rootPane);
     }
 
-    private void setupNode() {
-        setFont(Fonts.music);
-        setTextOrigin(VPos.CENTER);
-        setY(STAFF_HEIGHT / 2 + FONT_CENTER_FIX);
-    }
-
-    public void putAfter(Text prevNode, double space) {
-        double xPosition = prevNode.getX() + prevNode.prefWidth(-1) + space * ELEMENTS_SPACING;
-        setX(xPosition);
-    }
-
-    public void position(int position) {
-        setTranslateY(-position * NOTE_PITCH_SPACING);
+    public void putAfter(Node prevNode, double amount) {
+        double xPosition = prevNode.getLayoutX() + amount;
+        setLayoutX(xPosition);
     }
 }
