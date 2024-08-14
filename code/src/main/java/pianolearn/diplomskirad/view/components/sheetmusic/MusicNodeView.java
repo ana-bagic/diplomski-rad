@@ -11,6 +11,8 @@ public class MusicNodeView extends BaseView {
     private final Pane rootPane = new Pane();
 
     public MusicNodeView(MusicNodeModel model) {
+        setupGUI();
+
         for (NoteModel note : model.getNotes()) {
             NoteView noteView = new NoteView(note);
             rootPane.getChildren().add(noteView);

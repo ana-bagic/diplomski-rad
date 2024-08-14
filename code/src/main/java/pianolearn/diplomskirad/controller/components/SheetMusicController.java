@@ -49,7 +49,7 @@ public class SheetMusicController implements BaseViewController {
         if (part == null || part.getMeasure().size() < 2) return;
 
   //      while (nextMeasureIndex < rightHandPart.getMeasure().size()) {
-        while (nextMeasureIndex < 2) {
+        while (nextMeasureIndex < 1) {
             ScorePartwise.Part.Measure measure = part.getMeasure().get(nextMeasureIndex);
             MeasurePair measurePair = Score.measures(measure);
             view.addMeasure(measurePair);

@@ -33,8 +33,8 @@ public class MeasureView extends BaseView {
         Node prevNode = barLineNode;
         for (MusicNodeModel node : model.elements()) {
             MusicNodeView nodeView = new MusicNodeView(node);
-            nodeView.putAfter(prevNode, node.getDistanceFromPrev());
             rootPane.getChildren().add(nodeView);
+            nodeView.putAfter(prevNode, node.getDistanceFromPrev() * 3);
             prevNode = nodeView;
         }
     }
