@@ -4,6 +4,7 @@ import org.audiveris.proxymusic.*;
 import pianolearn.diplomskirad.controller.MainEngine;
 import pianolearn.diplomskirad.helper.ScaleHelper;
 import pianolearn.diplomskirad.model.score.PitchModel;
+import pianolearn.diplomskirad.model.score.ScoreAttributes;
 import pianolearn.diplomskirad.model.viewmodel.*;
 
 import javax.xml.bind.JAXBElement;
@@ -14,6 +15,117 @@ import java.util.*;
 import static pianolearn.diplomskirad.constants.SheetMusicSymbols.*;
 
 public class Score {
+
+    public static boolean noPianoPart() {
+        ScorePartwise score = XMLConverter.INSTANCE.getScore();
+        if (score == null) return true;
+
+        if (score.getPart().size() == 1) return false;
+
+        for (Object part : score.getPartList().getPartGroupOrScorePart()) {
+            if (isPiano(part)) return false;
+        }
+        return true;
+    }
+
+    private static boolean isPiano(Object part) {
+        if (part instanceof ScorePart scorePart) {
+            String partName = scorePart.getPartName().getValue();
+            return partName.toUpperCase().contains("PIANO");
+        }
+        return false;
+    }
+
+    public static ScorePartwise.Part pianoPart() {
+        if (noPianoPart()) return null;
+
+        ScorePartwise score = XMLConverter.INSTANCE.getScore();
+        if (score.getPart().size() == 1) return score.getPart().getFirst();
+
+        for (Object part : score.getPartList().getPartGroupOrScorePart()) {
+            if (!isPiano(part)) continue;
+
+            String partId = ((ScorePart) part).getId();
+            return score.getPart()
+                    .stream().filter(p -> ((ScorePart) p.getId()).getId().equals(partId)).findFirst().orElse(null);
+        }
+        return null;
+    }
+
+    public static ScoreAttributes attributes(ScorePartwise.Part part) {
+        if (part == null || part.getMeasure().isEmpty()) return null;
+
+        ScorePartwise.Part.Measure measure = part.getMeasure().getFirst();
+        if (measure == null) return null;
+
+        Optional<Attributes> optionalAttributes = measure.getNoteOrBackupOrForward()
+                .stream().filter(n -> n instanceof Attributes).map(a -> (Attributes) a).findAny();
+        if (optionalAttributes.isEmpty()) return null;
+
+        Attributes attributes = optionalAttributes.get();
+        boolean isRightHandTreble = true;
+        boolean isLeftHandTreble = false;
+        String timeNumerator = "4";
+        String timeDenominator = "4";
+        int fifths = 0;
+        int staves = 1;
+
+        List<Clef> clefs = attributes.getClef();
+        if (clefs != null && !clefs.isEmpty()) {
+            isRightHandTreble = clefs.getFirst().getSign() == ClefSign.G;
+            if (clefs.size() > 1) {
+                isLeftHandTreble = clefs.get(1).getSign() == ClefSign.G;
+            }
+        }
+
+        List<Time> times = attributes.getTime();
+        if (times != null && !times.isEmpty()) {
+            List<JAXBElement<String>> time = times.getFirst().getTimeSignature();
+            if (time != null) {
+                for (JAXBElement<String> element : time) {
+                    String localName = element.getName().getLocalPart();
+                    if (localName.equalsIgnoreCase("beats")) {
+                        timeNumerator = element.getValue();
+                    } else if (localName.equalsIgnoreCase("beat-type")) {
+                        timeDenominator = element.getValue();
+                    }
+                }
+            }
+        }
+
+        List<Key> keys = attributes.getKey();
+        if (keys != null && !keys.isEmpty()) {
+            fifths = keys.getFirst().getFifths().intValue();
+        }
+
+        BigInteger stavesInteger = attributes.getStaves();
+        if (stavesInteger != null) {
+            staves = stavesInteger.intValue();
+        }
+
+        return new ScoreAttributes(isRightHandTreble, isLeftHandTreble, timeNumerator, timeDenominator, fifths, staves);
+    }
+
+    public static ClefTimeKeyModel clefTimeKey(ScoreAttributes attributes, boolean rightHand) {
+        String clef = trebleClef;
+        String numerator = time4;
+        String denominator = time4;
+        List<Integer> accidentalPositions = Collections.emptyList();
+        String accidental = sharp;
+
+        if (attributes == null) return new ClefTimeKeyModel(clef, numerator, denominator, accidentalPositions, accidental);
+
+        boolean isHandTreble = rightHand ? attributes.isRightHandTreble() : attributes.isLeftHandTreble();
+        clef = BravuraConverter.getBravuraClef(isHandTreble);
+        numerator = BravuraConverter.getBravuraTime(attributes.timeNumerator());
+        denominator = BravuraConverter.getBravuraTime(attributes.timeDenominator());
+
+        int fifths = attributes.fifths();
+        accidentalPositions = ScaleHelper.getAccidentalPositions(fifths, isHandTreble);
+        accidental = BravuraConverter.getBravuraAccidental(fifths);
+
+        return new ClefTimeKeyModel(clef, numerator, denominator, accidentalPositions, accidental);
+    }
 
     public static String title() {
         ScorePartwise score = XMLConverter.INSTANCE.getScore();
@@ -38,83 +150,6 @@ public class Score {
         }
 
         return null;
-    }
-
-    public static boolean noPianoPart() {
-        ScorePartwise score = XMLConverter.INSTANCE.getScore();
-        if (score == null) return true;
-
-        if (score.getPart().size() == 1) return false;
-
-        for (Object part : score.getPartList().getPartGroupOrScorePart()) {
-            if (isPiano(part)) return false;
-        }
-        return true;
-    }
-
-    public static ScorePartwise.Part pianoPart() {
-        ScorePartwise score = XMLConverter.INSTANCE.getScore();
-        if (noPianoPart()) return null;
-
-        if (score.getPart().size() == 1) return score.getPart().getFirst();
-
-        for (Object part : score.getPartList().getPartGroupOrScorePart()) {
-            if (!isPiano(part)) continue;
-
-            String partId = ((ScorePart) part).getId();
-            return score.getPart()
-                    .stream().filter(p -> ((ScorePart) p.getId()).getId().equals(partId)).findFirst().orElse(null);
-        }
-        return null;
-    }
-
-    public static int numberOfStaves(ScorePartwise.Part part) {
-        Attributes attributes = attributes(part);
-        if (attributes == null) return 1;
-
-        BigInteger staves = attributes.getStaves();
-        return staves == null ? 1 : staves.intValue();
-    }
-
-    public static ClefTimeKeyModel clefTimeKey(ScorePartwise.Part part, boolean rightHand) {
-        String clef = trebleClef;
-        String numerator = time4;
-        String denominator = time4;
-        List<Integer> accidentalPositions = Collections.emptyList();
-        String accidental = sharp;
-
-        Attributes attributes = attributes(part);
-        if (attributes == null) return new ClefTimeKeyModel(clef, numerator, denominator, accidentalPositions, accidental);
-
-        List<Clef> clefs = attributes.getClef();
-        if (clefs != null && !clefs.isEmpty()) {
-            ClefSign clefSign = clefs.get(rightHand ? 0 : 1).getSign();
-            clef = BravuraConverter.getBravuraClef(clefSign);
-        }
-
-        List<Time> times = attributes.getTime();
-        if (times != null && !times.isEmpty()) {
-            List<JAXBElement<String>> time = times.getFirst().getTimeSignature();
-            if (time != null) {
-                for (JAXBElement<String> element : time) {
-                    String localName = element.getName().getLocalPart();
-                    if (localName.equalsIgnoreCase("beats")) {
-                        numerator = BravuraConverter.getBravuraTime(element.getValue());
-                    } else if (localName.equalsIgnoreCase("beat-type")) {
-                        denominator = BravuraConverter.getBravuraTime(element.getValue());
-                    }
-                }
-            }
-        }
-
-        List<Key> keys = attributes.getKey();
-        if (keys != null && !keys.isEmpty()) {
-            int fifths = keys.getFirst().getFifths().intValue();
-            accidentalPositions = ScaleHelper.getAccidentalPositions(fifths, clef.equals(trebleClef));
-            accidental = BravuraConverter.getBravuraAccidental(fifths);
-        }
-
-        return new ClefTimeKeyModel(clef, numerator, denominator, accidentalPositions, accidental);
     }
 
     public static MeasurePair measures(ScorePartwise.Part.Measure measure) {
@@ -175,26 +210,6 @@ public class Score {
 
         nodes.add(musicNodeModel);
         return new MeasureModel(nodes);
-    }
-
-    private static boolean isPiano(Object part) {
-        if (part instanceof ScorePart scorePart) {
-            String partName = scorePart.getPartName().getValue();
-            return partName.toUpperCase().contains("PIANO");
-        }
-        return false;
-    }
-
-    private static Attributes attributes(ScorePartwise.Part part) {
-        if (part == null || part.getMeasure().isEmpty()) return null;
-
-        ScorePartwise.Part.Measure measure = part.getMeasure().getFirst();
-        if (measure == null) return null;
-
-        Optional<Object> object = measure.getNoteOrBackupOrForward()
-                .stream().filter(n -> n instanceof Attributes).findAny();
-        return (Attributes) object.orElse(null);
-
     }
 
     private static NoteModel noteModel(Note note, boolean trebleClef) {

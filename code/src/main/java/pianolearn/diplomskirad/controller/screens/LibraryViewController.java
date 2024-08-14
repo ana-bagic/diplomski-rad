@@ -3,6 +3,7 @@ package pianolearn.diplomskirad.controller.screens;
 import pianolearn.diplomskirad.constants.LibraryData;
 import pianolearn.diplomskirad.constants.XmlFiles;
 import pianolearn.diplomskirad.controller.BaseViewController;
+import pianolearn.diplomskirad.controller.MainEngine;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.helper.xml.XMLConverter;
 import pianolearn.diplomskirad.view.BaseView;
@@ -32,6 +33,7 @@ public class LibraryViewController implements BaseViewController {
     private void chooseSong(String fileName) {
         File file = XmlFiles.getXmlFile(fileName);
         XMLConverter.INSTANCE.unmarshall(file);
+        MainEngine.INSTANCE.init();
         NavigationController.INSTANCE.push(new PlayViewController());
     }
 }

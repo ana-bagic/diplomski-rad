@@ -21,7 +21,6 @@ public class PlayViewController implements BaseViewController {
     private final MainEngine engine = MainEngine.INSTANCE;
 
     public PlayViewController() {
-        engine.init();
         sheetMusicController = new SheetMusicController();
         pianoKeyboardController = new PianoKeyboardController();
 

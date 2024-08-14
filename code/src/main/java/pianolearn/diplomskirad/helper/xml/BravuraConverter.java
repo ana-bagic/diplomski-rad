@@ -1,14 +1,13 @@
 package pianolearn.diplomskirad.helper.xml;
 
-import org.audiveris.proxymusic.ClefSign;
 import pianolearn.diplomskirad.model.score.NoteType;
 
 import static pianolearn.diplomskirad.constants.SheetMusicSymbols.*;
 
 public class BravuraConverter {
     
-    public static String getBravuraClef(ClefSign clef) {
-        return clef == ClefSign.F ? bassClef : trebleClef;
+    public static String getBravuraClef(boolean isTreble) {
+        return isTreble ? trebleClef : bassClef;
     }
 
     public static String getBravuraTime(String time) {

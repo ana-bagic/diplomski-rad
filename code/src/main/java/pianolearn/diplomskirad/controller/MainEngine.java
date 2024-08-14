@@ -3,10 +3,10 @@ package pianolearn.diplomskirad.controller;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import org.audiveris.proxymusic.ScorePartwise;
-import pianolearn.diplomskirad.constants.SheetMusicSymbols;
 import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.listener.HandChangeListener;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
+import pianolearn.diplomskirad.model.score.ScoreAttributes;
 import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
 
 public enum MainEngine {
@@ -14,33 +14,23 @@ public enum MainEngine {
     INSTANCE;
 
     private ScorePartwise.Part part;
-
-    private boolean usesBothHands;
-    private ClefTimeKeyModel leftHandClefTimeKeyModel;
-    private ClefTimeKeyModel rightHandClefTimeKeyModel;
-    private boolean leftHandIsTreble = false;
-    private boolean rightHandIsTreble = true;
+    private ScoreAttributes attributes;
 
     private boolean isPlaying = false;
     private PlaybackSpeed playbackSpeed = PlaybackSpeed.WAIT;
-    private boolean leftHandShows;
     private boolean rightHandShows = true;
+    private boolean leftHandShows;
 
     private HandChangeListener leftHandChangedListener;
     private HandChangeListener rightHandChangedListener;
 
     public void init() {
         part = Score.pianoPart();
+        attributes = Score.attributes(part);
 
-        usesBothHands = Score.numberOfStaves(part) == 2;
-        leftHandShows = usesBothHands;
+        if (part == null || attributes == null) return;
 
-        if (leftHandShows) {
-            leftHandClefTimeKeyModel = Score.clefTimeKey(part, false);
-            leftHandIsTreble = leftHandClefTimeKeyModel.clef().equals(SheetMusicSymbols.trebleClef);
-        }
-        rightHandClefTimeKeyModel = Score.clefTimeKey(part, true);
-        rightHandIsTreble = rightHandClefTimeKeyModel.clef().equals(SheetMusicSymbols.trebleClef);
+        leftHandShows = attributes.staves() == 2;
 
         tempKeyPress();
     }
@@ -74,16 +64,20 @@ public enum MainEngine {
         return part;
     }
 
+    public ScoreAttributes getAttributes() {
+        return attributes;
+    }
+
     public boolean usesBothHands() {
-        return usesBothHands;
+        return attributes.staves() == 2;
     }
 
     public ClefTimeKeyModel getClefTimeKey(boolean rightHandPart) {
-        return rightHandPart ? rightHandClefTimeKeyModel : leftHandClefTimeKeyModel;
+        return Score.clefTimeKey(attributes, rightHandPart);
     }
 
     public boolean isPartTreble(boolean rightHandPart) {
-        return rightHandPart ? rightHandIsTreble : leftHandIsTreble;
+        return rightHandPart ? attributes.isRightHandTreble() : attributes.isLeftHandTreble();
     }
 
     public void setLeftHandChangedListener(HandChangeListener listener) {

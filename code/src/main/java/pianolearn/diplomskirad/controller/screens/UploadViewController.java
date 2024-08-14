@@ -3,6 +3,7 @@ package pianolearn.diplomskirad.controller.screens;
 import javafx.stage.FileChooser;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.controller.BaseViewController;
+import pianolearn.diplomskirad.controller.MainEngine;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.helper.xml.XMLConverter;
@@ -53,7 +54,8 @@ public class UploadViewController implements BaseViewController {
                 return;
             }
 
-            int staves = Score.numberOfStaves(Score.pianoPart());
+            MainEngine.INSTANCE.init();
+            int staves = MainEngine.INSTANCE.getAttributes().staves();
             if (staves > 2) {
                 view.setError(Strings.xmlStavesError(fileName, staves));
                 return;
