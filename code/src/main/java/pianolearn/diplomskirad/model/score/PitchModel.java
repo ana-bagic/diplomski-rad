@@ -1,18 +1,12 @@
 package pianolearn.diplomskirad.model.score;
 
-import org.audiveris.proxymusic.Pitch;
+import pianolearn.diplomskirad.helper.ScaleHelper;
 
 public record PitchModel(NoteAlphabet key, int octave) {
 
     public static PitchModel fromMidi(int midiKey) {
-        NoteAlphabet noteAlphabet = NoteAlphabet.KEYS[midiKey % 12];
+        NoteAlphabet noteAlphabet = ScaleHelper.ALPHABET[midiKey % 12];
         int octave = midiKey / 12 - 1;
-        return new PitchModel(noteAlphabet, octave);
-    }
-
-    public static PitchModel fromPitch(Pitch pitch) {
-        NoteAlphabet noteAlphabet = NoteAlphabet.fromStep(pitch.getStep());
-        int octave = pitch.getOctave();
         return new PitchModel(noteAlphabet, octave);
     }
 
@@ -37,12 +31,5 @@ public record PitchModel(NoteAlphabet key, int octave) {
             return key.getChromaNumber() < pitch.key.getChromaNumber();
         }
         return octave < pitch.octave;
-    }
-
-    public PitchModel getIncreased() {
-        int nextChromaNumber = (key.getChromaNumber() + 1) % NoteAlphabet.KEYS.length;
-        NoteAlphabet newKey = NoteAlphabet.KEYS[nextChromaNumber];
-        int newOctave = octave + (newKey == NoteAlphabet.C ? 1 : 0);
-        return new PitchModel(newKey, newOctave);
     }
 }

@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class XmlFiles {
 
-    public static final String furElise = "fur-elise";
+    public static final String mozartSonata = "mozart-sonata";
     public static final String echigoJishi = "echigo-jishi";
 
     public static File getXmlFile(String fileName) {

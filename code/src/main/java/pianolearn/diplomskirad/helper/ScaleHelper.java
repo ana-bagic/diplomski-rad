@@ -1,9 +1,11 @@
 package pianolearn.diplomskirad.helper;
 
+import org.audiveris.proxymusic.Pitch;
 import pianolearn.diplomskirad.helper.custom.BidirectionalMap;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
 import pianolearn.diplomskirad.model.score.PitchModel;
 
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,7 @@ import static pianolearn.diplomskirad.model.score.NoteAlphabet.*;
 
 public class ScaleHelper {
 
+    public static final NoteAlphabet[] ALPHABET = new NoteAlphabet[] {C, CSH, D, DSH, E, F, FSH, G, GSH, A, ASH, B};
     private static final BidirectionalMap<Integer, NoteAlphabet> NATURALS = BidirectionalMap.ofEntries(
             Map.entry(0, C), Map.entry(1, D), Map.entry(2, E), Map.entry(3, F),
             Map.entry(4, G), Map.entry(5, A), Map.entry(6, B)
@@ -82,5 +85,29 @@ public class ScaleHelper {
             }
             return ScaleHelper.getInterval(new PitchModel(C, 2), pitch) - 8;
         }
+    }
+
+    public static PitchModel getPitchWithAlter(Pitch pitch) {
+        NoteAlphabet step = NoteAlphabet.fromStep(pitch.getStep());
+        BigDecimal alter = pitch.getAlter();
+        int accidental = alter == null ? 0 : alter.intValue();
+
+        return adjustPitch(step.getChromaNumber(), pitch.getOctave(), accidental);
+    }
+
+    public static PitchModel adjustPitch(int chromaNumber, int octave, int amount) {
+        int len = ALPHABET.length;
+        int newChromaNumber = chromaNumber + amount;
+        int newOctave = octave;
+
+        if (newChromaNumber >= len) {
+            newOctave += newChromaNumber / len;
+            newChromaNumber = newChromaNumber % len;
+        } else if (newChromaNumber < 0) {
+            newOctave += (newChromaNumber + 1) / len - 1;
+            newChromaNumber = (newChromaNumber % len + len) % len;
+        }
+
+        return new PitchModel(ALPHABET[newChromaNumber], newOctave);
     }
 }

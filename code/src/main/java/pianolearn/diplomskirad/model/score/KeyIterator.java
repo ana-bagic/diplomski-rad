@@ -1,5 +1,7 @@
 package pianolearn.diplomskirad.model.score;
 
+import pianolearn.diplomskirad.helper.ScaleHelper;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -23,7 +25,7 @@ public class KeyIterator implements Iterator<PitchModel> {
         if (!hasNext()) throw new NoSuchElementException();
 
         PitchModel pitch = currentPitch;
-        currentPitch = currentPitch.getIncreased();
+        currentPitch = ScaleHelper.adjustPitch(currentPitch.key().getChromaNumber(), currentPitch.octave(), 1);
         return pitch;
     }
 }

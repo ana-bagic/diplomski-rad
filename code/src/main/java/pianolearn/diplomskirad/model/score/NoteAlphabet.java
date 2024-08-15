@@ -17,8 +17,6 @@ public enum NoteAlphabet {
     ASH(10, "A#"),
     B(11, "B");
 
-    public static final NoteAlphabet[] KEYS = new NoteAlphabet[] {C, CSH, D, DSH, E, F, FSH, G, GSH, A, ASH, B};
-
     private final int chromaNumber;
     private final String name;
 

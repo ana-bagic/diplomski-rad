@@ -165,7 +165,10 @@ public class Score {
     }
 
     private static MeasureModel measureModel(LinkedList<Object> nbfList, boolean rightHand) {
-        boolean isTreble = MainEngine.INSTANCE.isPartTreble(rightHand);
+        ScoreAttributes attributes = MainEngine.INSTANCE.getAttributes();
+        boolean isTreble = rightHand ? attributes.isRightHandTreble() : attributes.isLeftHandTreble();
+        int fifths = attributes.fifths();
+
         List<MusicNodeModel> nodes = new LinkedList<>();
         MusicNodeModel musicNodeModel = new MusicNodeModel();
         boolean isNextNoteInChord = false;
@@ -189,7 +192,7 @@ public class Score {
                     isNextNoteInChord = true;
                 }
 
-                NoteModel noteModel = noteModel(note, isTreble);
+                NoteModel noteModel = noteModel(note, isTreble, fifths);
                 if (noteModel == null) continue;
 
                 if (!isNextNoteInChord) {
@@ -212,20 +215,17 @@ public class Score {
         return new MeasureModel(nodes);
     }
 
-    private static NoteModel noteModel(Note note, boolean trebleClef) {
+    private static NoteModel noteModel(Note note, boolean trebleClef, int fifths) {
         if (note.getType() == null) return null;
         String noteType = note.getType().getValue();
 
         Pitch pitch = note.getPitch();
         if (pitch != null) {
             String type = BravuraConverter.getBravuraNote(noteType, isStemUp(note));
-            PitchModel pitchModel = PitchModel.fromPitch(pitch);
+            PitchModel pitchModel = ScaleHelper.getPitchWithAlter(pitch);
             Integer position = ScaleHelper.getPositionFromPitch(pitchModel, trebleClef);
-            if (position == null) {
-                return null;
-            } else {
-                return new NoteModel(type, position, pitchModel);
-            }
+            if (position == null) return null;
+            return new NoteModel(type, position, pitchModel);
         }
 
         if (note.getRest() != null) {
