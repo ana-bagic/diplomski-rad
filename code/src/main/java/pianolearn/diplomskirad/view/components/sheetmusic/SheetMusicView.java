@@ -1,6 +1,9 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
+import javafx.geometry.Insets;
 import javafx.scene.layout.VBox;
+import pianolearn.diplomskirad.constants.Colors;
+import pianolearn.diplomskirad.helper.StylesHelper;
 import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
 import pianolearn.diplomskirad.model.viewmodel.MeasurePair;
 import pianolearn.diplomskirad.view.BaseView;
@@ -10,6 +13,7 @@ public class SheetMusicView extends BaseView {
 
     private final VBox rootPane = new VBox();
     private final SongMetadataView songMetadataView = new SongMetadataView();
+    private final VBox sheetMusicVBox = new VBox();
     private final SheetMusicPartView rightHandPartView = new SheetMusicPartView();
     private final SheetMusicPartView leftHandPartView = new SheetMusicPartView();
 
@@ -19,8 +23,18 @@ public class SheetMusicView extends BaseView {
 
     @Override
     protected void addViews() {
-        rootPane.getChildren().addAll(songMetadataView, rightHandPartView, leftHandPartView);
+        sheetMusicVBox.getChildren().addAll(rightHandPartView, leftHandPartView);
+        rootPane.getChildren().addAll(songMetadataView, sheetMusicVBox);
         bindToSelf(rootPane);
+    }
+
+    @Override
+    protected void styleViews() {
+        rootPane.setSpacing(30);
+
+        sheetMusicVBox.setBackground(StylesHelper.background(Colors.whiteKey, null));
+        sheetMusicVBox.setSpacing(40);
+        sheetMusicVBox.setPadding(new Insets(20, 0, 20, 0));
     }
 
     public void showPart(boolean rightHandPart, boolean show) {

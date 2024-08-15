@@ -3,7 +3,7 @@ package pianolearn.diplomskirad.helper.xml;
 import org.audiveris.proxymusic.*;
 import pianolearn.diplomskirad.controller.MainEngine;
 import pianolearn.diplomskirad.helper.ScaleHelper;
-import pianolearn.diplomskirad.model.score.PitchModel;
+import pianolearn.diplomskirad.model.score.NoteAlphabet;
 import pianolearn.diplomskirad.model.score.ScoreAttributes;
 import pianolearn.diplomskirad.model.viewmodel.*;
 
@@ -68,6 +68,7 @@ public class Score {
         String timeNumerator = "4";
         String timeDenominator = "4";
         int fifths = 0;
+        Set<NoteAlphabet> scale = Collections.emptySet();
         int staves = 1;
 
         List<Clef> clefs = attributes.getClef();
@@ -96,6 +97,7 @@ public class Score {
         List<Key> keys = attributes.getKey();
         if (keys != null && !keys.isEmpty()) {
             fifths = keys.getFirst().getFifths().intValue();
+            scale = ScaleHelper.getScale(fifths);
         }
 
         BigInteger stavesInteger = attributes.getStaves();
@@ -103,7 +105,7 @@ public class Score {
             staves = stavesInteger.intValue();
         }
 
-        return new ScoreAttributes(isRightHandTreble, isLeftHandTreble, timeNumerator, timeDenominator, fifths, staves);
+        return new ScoreAttributes(isRightHandTreble, isLeftHandTreble, timeNumerator, timeDenominator, fifths, scale, staves);
     }
 
     public static ClefTimeKeyModel clefTimeKey(ScoreAttributes attributes, boolean rightHand) {
@@ -122,7 +124,7 @@ public class Score {
 
         int fifths = attributes.fifths();
         accidentalPositions = ScaleHelper.getAccidentalPositions(fifths, isHandTreble);
-        accidental = BravuraConverter.getBravuraAccidental(fifths);
+        accidental = BravuraConverter.getBravuraAccidentalFromFifths(fifths);
 
         return new ClefTimeKeyModel(clef, numerator, denominator, accidentalPositions, accidental);
     }
@@ -167,7 +169,6 @@ public class Score {
     private static MeasureModel measureModel(LinkedList<Object> nbfList, boolean rightHand) {
         ScoreAttributes attributes = MainEngine.INSTANCE.getAttributes();
         boolean isTreble = rightHand ? attributes.isRightHandTreble() : attributes.isLeftHandTreble();
-        int fifths = attributes.fifths();
 
         List<MusicNodeModel> nodes = new LinkedList<>();
         MusicNodeModel musicNodeModel = new MusicNodeModel();
@@ -192,7 +193,7 @@ public class Score {
                     isNextNoteInChord = true;
                 }
 
-                NoteModel noteModel = noteModel(note, isTreble, fifths);
+                NoteModel noteModel = noteModel(note, isTreble, attributes);
                 if (noteModel == null) continue;
 
                 if (!isNextNoteInChord) {
@@ -215,22 +216,25 @@ public class Score {
         return new MeasureModel(nodes);
     }
 
-    private static NoteModel noteModel(Note note, boolean trebleClef, int fifths) {
+    private static NoteModel noteModel(Note note, boolean trebleClef, ScoreAttributes attributes) {
         if (note.getType() == null) return null;
         String noteType = note.getType().getValue();
 
         Pitch pitch = note.getPitch();
         if (pitch != null) {
             String type = BravuraConverter.getBravuraNote(noteType, isStemUp(note));
-            PitchModel pitchModel = ScaleHelper.getPitchWithAlter(pitch);
-            Integer position = ScaleHelper.getPositionFromPitch(pitchModel, trebleClef);
-            if (position == null) return null;
-            return new NoteModel(type, position, pitchModel);
+            String dot = BravuraConverter.getBravuraDot(note.getDot().size());
+
+            NoteModel noteModel = new NoteModel(type);
+            noteModel.setDot(dot);
+
+            ScaleHelper.setNoteModelPitch(noteModel, pitch, trebleClef, attributes);
+            return noteModel;
         }
 
         if (note.getRest() != null) {
             String type = BravuraConverter.getBravuraRest(noteType);
-            return new NoteModel(type, 0, null);
+            return new NoteModel(type);
         }
 
         return null;

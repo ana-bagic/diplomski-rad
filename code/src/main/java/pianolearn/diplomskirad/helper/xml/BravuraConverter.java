@@ -24,21 +24,22 @@ public class BravuraConverter {
         };
     }
 
-    public static String getBravuraAccidental(int fifths) {
+    public static String getBravuraAccidentalFromFifths(int fifths) {
         return fifths >= 0 ? sharp : flat;
     }
 
-    public static String getBravuraRest(String type) {
-        NoteType noteType = NoteType.fromType(type);
-        return switch (noteType) {
-            case WHOLE -> wholeRest;
-            case HALF -> halfRest;
-            case QUARTER, OTHER -> quarterRest;
-            case EIGHTH -> rest8;
-            case TYPE16 -> rest16;
-            case TYPE32 -> rest32;
-            case TYPE64 -> rest64;
+    public static String getBravuraAccidentalFromAccidental(Integer accidental) {
+        if (accidental == null) return "";
+        return switch (accidental) {
+            case 1 -> sharp;
+            case -1 -> flat;
+            case 0 -> natural;
+            default -> "";
         };
+    }
+
+    public static String getBravuraDot(int size) {
+        return size == 0 ? "" : dot;
     }
 
     public static String getBravuraNote(String type, boolean up) {
@@ -51,6 +52,19 @@ public class BravuraConverter {
             case TYPE16 -> up ? note16Up : note16Down;
             case TYPE32 -> up ? note32Up : note32Down;
             case TYPE64 -> up ? note64Up : note64Down;
+        };
+    }
+
+    public static String getBravuraRest(String type) {
+        NoteType noteType = NoteType.fromType(type);
+        return switch (noteType) {
+            case WHOLE -> wholeRest;
+            case HALF -> halfRest;
+            case QUARTER, OTHER -> quarterRest;
+            case EIGHTH -> rest8;
+            case TYPE16 -> rest16;
+            case TYPE32 -> rest32;
+            case TYPE64 -> rest64;
         };
     }
 }

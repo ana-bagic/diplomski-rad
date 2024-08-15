@@ -15,7 +15,7 @@ public class NoteView extends Text {
     }
 
     public NoteView(NoteModel model) {
-        this(model.type(), model.position());
+        this(model.getAccidental() + model.getType() + model.getDot(), model.getPosition());
     }
 
     public NoteView(String type, int position) {

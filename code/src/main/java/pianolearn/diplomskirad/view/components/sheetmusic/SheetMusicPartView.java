@@ -4,7 +4,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import pianolearn.diplomskirad.constants.Colors;
-import pianolearn.diplomskirad.helper.StylesHelper;
 import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
 import pianolearn.diplomskirad.model.viewmodel.MeasureModel;
 import pianolearn.diplomskirad.view.BaseView;
@@ -40,8 +39,6 @@ public class SheetMusicPartView extends BaseView {
 
     @Override
     protected void styleViews() {
-        rootPane.setBackground(StylesHelper.background(Colors.whiteKey, null));
-
         staffView.setMinHeight(STAFF_HEIGHT);
         staffView.setMaxHeight(STAFF_HEIGHT);
 

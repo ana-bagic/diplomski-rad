@@ -2,13 +2,14 @@ package pianolearn.diplomskirad.helper;
 
 import org.audiveris.proxymusic.Pitch;
 import pianolearn.diplomskirad.helper.custom.BidirectionalMap;
+import pianolearn.diplomskirad.helper.xml.BravuraConverter;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
 import pianolearn.diplomskirad.model.score.PitchModel;
+import pianolearn.diplomskirad.model.score.ScoreAttributes;
+import pianolearn.diplomskirad.model.viewmodel.NoteModel;
 
 import java.math.BigDecimal;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static pianolearn.diplomskirad.model.score.NoteAlphabet.*;
 
@@ -19,36 +20,11 @@ public class ScaleHelper {
             Map.entry(0, C), Map.entry(1, D), Map.entry(2, E), Map.entry(3, F),
             Map.entry(4, G), Map.entry(5, A), Map.entry(6, B)
     );
-    private static final BidirectionalMap<Integer, NoteAlphabet> SHARPS = BidirectionalMap.ofEntries(
-            Map.entry(0, F), Map.entry(1, C), Map.entry(2, G), Map.entry(3, D),
-            Map.entry(4, A), Map.entry(5, E), Map.entry(6, B)
-    );
-    private static final BidirectionalMap<Integer, NoteAlphabet> FLATS = BidirectionalMap.ofEntries(
-            Map.entry(0, B), Map.entry(1, E), Map.entry(2, A), Map.entry(3, D),
-            Map.entry(4, G), Map.entry(5, C), Map.entry(6, F)
-    );
 
     private static final List<Integer> sharpAccidentalTreblePositions = List.of(4, 1, 5, 2, -1, 3, 0);
     private static final List<Integer> flatAccidentalTreblePositions = List.of(0, 3, -1, 2, -2, 1, -3);
     private static final List<Integer> sharpAccidentalBassPositions = List.of(2, -1, 3, 0, -3, 1, -2);
     private static final List<Integer> flatAccidentalBassPositions = List.of(-2, 1, -3, 0, -4, -1, -5);
-
-    public static int getInterval(PitchModel first, PitchModel last) {
-        int startNoteIndex = NATURALS.getFromValue(first.key());
-        int endNoteIndex = NATURALS.getFromValue(last.key());
-
-        int interval = 0;
-
-        if (first.octave() == last.octave()) {
-            interval = endNoteIndex - startNoteIndex;
-        } else {
-            interval += (NATURALS.size() - startNoteIndex - 1);
-            interval += NATURALS.size() * (last.octave() - first.octave() - 1);
-            interval += (endNoteIndex + 1);
-        }
-
-        return interval;
-    }
 
     public static List<Integer> getAccidentalPositions(int fifths, boolean trebleClef) {
         List<Integer> accidentals = new LinkedList<>();
@@ -71,23 +47,88 @@ public class ScaleHelper {
         return accidentals;
     }
 
+    public static Set<NoteAlphabet> getScale(int fifths) {
+        int adjustBy = fifths*7;
+        int firstChromaNumber = adjustPitch(0, 0, adjustBy).key().getChromaNumber();
+
+        int len = ALPHABET.length;
+        Set<NoteAlphabet> scale = new HashSet<>();
+
+        scale.add(ALPHABET[firstChromaNumber]);
+        scale.add(ALPHABET[(firstChromaNumber + 2) % len]);
+        scale.add(ALPHABET[(firstChromaNumber + 4) % len]);
+        scale.add(ALPHABET[(firstChromaNumber + 5) % len]);
+        scale.add(ALPHABET[(firstChromaNumber + 7) % len]);
+        scale.add(ALPHABET[(firstChromaNumber + 9) % len]);
+        scale.add(ALPHABET[(firstChromaNumber + 11) % len]);
+
+        return scale;
+    }
+
+    public static int getInterval(PitchModel first, PitchModel last) {
+        int startNoteIndex = NATURALS.getFromValue(first.key());
+        int endNoteIndex = NATURALS.getFromValue(last.key());
+
+        int interval = 0;
+
+        if (first.octave() == last.octave()) {
+            interval = endNoteIndex - startNoteIndex;
+        } else {
+            interval += (NATURALS.size() - startNoteIndex - 1);
+            interval += NATURALS.size() * (last.octave() - first.octave() - 1);
+            interval += (endNoteIndex + 1);
+        }
+
+        return interval;
+    }
+
     // treble: B4 is position 0, C6 is position 8, A3 is position -8
     // bass: D3 is position 0, E4 is position 8, C2 is position -8
-    public static Integer getPositionFromPitch(PitchModel pitch, boolean trebleClef) {
+    public static int getPositionFromPitch(PitchModel pitch, boolean trebleClef) {
         if (trebleClef) {
             if (pitch.lessThanOrEquals(new PitchModel(G, 3)) || !pitch.lessThanOrEquals(new PitchModel(C, 6))) {
-                return null;
+                return 0;
             }
             return ScaleHelper.getInterval(new PitchModel(A, 3), pitch) - 8;
         } else {
             if (pitch.lessThanOrEquals(new PitchModel(B, 1)) || !pitch.lessThanOrEquals(new PitchModel(E, 4))) {
-                return null;
+                return 0;
             }
             return ScaleHelper.getInterval(new PitchModel(C, 2), pitch) - 8;
         }
     }
 
-    public static PitchModel getPitchWithAlter(Pitch pitch) {
+    public static void setNoteModelPitch(NoteModel noteModel, Pitch pitch, boolean trebleClef, ScoreAttributes attributes) {
+        PitchModel pitchModel = ScaleHelper.getPitchWithAlter(pitch);
+        NoteAlphabet note = pitchModel.key();
+
+        int fifths = attributes.fifths();
+        Integer accidentalInt;
+        PitchModel pitchToPosition;
+        if (attributes.scale().contains(note)) {
+            accidentalInt = null;
+        } else {
+            if (fifths >= 0) {
+                accidentalInt = note.isBlack() ? 1 : 0;
+            } else {
+                accidentalInt = note.isBlack() ? -1 : 0;
+            }
+        }
+        if (fifths >= 0) {
+            pitchToPosition = isSharp(note, fifths) ? getFlat(pitchModel) : pitchModel;
+        } else {
+            pitchToPosition = isFlat(note, fifths) ? getSharp(pitchModel) : pitchModel;
+        }
+
+        String accidental = BravuraConverter.getBravuraAccidentalFromAccidental(accidentalInt);
+        int position = ScaleHelper.getPositionFromPitch(pitchToPosition, trebleClef);
+
+        noteModel.setPosition(position);
+        noteModel.setAccidental(accidental);
+        noteModel.setPitch(pitchModel);
+    }
+
+    private static PitchModel getPitchWithAlter(Pitch pitch) {
         NoteAlphabet step = NoteAlphabet.fromStep(pitch.getStep());
         BigDecimal alter = pitch.getAlter();
         int accidental = alter == null ? 0 : alter.intValue();
@@ -109,5 +150,27 @@ public class ScaleHelper {
         }
 
         return new PitchModel(ALPHABET[newChromaNumber], newOctave);
+    }
+
+    private static PitchModel getSharp(PitchModel pitch) {
+        return adjustPitch(pitch.key().getChromaNumber(), pitch.octave(), 1);
+    }
+
+    private static PitchModel getFlat(PitchModel pitch) {
+        return adjustPitch(pitch.key().getChromaNumber(), pitch.octave(), -1);
+    }
+
+    private static boolean isSharp(NoteAlphabet note, int fifths) {
+        if (note.isBlack()) return true;
+
+        if (fifths > 5 && note == F) return true;
+        return fifths > 6 && note == C;
+    }
+
+    private static boolean isFlat(NoteAlphabet note, int fifths) {
+        if (note.isBlack()) return true;
+
+        if (fifths > 5 && note == B) return true;
+        return fifths > 6 && note == E;
     }
 }
