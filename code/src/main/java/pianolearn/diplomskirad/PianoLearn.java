@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.constants.XmlFiles;
+import pianolearn.diplomskirad.controller.MainEngine;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.controller.screens.PlayViewController;
 import pianolearn.diplomskirad.controller.screens.TitleViewController;
@@ -16,13 +17,15 @@ public class PianoLearn extends Application {
     @Override
     public void start(Stage stage) {
         stage.setTitle(Strings.appTitle);
-        stage.setMinWidth(850);
-        stage.setMinHeight(750);
+        stage.setMinWidth(1000);
+        stage.setMinHeight(800);
 
         NavigationController.INSTANCE.init(stage, new TitleViewController());
 
-        File file = XmlFiles.getXmlFile(XmlFiles.furElise);
+        // ovo treba obrisati za finalnu verziju
+        File file = XmlFiles.getXmlFile(XmlFiles.mozartSonata);
         XMLConverter.INSTANCE.unmarshall(file);
+        MainEngine.INSTANCE.init();
         NavigationController.INSTANCE.push(new PlayViewController());
     }
 

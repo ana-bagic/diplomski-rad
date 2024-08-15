@@ -33,8 +33,8 @@ public class SheetMusicView extends BaseView {
         rootPane.setSpacing(30);
 
         sheetMusicVBox.setBackground(StylesHelper.background(Colors.whiteKey, null));
-        sheetMusicVBox.setSpacing(40);
-        sheetMusicVBox.setPadding(new Insets(20, 0, 20, 0));
+        sheetMusicVBox.setSpacing(50);
+        sheetMusicVBox.setPadding(new Insets(40, 0, 40, 0));
     }
 
     public void showPart(boolean rightHandPart, boolean show) {
