@@ -5,7 +5,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
-import pianolearn.diplomskirad.model.viewmodel.MeasureModel;
+import pianolearn.diplomskirad.model.viewmodel.MusicNodeModel;
 import pianolearn.diplomskirad.view.BaseView;
 
 import java.util.LinkedList;
@@ -62,11 +62,11 @@ public class SheetMusicPartView extends BaseView {
         notesView.getChildren().add(clefTimeKeyView);
     }
 
-    public void addMeasure(MeasureModel measure) {
+    public void addMeasure(List<MusicNodeModel> measure, double measureWidth) {
         MeasureView measureView = new MeasureView(measure);
         measureViews.add(measureView);
         notesView.getChildren().add(measureView);
         measureView.setLayoutX(lastMeasureEnd);
-        lastMeasureEnd += measureView.prefWidth(-1);
+        lastMeasureEnd += measureWidth;
     }
 }

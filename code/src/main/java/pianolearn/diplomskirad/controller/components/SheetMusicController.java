@@ -48,16 +48,16 @@ public class SheetMusicController implements BaseViewController {
         ScorePartwise.Part part = engine.getPart();
         if (part == null || part.getMeasure().size() < 2) return;
 
-//        while (nextMeasureIndex < part.getMeasure().size()) {
-//            ScorePartwise.Part.Measure measure = part.getMeasure().get(nextMeasureIndex);
-//            MeasurePair measurePair = Score.measures(measure);
-//            view.addMeasure(measurePair);
-//            nextMeasureIndex++;
-//        }
+        while (nextMeasureIndex < 2) {
+            ScorePartwise.Part.Measure measure = part.getMeasure().get(nextMeasureIndex);
+            MeasurePair measurePair = Score.measures(measure);
+            view.addMeasure(measurePair);
+            nextMeasureIndex++;
+        }
 
-        ScorePartwise.Part.Measure measure = part.getMeasure().get(14);
-        MeasurePair measurePair = Score.measures(measure);
-        view.addMeasure(measurePair);
-        nextMeasureIndex++;
+//        ScorePartwise.Part.Measure measure = part.getMeasure().get(1);
+//        MeasurePair measurePair = Score.measures(measure);
+//        view.addMeasure(measurePair);
+//        nextMeasureIndex++;
     }
 }

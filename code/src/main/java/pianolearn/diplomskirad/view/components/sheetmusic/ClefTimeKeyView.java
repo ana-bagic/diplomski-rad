@@ -28,7 +28,7 @@ public class ClefTimeKeyView extends BaseView {
     protected void styleViews() {
         barLineNode.setText(barLine);
 
-        clefNode.putAfter(barLineNode, 1);
+        clefNode.putAfter(barLineNode, ClefTimeKeyModel.spacing());
 
         timeNumeratorNode.position(6);
 
@@ -40,14 +40,14 @@ public class ClefTimeKeyView extends BaseView {
         timeNumeratorNode.setText(model.numerator());
         timeDenominatorNode.setText(model.denominator());
 
-        timeNumeratorNode.putAfter(clefNode, 1);
-        timeDenominatorNode.putAfter(clefNode, 1);
+        timeNumeratorNode.putAfter(clefNode, ClefTimeKeyModel.spacing());
+        timeDenominatorNode.putAfter(clefNode, ClefTimeKeyModel.spacing());
 
         NoteView prevAcc = null;
         for (Integer position : model.accidentalPositions()) {
             NoteView acc = new NoteView(model.accidental(), position);
             if (prevAcc == null) {
-                acc.putAfter(timeNumeratorNode, 2.5);
+                acc.putAfter(timeNumeratorNode, ClefTimeKeyModel.timeAccidentalSpacing());
             } else {
                 acc.putAfter(prevAcc, 0);
             }

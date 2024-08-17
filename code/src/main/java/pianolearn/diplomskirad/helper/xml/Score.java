@@ -1,6 +1,7 @@
 package pianolearn.diplomskirad.helper.xml;
 
 import org.audiveris.proxymusic.*;
+import pianolearn.diplomskirad.constants.Config;
 import pianolearn.diplomskirad.controller.MainEngine;
 import pianolearn.diplomskirad.helper.ScaleHelper;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
@@ -158,15 +159,18 @@ public class Score {
         if (measure == null) return null;
 
         LinkedList<Object> nbfList = new LinkedList<>(measure.getNoteOrBackupOrForward());
-        MeasureModel rightHandMeasure = measureModel(nbfList, true);
+        List<MusicNodeModel> rightHandMeasure = measureModel(nbfList, true);
 
         boolean hasBothHands = !nbfList.isEmpty();
-        MeasureModel leftHandMeasure = measureModel(nbfList, false);
+        List<MusicNodeModel> leftHandMeasure = hasBothHands ? measureModel(nbfList, false) : Collections.emptyList();
 
-        return new MeasurePair(hasBothHands, rightHandMeasure, leftHandMeasure);
+        MeasurePair measurePair = new MeasurePair(hasBothHands, rightHandMeasure, leftHandMeasure);
+        calculateDistances(measurePair);
+
+        return measurePair;
     }
 
-    private static MeasureModel measureModel(LinkedList<Object> nbfList, boolean rightHand) {
+    private static List<MusicNodeModel> measureModel(LinkedList<Object> nbfList, boolean rightHand) {
         ScoreAttributes attributes = MainEngine.INSTANCE.getAttributes();
         boolean isTreble = rightHand ? attributes.isRightHandTreble() : attributes.isLeftHandTreble();
 
@@ -203,7 +207,8 @@ public class Score {
                     }
                 }
 
-                musicNodeModel.addNote(noteModel);
+                int duration = note.getDuration().intValue();
+                musicNodeModel.addNote(noteModel, duration);
 
                 isNextNoteInChord = false;
             } else if (nbf instanceof Backup backup) {
@@ -213,7 +218,7 @@ public class Score {
         }
 
         nodes.add(musicNodeModel);
-        return new MeasureModel(nodes);
+        return nodes;
     }
 
     private static NoteModel noteModel(Note note, boolean trebleClef, ScoreAttributes attributes) {
@@ -244,5 +249,32 @@ public class Score {
         Stem stem = note.getStem();
         if (stem == null) return true;
         return stem.getValue().value().equalsIgnoreCase("up");
+    }
+
+    private static void calculateDistances(MeasurePair measurePair) {
+        List<MusicNodeModel> rightHand = measurePair.getRightHandMeasure();
+        List<MusicNodeModel> leftHand = measurePair.getLeftHandMeasure();
+        if (rightHand.isEmpty()) return;
+
+        int minDurationRight = rightHand.stream().mapToInt(MusicNodeModel::getDuration).min().orElse(Integer.MAX_VALUE);
+        int minDurationLeft = leftHand.stream().mapToInt(MusicNodeModel::getDuration).min().orElse(Integer.MAX_VALUE);
+        double minDuration = Math.min(minDurationRight, minDurationLeft);
+
+        setDistances(rightHand, minDuration);
+        if (measurePair.hasBothHands()) {
+            setDistances(leftHand, minDuration);
+        }
+
+        double measureWidth = rightHand.stream().mapToDouble(MusicNodeModel::getDistanceFromPrev).sum();
+        measureWidth += (rightHand.getFirst().getDuration() / minDuration) * Config.NOTE_NOTE_SPACE;
+        measurePair.setWidth(measureWidth);
+    }
+
+    private static void setDistances(List<MusicNodeModel> measure, double minDuration) {
+        double distanceFromPrev = Config.BARLINE_NOTE_SPACE;
+        for (MusicNodeModel model : measure) {
+            model.setDistanceFromPrev(distanceFromPrev);
+            distanceFromPrev = (model.getDuration() / minDuration) * Config.NOTE_NOTE_SPACE;
+        }
     }
 }

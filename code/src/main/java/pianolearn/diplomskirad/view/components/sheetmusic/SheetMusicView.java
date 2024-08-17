@@ -58,9 +58,9 @@ public class SheetMusicView extends BaseView {
     }
 
     public void addMeasure(MeasurePair measurePair) {
-        rightHandPartView.addMeasure(measurePair.rightHandModel());
+        rightHandPartView.addMeasure(measurePair.getRightHandMeasure(), measurePair.getWidth());
         if (measurePair.hasBothHands()) {
-            leftHandPartView.addMeasure(measurePair.leftHandModel());
+            leftHandPartView.addMeasure(measurePair.getLeftHandMeasure(), measurePair.getWidth());
         }
     }
 }

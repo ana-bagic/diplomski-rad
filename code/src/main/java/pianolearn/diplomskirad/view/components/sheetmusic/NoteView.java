@@ -34,8 +34,8 @@ public class NoteView extends Text {
         setTranslateY(-position * NOTE_PITCH_SPACING);
     }
 
-    public void putAfter(Text prevNode, double space) {
-        double xPosition = prevNode.getX() + prevNode.prefWidth(-1) + space * ELEMENTS_SPACING;
+    public void putAfter(Text prevNode, double amount) {
+        double xPosition = prevNode.getX() + prevNode.prefWidth(-1) + amount;
         setX(xPosition);
     }
 }

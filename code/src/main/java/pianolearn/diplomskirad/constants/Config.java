@@ -20,7 +20,11 @@ public class Config {
     public static final double STAFF_HEIGHT = STAFF_LINE_SPACING * 8;
     public static final double FONT_CENTER_FIX = 8;
     public static final double NOTE_PITCH_SPACING = STAFF_LINE_SPACING / 2;
-    public static final double ELEMENTS_SPACING = 16;
+
+    public static final double ATTRIBUTES_SPACE = 15;
+    public static final double BARLINE_NOTE_SPACE = 30;
+    public static final double NOTE_NOTE_SPACE = 80;
+
     public static final double CONTROL_LINE_X = 400;
     public static final double CONTROL_LINE_WIDTH = 30;
     public static final double CTRL_LINE_MEASURE_DISTANCE = 400;
