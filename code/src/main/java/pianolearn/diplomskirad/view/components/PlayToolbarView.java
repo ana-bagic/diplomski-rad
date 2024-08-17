@@ -14,7 +14,7 @@ import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Images;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.helper.StylesHelper;
-import pianolearn.diplomskirad.listener.ButtonClickListener;
+import pianolearn.diplomskirad.listener.EventListener;
 import pianolearn.diplomskirad.listener.SpeedChangeListener;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
 import pianolearn.diplomskirad.view.BaseView;
@@ -32,11 +32,11 @@ public class PlayToolbarView extends BaseView {
     private final Button leftHandButton = new Button();
     private final Button rightHandButton = new Button();
 
-    private ButtonClickListener playPauseButtonListener;
-    private ButtonClickListener stopButtonListener;
+    private EventListener playPauseButtonListener;
+    private EventListener stopButtonListener;
     private SpeedChangeListener speedSliderListener;
-    private ButtonClickListener leftHandButtonListener;
-    private ButtonClickListener rightHandButtonListener;
+    private EventListener leftHandButtonListener;
+    private EventListener rightHandButtonListener;
 
     private boolean isPlay = true;
     private int oldSliderIndex = 0;
@@ -97,13 +97,13 @@ public class PlayToolbarView extends BaseView {
     private void playPauseClicked() {
         isPlay = !isPlay;
         changePlayPauseButton(isPlay);
-        playPauseButtonListener.onButtonClicked();
+        playPauseButtonListener.onAction();
     }
 
     private void stopButtonClicked() {
         isPlay = true;
         changePlayPauseButton(true);
-        stopButtonListener.onButtonClicked();
+        stopButtonListener.onAction();
     }
 
     private void sliderChanged() {
@@ -119,7 +119,7 @@ public class PlayToolbarView extends BaseView {
             isLeftShown = !isLeftShown;
             Color backgroundColor = isLeftShown ? Colors.accent : Colors.text;
             StylesHelper.setButtonBackground(leftHandButton, backgroundColor, Colors.highlight, 20);
-            leftHandButtonListener.onButtonClicked();
+            leftHandButtonListener.onAction();
         }
     }
 
@@ -128,7 +128,7 @@ public class PlayToolbarView extends BaseView {
             isRightShown = !isRightShown;
             Color backgroundColor = isRightShown ? Colors.accent : Colors.text;
             StylesHelper.setButtonBackground(rightHandButton, backgroundColor, Colors.highlight, 20);
-            rightHandButtonListener.onButtonClicked();
+            rightHandButtonListener.onAction();
         }
     }
 
@@ -144,11 +144,11 @@ public class PlayToolbarView extends BaseView {
         }
     }
 
-    public void setPlayPauseButtonListener(ButtonClickListener listener) {
+    public void setPlayPauseButtonListener(EventListener listener) {
         playPauseButtonListener = listener;
     }
 
-    public void setStopButtonListener(ButtonClickListener listener) {
+    public void setStopButtonListener(EventListener listener) {
         stopButtonListener = listener;
     }
 
@@ -156,11 +156,11 @@ public class PlayToolbarView extends BaseView {
         speedSliderListener = listener;
     }
 
-    public void setLeftHandButtonListener(ButtonClickListener listener) {
+    public void setLeftHandButtonListener(EventListener listener) {
         leftHandButtonListener = listener;
     }
 
-    public void setRightHandButtonListener(ButtonClickListener listener) {
+    public void setRightHandButtonListener(EventListener listener) {
         rightHandButtonListener = listener;
     }
 }

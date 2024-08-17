@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import pianolearn.diplomskirad.constants.*;
 import pianolearn.diplomskirad.helper.StylesHelper;
-import pianolearn.diplomskirad.listener.ButtonClickListener;
+import pianolearn.diplomskirad.listener.EventListener;
 import pianolearn.diplomskirad.view.BaseView;
 
 public class TitleView extends BaseView {
@@ -19,9 +19,9 @@ public class TitleView extends BaseView {
     private final Button libraryButton = new Button();
     private final Button settingsButton = new Button();
 
-    private ButtonClickListener uploadButtonListener;
-    private ButtonClickListener libraryButtonListener;
-    private ButtonClickListener settingsButtonListener;
+    private EventListener uploadButtonListener;
+    private EventListener libraryButtonListener;
+    private EventListener settingsButtonListener;
 
     public TitleView() {
         setupGUI();
@@ -54,9 +54,9 @@ public class TitleView extends BaseView {
 
     @Override
     protected void setupActions() {
-        uploadButton.setOnAction(e -> uploadButtonListener.onButtonClicked());
-        libraryButton.setOnAction(e -> libraryButtonListener.onButtonClicked());
-        settingsButton.setOnAction(e -> settingsButtonListener.onButtonClicked());
+        uploadButton.setOnAction(e -> uploadButtonListener.onAction());
+        libraryButton.setOnAction(e -> libraryButtonListener.onAction());
+        settingsButton.setOnAction(e -> settingsButtonListener.onAction());
     }
 
     private void setupButton(Button button, String tooltipText, Image image) {
@@ -66,15 +66,15 @@ public class TitleView extends BaseView {
         bindImageToButton(image, button);
     }
 
-    public void setUploadButtonListener(ButtonClickListener listener) {
+    public void setUploadButtonListener(EventListener listener) {
         uploadButtonListener = listener;
     }
 
-    public void setLibraryButtonListener(ButtonClickListener listener) {
+    public void setLibraryButtonListener(EventListener listener) {
         libraryButtonListener = listener;
     }
 
-    public void setSettingsButtonListener(ButtonClickListener listener) {
+    public void setSettingsButtonListener(EventListener listener) {
         settingsButtonListener = listener;
     }
 }

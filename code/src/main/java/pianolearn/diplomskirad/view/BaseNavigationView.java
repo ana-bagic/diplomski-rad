@@ -8,7 +8,7 @@ import javafx.scene.layout.StackPane;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Images;
 import pianolearn.diplomskirad.helper.StylesHelper;
-import pianolearn.diplomskirad.listener.ButtonClickListener;
+import pianolearn.diplomskirad.listener.EventListener;
 
 public class BaseNavigationView extends BaseView {
 
@@ -16,7 +16,7 @@ public class BaseNavigationView extends BaseView {
     protected final StackPane topStackPane = new StackPane();
     private final Button backButton = new Button();
 
-    private ButtonClickListener backButtonListener;
+    private EventListener backButtonListener;
 
     @Override
     protected void addViews() {
@@ -39,10 +39,10 @@ public class BaseNavigationView extends BaseView {
 
     @Override
     protected void setupActions() {
-        backButton.setOnAction(e -> backButtonListener.onButtonClicked());
+        backButton.setOnAction(e -> backButtonListener.onAction());
     }
 
-    public void setBackButtonListener(ButtonClickListener listener) {
+    public void setBackButtonListener(EventListener listener) {
         backButtonListener = listener;
     }
 }

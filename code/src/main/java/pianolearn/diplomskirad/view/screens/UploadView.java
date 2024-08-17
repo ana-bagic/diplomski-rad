@@ -12,7 +12,7 @@ import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.helper.StylesHelper;
-import pianolearn.diplomskirad.listener.ButtonClickListener;
+import pianolearn.diplomskirad.listener.EventListener;
 import pianolearn.diplomskirad.view.BaseNavigationView;
 
 public class UploadView extends BaseNavigationView {
@@ -27,8 +27,8 @@ public class UploadView extends BaseNavigationView {
     private final Label orLabel = new Label();
     private final Button fileChooserButton = new Button();
 
-    private ButtonClickListener fileChooserButtonListener;
-    private ButtonClickListener confirmButtonListener;
+    private EventListener fileChooserButtonListener;
+    private EventListener confirmButtonListener;
 
     public UploadView() {
         setupGUI();
@@ -92,15 +92,15 @@ public class UploadView extends BaseNavigationView {
     @Override
     protected void setupActions() {
         super.setupActions();
-        fileChooserButton.setOnAction(e -> fileChooserButtonListener.onButtonClicked());
-        confirmButton.setOnAction(e -> confirmButtonListener.onButtonClicked());
+        fileChooserButton.setOnAction(e -> fileChooserButtonListener.onAction());
+        confirmButton.setOnAction(e -> confirmButtonListener.onAction());
     }
 
-    public void setFileChooserButtonListener(ButtonClickListener listener) {
+    public void setFileChooserButtonListener(EventListener listener) {
         fileChooserButtonListener = listener;
     }
 
-    public void setConfirmButtonListener(ButtonClickListener listener) {
+    public void setConfirmButtonListener(EventListener listener) {
         confirmButtonListener = listener;
     }
 

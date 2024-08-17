@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.VBox;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.helper.StylesHelper;
+import pianolearn.diplomskirad.listener.EventListener;
 import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
 import pianolearn.diplomskirad.model.viewmodel.MeasurePair;
 import pianolearn.diplomskirad.view.BaseView;
@@ -62,5 +63,9 @@ public class SheetMusicView extends BaseView {
         if (measurePair.hasBothHands()) {
             leftHandPartView.addMeasure(measurePair.getLeftHandMeasure(), measurePair.getWidth());
         }
+    }
+
+    public void setNewMeasureNeededListener(EventListener listener) {
+        rightHandPartView.setNewMeasureNeededListener(listener);
     }
 }

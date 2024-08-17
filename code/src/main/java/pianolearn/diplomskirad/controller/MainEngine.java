@@ -8,6 +8,10 @@ import pianolearn.diplomskirad.listener.HandChangeListener;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
 import pianolearn.diplomskirad.model.score.ScoreAttributes;
 import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
+import pianolearn.diplomskirad.model.viewmodel.MeasurePair;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public enum MainEngine {
 
@@ -15,6 +19,9 @@ public enum MainEngine {
 
     private ScorePartwise.Part part;
     private ScoreAttributes attributes;
+
+    private final List<MeasurePair> measurePairs = new LinkedList<>();
+    private int nextMeasureIndex = 0;
 
     private boolean isPlaying = false;
     private PlaybackSpeed playbackSpeed = PlaybackSpeed.WAIT;
@@ -60,12 +67,24 @@ public enum MainEngine {
         rightHandChangedListener.onHandChanged(rightHandShows);
     }
 
-    public ScorePartwise.Part getPart() {
-        return part;
-    }
-
     public ScoreAttributes getAttributes() {
         return attributes;
+    }
+
+    public MeasurePair getNextMeasure() {
+        if (part == null) return null;
+
+        List<ScorePartwise.Part.Measure> measures = part.getMeasure();
+        if (nextMeasureIndex < measures.size()) {
+            ScorePartwise.Part.Measure measure = measures.get(nextMeasureIndex);
+            MeasurePair measurePair = Score.measures(measure);
+            System.out.println("created new measure");
+            measurePairs.add(measurePair);
+            nextMeasureIndex++;
+            return measurePair;
+        }
+
+        return null;
     }
 
     public boolean usesBothHands() {
@@ -74,10 +93,6 @@ public enum MainEngine {
 
     public ClefTimeKeyModel getClefTimeKey(boolean rightHandPart) {
         return Score.clefTimeKey(attributes, rightHandPart);
-    }
-
-    public boolean isPartTreble(boolean rightHandPart) {
-        return rightHandPart ? attributes.isRightHandTreble() : attributes.isLeftHandTreble();
     }
 
     public void setLeftHandChangedListener(HandChangeListener listener) {

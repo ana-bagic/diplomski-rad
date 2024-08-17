@@ -24,7 +24,7 @@ public class PlayViewController implements BaseViewController {
         sheetMusicController = new SheetMusicController();
         pianoKeyboardController = new PianoKeyboardController();
 
-        setupViews();
+        setupView();
         setupListeners();
     }
 
@@ -33,7 +33,7 @@ public class PlayViewController implements BaseViewController {
         return view;
     }
 
-    private void setupViews() {
+    private void setupView() {
         view.setUsesBothHands(engine.usesBothHands());
         view.setSheetMusicView(sheetMusicController.getView());
         view.setPianoKeyboardView(pianoKeyboardController.getView());
