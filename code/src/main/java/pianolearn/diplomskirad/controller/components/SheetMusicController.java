@@ -38,7 +38,8 @@ public class SheetMusicController implements BaseViewController {
             engine.setLeftHandChangedListener(show -> view.showPart(false, show));
             engine.setRightHandChangedListener(show -> view.showPart(true, show));
         }
-        engine.setStopClickedListener(view::reset);
+        engine.setStopClickedListener(this::reset);
+        engine.setTranslateMeasuresListener(view::translateMeasures);
 
         view.setNewMeasureNeededListener(this::addNextMeasure);
     }
@@ -47,5 +48,10 @@ public class SheetMusicController implements BaseViewController {
         MeasurePair measurePair = engine.getNextMeasure();
         if (measurePair == null) return;
         view.addMeasure(measurePair);
+    }
+
+    private void reset() {
+        view.reset();
+        addNextMeasure();
     }
 }

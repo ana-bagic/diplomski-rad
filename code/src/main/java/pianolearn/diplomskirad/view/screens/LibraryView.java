@@ -9,7 +9,7 @@ import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.helper.StylesHelper;
-import pianolearn.diplomskirad.listener.ButtonClickWithIdListener;
+import pianolearn.diplomskirad.listener.EventWithIdListener;
 import pianolearn.diplomskirad.model.viewmodel.LibraryItem;
 import pianolearn.diplomskirad.view.BaseNavigationView;
 import pianolearn.diplomskirad.view.components.library.LibraryRowView;
@@ -50,7 +50,6 @@ public class LibraryView extends BaseNavigationView {
         pickASongLabel.setText(Strings.libraryLabel);
 
         scrollPane.setFitToWidth(true);
-        //scrollPane.setFitToHeight(false);
         scrollPane.setPannable(true);
         scrollPane.setBackground(StylesHelper.background(Colors.background, null));
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -63,7 +62,7 @@ public class LibraryView extends BaseNavigationView {
         modernRowView.setLabel(Strings.modernRow);
     }
 
-    public void setCoverButtonListeners(ButtonClickWithIdListener listener) {
+    public void setCoverButtonListeners(EventWithIdListener listener) {
         classicalRowView.setCoverButtonListeners(listener);
         modernRowView.setCoverButtonListeners(listener);
     }

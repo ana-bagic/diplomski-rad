@@ -21,6 +21,8 @@ public class Config {
     public static final double FONT_CENTER_FIX = 8;
     public static final double NOTE_PITCH_SPACING = STAFF_LINE_SPACING / 2;
 
+    public static final double CLEF_TIME_KEY_WIDTH = 300;
+
     public static final double ATTRIBUTES_SPACE = 15;
     public static final double BARLINE_NOTE_SPACE = 30;
     public static final double NOTE_NOTE_SPACE = 60;
@@ -29,6 +31,8 @@ public class Config {
     public static final double CONTROL_LINE_WIDTH = 30;
     public static final double CTRL_LINE_MEASURE_DISTANCE = 400;
     public static final double MEASURE_START_X = CONTROL_LINE_X + CTRL_LINE_MEASURE_DISTANCE;
+
+    public static final double TICK_DURATION_MS = 40;
 
     // keyboard
     public static final double WHITE_KEY_HEIGHT_MULTIPLIER = 5;

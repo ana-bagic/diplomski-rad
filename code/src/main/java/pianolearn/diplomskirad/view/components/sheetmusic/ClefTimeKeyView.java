@@ -1,6 +1,8 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
 import javafx.scene.layout.Pane;
+import pianolearn.diplomskirad.constants.Colors;
+import pianolearn.diplomskirad.helper.StylesHelper;
 import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
 import pianolearn.diplomskirad.view.BaseView;
 
@@ -26,6 +28,8 @@ public class ClefTimeKeyView extends BaseView {
 
     @Override
     protected void styleViews() {
+        rootPane.setBackground(StylesHelper.background(Colors.text, null));
+
         barLineNode.setText(barLine);
 
         clefNode.putAfter(barLineNode, ClefTimeKeyModel.spacing());

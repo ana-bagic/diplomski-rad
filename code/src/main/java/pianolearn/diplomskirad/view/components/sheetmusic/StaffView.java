@@ -31,7 +31,7 @@ public class StaffView extends BaseView {
     @Override
     protected void styleViews() {
         for (Line line : lines) {
-            line.setStroke(Colors.blackKey);
+            line.setStroke(Colors.notes);
             line.setStrokeWidth(1);
             line.endXProperty().bind(rootPane.widthProperty());
         }

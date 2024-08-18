@@ -10,7 +10,7 @@ import javafx.scene.text.TextAlignment;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.helper.StylesHelper;
-import pianolearn.diplomskirad.listener.ButtonClickWithIdListener;
+import pianolearn.diplomskirad.listener.EventWithIdListener;
 import pianolearn.diplomskirad.model.viewmodel.LibraryItem;
 import pianolearn.diplomskirad.view.BaseView;
 
@@ -23,7 +23,7 @@ public class LibraryRowItemView extends BaseView {
     private final Label songNameLabel = new Label();
     private final Label artistNameLabel = new Label();
 
-    private ButtonClickWithIdListener coverButtonListener;
+    private EventWithIdListener coverButtonListener;
     private String fileName;
 
     public LibraryRowItemView() {
@@ -65,10 +65,10 @@ public class LibraryRowItemView extends BaseView {
 
     @Override
     protected void setupActions() {
-        coverButton.setOnAction(e -> coverButtonListener.onButtonClicked(fileName));
+        coverButton.setOnAction(e -> coverButtonListener.onAction(fileName));
     }
 
-    public void setCoverButtonListener(ButtonClickWithIdListener listener) {
+    public void setCoverButtonListener(EventWithIdListener listener) {
         coverButtonListener = listener;
     }
 

@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
-import pianolearn.diplomskirad.listener.ButtonClickWithIdListener;
+import pianolearn.diplomskirad.listener.EventWithIdListener;
 import pianolearn.diplomskirad.model.viewmodel.LibraryItem;
 import pianolearn.diplomskirad.view.BaseView;
 
@@ -46,7 +46,7 @@ public class LibraryRowView extends BaseView {
         rowLabel.setTextFill(Colors.text);
     }
 
-    public void setCoverButtonListeners(ButtonClickWithIdListener listener) {
+    public void setCoverButtonListeners(EventWithIdListener listener) {
         for (LibraryRowItemView view : rowItems) {
             view.setCoverButtonListener(listener);
         }

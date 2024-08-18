@@ -40,11 +40,11 @@ public class SheetMusicView extends BaseView {
 
     @Override
     protected void styleViews() {
-        scene.widthProperty().addListener(e -> checkIfMeasureIsNeeded());
+        scene.widthProperty().addListener(e -> fetchRemoveMeasures());
 
         rootPane.setSpacing(30);
 
-        sheetMusicVBox.setBackground(StylesHelper.background(Colors.whiteKey, null));
+        sheetMusicVBox.setBackground(StylesHelper.background(Colors.text, null));
         sheetMusicVBox.setSpacing(50);
         sheetMusicVBox.setPadding(new Insets(40, 0, 40, 0));
     }
@@ -55,8 +55,17 @@ public class SheetMusicView extends BaseView {
             leftHandPartView.addMeasure(measurePair.getLeftHandMeasure(), lastMeasureEnd);
         }
 
+        System.out.println("added measures");
         lastMeasureEnd += measurePair.getWidth();
-        checkIfMeasureIsNeeded();
+        fetchRemoveMeasures();
+    }
+
+    public void translateMeasures(double amount) {
+        rightHandPartView.translateMeasures(amount);
+        leftHandPartView.translateMeasures(amount);
+
+        lastMeasureEnd -= amount;
+        fetchRemoveMeasures();
     }
 
     public void showPart(boolean rightHandPart, boolean show) {
@@ -74,17 +83,21 @@ public class SheetMusicView extends BaseView {
     public void reset() {
         rightHandPartView.reset();
         leftHandPartView.reset();
+        lastMeasureEnd = MEASURE_START_X;
     }
 
     public void setNewMeasureNeededListener(EventListener listener) {
         newMeasureNeededListener = listener;
     }
 
-    private void checkIfMeasureIsNeeded() {
+    private void fetchRemoveMeasures() {
         double sceneWidth = scene.getWidth();
 
         if (newMeasureNeededListener != null && lastMeasureEnd < sceneWidth) {
             newMeasureNeededListener.onAction();
         }
+
+        rightHandPartView.removeMeasuresIfNeeded();
+        leftHandPartView.removeMeasuresIfNeeded();
     }
 }
