@@ -4,7 +4,7 @@ import pianolearn.diplomskirad.constants.Strings;
 
 public enum PlaybackSpeed {
 
-    WAIT(Strings.sliderWait, 0),
+    WAIT(Strings.sliderWait, 1),
     SPEED50(Strings.sliderSpeed50, 0.5),
     SPEED80(Strings.sliderSpeed80, 0.8),
     SPEED100(Strings.sliderSpeed100, 1);

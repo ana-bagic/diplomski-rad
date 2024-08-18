@@ -1,12 +1,9 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
-import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import pianolearn.diplomskirad.constants.Colors;
-import pianolearn.diplomskirad.controller.NavigationController;
-import pianolearn.diplomskirad.listener.EventListener;
 import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
 import pianolearn.diplomskirad.model.viewmodel.MusicNodeModel;
 import pianolearn.diplomskirad.view.BaseView;
@@ -26,11 +23,6 @@ public class SheetMusicPartView extends BaseView {
     private final Pane controlLineContainer = new Pane();
     private final Rectangle controlLine = new Rectangle();
 
-    private double lastMeasureEnd = MEASURE_START_X;
-    private final Scene scene = NavigationController.INSTANCE.getStage().getScene();
-
-    private EventListener newMeasureNeededListener;
-
     public SheetMusicPartView() {
         setupGUI();
     }
@@ -45,8 +37,6 @@ public class SheetMusicPartView extends BaseView {
 
     @Override
     protected void styleViews() {
-        scene.widthProperty().addListener(e -> checkIfMeasureIsNeeded());
-
         staffView.setMinHeight(STAFF_HEIGHT);
         staffView.setMaxHeight(STAFF_HEIGHT);
 
@@ -60,6 +50,13 @@ public class SheetMusicPartView extends BaseView {
         controlLine.setFill(Colors.controlLine);
     }
 
+    public void addMeasure(List<MusicNodeModel> measure, double measureStartX) {
+        MeasureView measureView = new MeasureView(measure);
+        measureViews.add(measureView);
+        notesView.getChildren().add(measureView);
+        measureView.setLayoutX(measureStartX);
+    }
+
     public void setClefTimeKey(ClefTimeKeyModel model) {
         clefTimeKeyView.setModel(model);
     }
@@ -68,29 +65,5 @@ public class SheetMusicPartView extends BaseView {
         measureViews.clear();
         notesView.getChildren().clear();
         notesView.getChildren().add(clefTimeKeyView);
-    }
-
-    public void addMeasure(List<MusicNodeModel> measure, double measureWidth) {
-        MeasureView measureView = new MeasureView(measure);
-        measureViews.add(measureView);
-        notesView.getChildren().add(measureView);
-
-        measureView.setLayoutX(lastMeasureEnd);
-        lastMeasureEnd += measureWidth;
-
-        checkIfMeasureIsNeeded();
-    }
-
-    public void setNewMeasureNeededListener(EventListener listener) {
-        newMeasureNeededListener = listener;
-        checkIfMeasureIsNeeded();
-    }
-
-    private void checkIfMeasureIsNeeded() {
-        double sceneWidth = scene.getWidth();
-
-        if (newMeasureNeededListener != null && lastMeasureEnd < sceneWidth) {
-            newMeasureNeededListener.onAction();
-        }
     }
 }

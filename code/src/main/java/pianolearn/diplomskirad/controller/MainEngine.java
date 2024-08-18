@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import org.audiveris.proxymusic.ScorePartwise;
 import pianolearn.diplomskirad.helper.xml.Score;
+import pianolearn.diplomskirad.listener.EventListener;
 import pianolearn.diplomskirad.listener.HandChangeListener;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
 import pianolearn.diplomskirad.model.score.ScoreAttributes;
@@ -24,12 +25,14 @@ public enum MainEngine {
     private int nextMeasureIndex = 0;
 
     private boolean isPlaying = false;
-    private PlaybackSpeed playbackSpeed = PlaybackSpeed.WAIT;
+    private double playbackSpeed = 1;
+    private boolean isWait = true;
     private boolean rightHandShows = true;
     private boolean leftHandShows;
 
     private HandChangeListener leftHandChangedListener;
     private HandChangeListener rightHandChangedListener;
+    private EventListener stopClickedListener;
 
     public void init() {
         part = Score.pianoPart();
@@ -40,35 +43,6 @@ public enum MainEngine {
         leftHandShows = attributes.staves() == 2;
 
         tempKeyPress();
-    }
-
-    public void playPauseButtonClicked() {
-        isPlaying = !isPlaying;
-        System.out.println("playing " + isPlaying);
-    }
-
-    public void stopButtonClicked() {
-        isPlaying = false;
-        System.out.println("stopped");
-    }
-
-    public void speedChanged(PlaybackSpeed speed) {
-        playbackSpeed = speed;
-        System.out.println("speed " + playbackSpeed.getLabel());
-    }
-
-    public void leftHandButtonClicked() {
-        leftHandShows = !leftHandShows;
-        leftHandChangedListener.onHandChanged(leftHandShows);
-    }
-
-    public void rightHandButtonClicked() {
-        rightHandShows = !rightHandShows;
-        rightHandChangedListener.onHandChanged(rightHandShows);
-    }
-
-    public ScoreAttributes getAttributes() {
-        return attributes;
     }
 
     public MeasurePair getNextMeasure() {
@@ -87,6 +61,10 @@ public enum MainEngine {
         return null;
     }
 
+    public ScoreAttributes getAttributes() {
+        return attributes;
+    }
+
     public boolean usesBothHands() {
         return attributes.staves() == 2;
     }
@@ -95,12 +73,40 @@ public enum MainEngine {
         return Score.clefTimeKey(attributes, rightHandPart);
     }
 
+    public void playPauseButtonClicked() {
+        isPlaying = !isPlaying;
+    }
+
+    public void stopButtonClicked() {
+        isPlaying = false;
+        stopClickedListener.onAction();
+    }
+
+    public void speedChanged(PlaybackSpeed speed) {
+        playbackSpeed = speed.getSpeed();
+        isWait = speed == PlaybackSpeed.WAIT;
+    }
+
+    public void leftHandButtonClicked() {
+        leftHandShows = !leftHandShows;
+        leftHandChangedListener.onHandChanged(leftHandShows);
+    }
+
+    public void rightHandButtonClicked() {
+        rightHandShows = !rightHandShows;
+        rightHandChangedListener.onHandChanged(rightHandShows);
+    }
+
     public void setLeftHandChangedListener(HandChangeListener listener) {
         leftHandChangedListener = listener;
     }
 
     public void setRightHandChangedListener(HandChangeListener listener) {
         rightHandChangedListener = listener;
+    }
+
+    public void setStopClickedListener(EventListener listener) {
+        stopClickedListener = listener;
     }
 
     private void tempKeyPress() {
@@ -113,28 +119,4 @@ public enum MainEngine {
             }
         });
     }
-
-//    private void play() {
-//        ScorePartwise.Part part = Score.rightHandPart();
-//        if (part == null) return;
-//
-//        ScorePartIterator iterator = new ScorePartIterator(part);
-//
-//        while (iterator.hasNext()) {
-//            Note note = iterator.next();
-//            if (note != null) {
-//                Pitch pitch = note.getPitch();
-//
-//                if (pitch != null) {
-//                    System.out.println(PitchHelper.pitchToString(note.getPitch()) + " " + note.getType().getValue());
-//                } else if (note.getUnpitched() != null) {
-//                    System.out.println("Unpitched: " + note.getUnpitched());
-//                } else if (note.getRest() != null) {
-//                    System.out.println("\t" + note.getType().getValue());
-//                } else {
-//                    System.out.println("Something else");
-//                }
-//            }
-//        }
-//    }
 }

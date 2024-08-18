@@ -38,6 +38,7 @@ public class SheetMusicController implements BaseViewController {
             engine.setLeftHandChangedListener(show -> view.showPart(false, show));
             engine.setRightHandChangedListener(show -> view.showPart(true, show));
         }
+        engine.setStopClickedListener(view::reset);
 
         view.setNewMeasureNeededListener(this::addNextMeasure);
     }

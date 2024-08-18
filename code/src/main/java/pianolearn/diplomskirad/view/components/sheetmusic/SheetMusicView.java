@@ -1,14 +1,18 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import pianolearn.diplomskirad.constants.Colors;
+import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.helper.StylesHelper;
 import pianolearn.diplomskirad.listener.EventListener;
 import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
 import pianolearn.diplomskirad.model.viewmodel.MeasurePair;
 import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.components.SongMetadataView;
+
+import static pianolearn.diplomskirad.constants.Config.MEASURE_START_X;
 
 public class SheetMusicView extends BaseView {
 
@@ -17,6 +21,11 @@ public class SheetMusicView extends BaseView {
     private final VBox sheetMusicVBox = new VBox();
     private final SheetMusicPartView rightHandPartView = new SheetMusicPartView();
     private final SheetMusicPartView leftHandPartView = new SheetMusicPartView();
+
+    private double lastMeasureEnd = MEASURE_START_X;
+    private final Scene scene = NavigationController.INSTANCE.getStage().getScene();
+
+    private EventListener newMeasureNeededListener;
 
     public SheetMusicView() {
         setupGUI();
@@ -31,11 +40,23 @@ public class SheetMusicView extends BaseView {
 
     @Override
     protected void styleViews() {
+        scene.widthProperty().addListener(e -> checkIfMeasureIsNeeded());
+
         rootPane.setSpacing(30);
 
         sheetMusicVBox.setBackground(StylesHelper.background(Colors.whiteKey, null));
         sheetMusicVBox.setSpacing(50);
         sheetMusicVBox.setPadding(new Insets(40, 0, 40, 0));
+    }
+
+    public void addMeasure(MeasurePair measurePair) {
+        rightHandPartView.addMeasure(measurePair.getRightHandMeasure(), lastMeasureEnd);
+        if (measurePair.hasBothHands()) {
+            leftHandPartView.addMeasure(measurePair.getLeftHandMeasure(), lastMeasureEnd);
+        }
+
+        lastMeasureEnd += measurePair.getWidth();
+        checkIfMeasureIsNeeded();
     }
 
     public void showPart(boolean rightHandPart, boolean show) {
@@ -50,22 +71,20 @@ public class SheetMusicView extends BaseView {
         }
     }
 
-    public void reset(boolean rightHandPart) {
-        if (rightHandPart) {
-            rightHandPartView.reset();
-        } else {
-            leftHandPartView.reset();
-        }
-    }
-
-    public void addMeasure(MeasurePair measurePair) {
-        rightHandPartView.addMeasure(measurePair.getRightHandMeasure(), measurePair.getWidth());
-        if (measurePair.hasBothHands()) {
-            leftHandPartView.addMeasure(measurePair.getLeftHandMeasure(), measurePair.getWidth());
-        }
+    public void reset() {
+        rightHandPartView.reset();
+        leftHandPartView.reset();
     }
 
     public void setNewMeasureNeededListener(EventListener listener) {
-        rightHandPartView.setNewMeasureNeededListener(listener);
+        newMeasureNeededListener = listener;
+    }
+
+    private void checkIfMeasureIsNeeded() {
+        double sceneWidth = scene.getWidth();
+
+        if (newMeasureNeededListener != null && lastMeasureEnd < sceneWidth) {
+            newMeasureNeededListener.onAction();
+        }
     }
 }
