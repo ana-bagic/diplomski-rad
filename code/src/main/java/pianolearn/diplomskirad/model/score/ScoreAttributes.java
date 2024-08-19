@@ -11,6 +11,7 @@ public record ScoreAttributes(
         String beatUnit,
         double bpm,
         NoteType beatUnitTempo,
+        int divisions,
 
         int fifths,
         Set<NoteAlphabet> scale,

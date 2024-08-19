@@ -8,6 +8,8 @@ public class MeasurePair {
     private final List<MusicNodeModel> rightHandMeasure;
     private final List<MusicNodeModel> leftHandMeasure;
     private double width;
+    private double notesWidthWithoutLast;
+    private List<MusicNodeModel> mainHand;
 
     public MeasurePair(boolean hasBothHands, List<MusicNodeModel> rightHandMeasure, List<MusicNodeModel> leftHandMeasure) {
         this.hasBothHands = hasBothHands;
@@ -31,7 +33,23 @@ public class MeasurePair {
         return width;
     }
 
+    public double getNotesWidthWithoutLast() {
+        return notesWidthWithoutLast;
+    }
+
+    public List<MusicNodeModel> getMainHand() {
+        return mainHand;
+    }
+
     public void setWidth(double width) {
         this.width = width;
+    }
+
+    public void setNotesWidthWithoutLast(double notesWidthWithoutLast) {
+        this.notesWidthWithoutLast = notesWidthWithoutLast;
+    }
+
+    public void setMainHand(boolean isRight) {
+        mainHand = isRight ? rightHandMeasure : leftHandMeasure;
     }
 }

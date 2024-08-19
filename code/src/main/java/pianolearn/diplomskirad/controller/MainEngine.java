@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 import org.audiveris.proxymusic.ScorePartwise;
+import pianolearn.diplomskirad.helper.TempoHelper;
 import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.listener.EventListener;
 import pianolearn.diplomskirad.listener.EventWithAmountListener;
@@ -26,11 +27,16 @@ public enum MainEngine {
 
     private ScorePartwise.Part part;
     private ScoreAttributes attributes;
+    private double durationOfQuarter;
+    private double durationOfMeasure;
 
     private final List<MeasurePair> measurePairs = new LinkedList<>();
-    private int nextMeasureIndex = 0;
+    private int nextDisplayMeasureIndex = 0;
+    private int nextPlayMeasureIndex = -1;
+    private boolean isBeginningOfMeasure = true;
 
-    private double introDistanceLeft = CTRL_LINE_MEASURE_DISTANCE;
+    private double remainingDistance;
+    private double tickDistance;
     private int remainingTickCounts = 0;
 
     private boolean isPlaying = false;
@@ -43,6 +49,7 @@ public enum MainEngine {
     private HandChangeListener rightHandChangedListener;
     private EventListener stopClickedListener;
 
+    private EventListener finishedListener;
     private EventWithAmountListener translateMeasuresListener;
 
     public void init() {
@@ -52,24 +59,59 @@ public enum MainEngine {
         if (part == null || attributes == null) return;
 
         leftHandShows = attributes.staves() == 2;
+        durationOfQuarter = TempoHelper.getDurationOfQuarter(attributes.beatUnitTempo(), attributes.bpm());
+        durationOfMeasure = TempoHelper.getDurationOfMeasure(durationOfQuarter, attributes);
     }
 
     private void mainLoop() {
         if (isPlaying) {
-            if (introDistanceLeft > 0) {
-                Timeline introTimeline = new Timeline(new KeyFrame(Duration.millis(TICK_DURATION_MS), event -> {
-                    translateMeasuresListener.onAction(5);
-                    mainLoop();
-                }));
-                introTimeline.play();
-            } else {
-                Timeline timeline = new Timeline(new KeyFrame(Duration.millis(TICK_DURATION_MS), event -> {
-                    translateMeasuresListener.onAction(5);
-                    mainLoop();
-                }));
-                timeline.play();
+            if (remainingTickCounts == 0 && !setupNewRegion()) {
+                isPlaying = false;
+                finishedListener.onAction();
+                return;
             }
+
+            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(TICK_DURATION_MS), event -> {
+                translateMeasuresListener.onAction(remainingTickCounts == 1 ? remainingDistance : tickDistance);
+                remainingDistance -= tickDistance;
+                remainingTickCounts = Math.max(0, remainingTickCounts - 1);
+
+                mainLoop();
+            }));
+            timeline.play();
         }
+    }
+
+    private boolean setupNewRegion() {
+        double durationOfRegion;
+        if (nextPlayMeasureIndex < 0) {
+            remainingDistance = CTRL_LINE_MEASURE_DISTANCE + BARLINE_NOTE_SPACE;
+            durationOfRegion = durationOfMeasure;
+            nextPlayMeasureIndex++;
+        } else if (nextPlayMeasureIndex < measurePairs.size()) {
+            MeasurePair measurePair = measurePairs.get(nextPlayMeasureIndex);
+            int lastDuration = measurePair.getMainHand().getLast().getDuration();
+            double notesWidthWithoutLast = measurePair.getNotesWidthWithoutLast();
+            double durationOfLast = TempoHelper.getDurationOfNote(durationOfQuarter, attributes.divisions(), lastDuration);
+
+            if (isBeginningOfMeasure) {
+                remainingDistance = notesWidthWithoutLast;
+                durationOfRegion = durationOfMeasure - durationOfLast;
+                isBeginningOfMeasure = false;
+            } else  {
+                remainingDistance = measurePair.getWidth() - notesWidthWithoutLast;
+                durationOfRegion = durationOfLast;
+                isBeginningOfMeasure = true;
+                nextPlayMeasureIndex++;
+            }
+        } else {
+            return false;
+        }
+
+        double actualDuration = durationOfRegion / playbackSpeed;
+        remainingTickCounts = (int) Math.round(actualDuration / TICK_DURATION_MS);
+        tickDistance = remainingDistance / remainingTickCounts;
+        return true;
     }
 
     public MeasurePair getNextMeasure() {
@@ -78,8 +120,8 @@ public enum MainEngine {
         List<ScorePartwise.Part.Measure> measures = part.getMeasure();
         MeasurePair measurePair = null;
 
-        if (nextMeasureIndex < measures.size()) {
-            ScorePartwise.Part.Measure measure = measures.get(nextMeasureIndex++);
+        if (nextDisplayMeasureIndex < measures.size()) {
+            ScorePartwise.Part.Measure measure = measures.get(nextDisplayMeasureIndex++);
             measurePair = Score.measures(measure);
             measurePairs.add(measurePair);
         }
@@ -107,8 +149,9 @@ public enum MainEngine {
     public void stopButtonClicked() {
         isPlaying = false;
         measurePairs.clear();
-        nextMeasureIndex = 0;
-        introDistanceLeft = CTRL_LINE_MEASURE_DISTANCE;
+        nextDisplayMeasureIndex = 0;
+        nextPlayMeasureIndex = -1;
+        remainingTickCounts = 0;
         stopClickedListener.onAction();
     }
 
@@ -141,6 +184,10 @@ public enum MainEngine {
 
     public void setTranslateMeasuresListener(EventWithAmountListener listener) {
         translateMeasuresListener = listener;
+    }
+
+    public void setFinishedListener(EventListener listener) {
+        finishedListener = listener;
     }
 
     private void tempKeyPress() {

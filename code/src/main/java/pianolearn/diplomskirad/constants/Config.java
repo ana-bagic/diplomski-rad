@@ -21,13 +21,13 @@ public class Config {
     public static final double FONT_CENTER_FIX = 8;
     public static final double NOTE_PITCH_SPACING = STAFF_LINE_SPACING / 2;
 
-    public static final double CLEF_TIME_KEY_WIDTH = 300;
+    public static final double NOTE_DISAPPEAR_X = 240;
 
     public static final double ATTRIBUTES_SPACE = 15;
     public static final double BARLINE_NOTE_SPACE = 30;
     public static final double NOTE_NOTE_SPACE = 60;
 
-    public static final double CONTROL_LINE_X = 400;
+    public static final double CONTROL_LINE_X = 500;
     public static final double CONTROL_LINE_WIDTH = 30;
     public static final double CTRL_LINE_MEASURE_DISTANCE = 400;
     public static final double MEASURE_START_X = CONTROL_LINE_X + CTRL_LINE_MEASURE_DISTANCE;

@@ -7,6 +7,7 @@ public class MusicNodeModel {
 
     private final List<NoteModel> notes = new LinkedList<>();
     private double distanceFromPrev;
+    private double distanceToNext;
 
     private int duration;
 
@@ -23,12 +24,20 @@ public class MusicNodeModel {
         this.distanceFromPrev = distanceFromPrev;
     }
 
+    public void setDistanceToNext(double distanceToNext) {
+        this.distanceToNext = distanceToNext;
+    }
+
     public List<NoteModel> getNotes() {
         return notes;
     }
 
     public double getDistanceFromPrev() {
         return distanceFromPrev;
+    }
+
+    public double getDistanceToNext() {
+        return distanceToNext;
     }
 
     public int getDuration() {

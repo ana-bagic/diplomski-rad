@@ -1,7 +1,6 @@
 package pianolearn.diplomskirad.helper.xml;
 
 import org.audiveris.proxymusic.*;
-import pianolearn.diplomskirad.constants.Config;
 import pianolearn.diplomskirad.controller.MainEngine;
 import pianolearn.diplomskirad.helper.ScaleHelper;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
@@ -12,9 +11,11 @@ import pianolearn.diplomskirad.model.viewmodel.*;
 import javax.xml.bind.JAXBElement;
 import java.lang.Double;
 import java.lang.String;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 
+import static pianolearn.diplomskirad.constants.Config.*;
 import static pianolearn.diplomskirad.constants.SheetMusicSymbols.*;
 
 public class Score {
@@ -78,6 +79,7 @@ public class Score {
         String beatUnit = "4";
         double bpm = 60;
         NoteType beatUnitTempo = NoteType.QUARTER;
+        int divisions = 8;
         int fifths = 0;
         Set<NoteAlphabet> scale = Collections.emptySet();
         int staves = 1;
@@ -105,6 +107,11 @@ public class Score {
             }
         }
 
+        BigDecimal divisionsDecimal = attributes.getDivisions();
+        if (divisionsDecimal != null) {
+            divisions = divisionsDecimal.intValue();
+        }
+
         List<Key> keys = attributes.getKey();
         if (keys != null && !keys.isEmpty()) {
             fifths = keys.getFirst().getFifths().intValue();
@@ -126,7 +133,7 @@ public class Score {
         }
 
         return new ScoreAttributes(isRightHandTreble, isLeftHandTreble,
-                beats, beatUnit, bpm, beatUnitTempo, fifths, scale, staves);
+                beats, beatUnit, bpm, beatUnitTempo, divisions, fifths, scale, staves);
     }
 
     public static ClefTimeKeyModel clefTimeKey(ScoreAttributes attributes, boolean rightHand) {
@@ -285,16 +292,34 @@ public class Score {
             setDistances(leftHand, minDuration);
         }
 
-        double measureWidth = rightHand.stream().mapToDouble(MusicNodeModel::getDistanceFromPrev).sum();
-        measureWidth += (rightHand.getFirst().getDuration() / minDuration) * Config.NOTE_NOTE_SPACE;
+        setMainHand(measurePair);
+        List<MusicNodeModel> mainHand = measurePair.getMainHand();
+        double notesWidth = mainHand.stream().mapToDouble(MusicNodeModel::getDistanceToNext).sum();
+        double measureWidth = notesWidth + BARLINE_NOTE_SPACE;
+        double notesWidthWithoutLast = notesWidth - mainHand.getLast().getDistanceToNext();
+
         measurePair.setWidth(measureWidth);
+        measurePair.setNotesWidthWithoutLast(notesWidthWithoutLast);
     }
 
     private static void setDistances(List<MusicNodeModel> measure, double minDuration) {
-        double distanceFromPrev = Config.BARLINE_NOTE_SPACE;
+        double distanceFromPrev = BARLINE_NOTE_SPACE;
         for (MusicNodeModel model : measure) {
+            double distanceToNext = (model.getDuration() / minDuration) * NOTE_NOTE_SPACE;
             model.setDistanceFromPrev(distanceFromPrev);
-            distanceFromPrev = (model.getDuration() / minDuration) * Config.NOTE_NOTE_SPACE;
+            model.setDistanceToNext(distanceToNext);
+            distanceFromPrev = distanceToNext;
+        }
+    }
+
+    private static void setMainHand(MeasurePair measurePair) {
+        if (measurePair.hasBothHands()) {
+            int rightLastDuration = measurePair.getRightHandMeasure().getLast().getDuration();
+            int leftLastDuration = measurePair.getLeftHandMeasure().getLast().getDuration();
+
+            measurePair.setMainHand(rightLastDuration <= leftLastDuration);
+        } else {
+            measurePair.setMainHand(true);
         }
     }
 }

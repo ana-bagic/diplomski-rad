@@ -12,6 +12,7 @@ public class Colors {
 
     public static final Color controlLine = Color.web("#2F2F2F", 0.35);
     public static final Color notes = Color.web("#000000");
+    public static final Color notesFaded = Color.web("#999999");
     public static final Color whiteKey =  Color.web("#F8F8F8");
     public static final Color blackKey =  Color.web("#2F2F2F");
 }

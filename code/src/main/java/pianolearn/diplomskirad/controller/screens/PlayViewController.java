@@ -48,6 +48,8 @@ public class PlayViewController implements BaseViewController {
         view.setLeftHandButtonListener(engine::leftHandButtonClicked);
         view.setRightHandButtonListener(engine::rightHandButtonClicked);
 
+        engine.setFinishedListener(view::setPaused);
+
         midiInputReceiver.setKeyPressedListener(this::keyPressed);
         midiInputReceiver.setKeyReleasedListener(this::keyReleased);
     }

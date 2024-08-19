@@ -41,6 +41,10 @@ public class PlayView extends BaseNavigationView {
         playToolbarView.setUsesBothHands(usesBothHands);
     }
 
+    public void setPaused() {
+        playToolbarView.setPaused(true);
+    }
+
     public void setPlayPauseButtonListener(EventListener listener) {
         playToolbarView.setPlayPauseButtonListener(listener);
     }

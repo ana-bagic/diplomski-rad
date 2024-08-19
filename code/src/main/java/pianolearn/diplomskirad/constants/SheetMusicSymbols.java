@@ -24,7 +24,7 @@ public class SheetMusicSymbols {
     public static final String natural = "\uE261";
     public static final String sharp = "\uE262";
 
-    public static final String dot = " \uE1E7";
+    public static final String dot = "\uE1E7";
 
     public static final String wholeNote = "\uE1D2";
     public static final String halfNoteUp = "\uE1D3";

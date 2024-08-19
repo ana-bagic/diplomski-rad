@@ -1,10 +1,12 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
-import javafx.scene.Node;
+import javafx.geometry.Bounds;
 import javafx.scene.layout.Pane;
+import pianolearn.diplomskirad.constants.Config;
 import pianolearn.diplomskirad.model.viewmodel.MusicNodeModel;
 import pianolearn.diplomskirad.view.BaseView;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static pianolearn.diplomskirad.constants.SheetMusicSymbols.barLine;
@@ -12,7 +14,8 @@ import static pianolearn.diplomskirad.constants.SheetMusicSymbols.barLine;
 public class MeasureView extends BaseView {
 
     private final Pane rootPane = new Pane();
-    private final NoteView barLineNode = new NoteView();
+    private final MusicNodeView barLineNode = new MusicNodeView();
+    private final List<MusicNodeView> nodeViews = new LinkedList<>();
 
     public MeasureView(List<MusicNodeModel> measure) {
         setupGUI();
@@ -31,12 +34,30 @@ public class MeasureView extends BaseView {
     }
 
     private void setModel(List<MusicNodeModel> measure) {
-        Node prevNode = barLineNode;
+        MusicNodeView prevNode = barLineNode;
         for (MusicNodeModel node : measure) {
             MusicNodeView nodeView = new MusicNodeView(node);
             rootPane.getChildren().add(nodeView);
-            nodeView.putAfter(prevNode, node.getDistanceFromPrev());
+            nodeViews.add(nodeView);
+            nodeView.putAfter(prevNode, node.getDistanceFromPrev(), false);
             prevNode = nodeView;
+        }
+    }
+
+    public void translate(double amount) {
+        setLayoutX(getLayoutX() - amount);
+
+        checkIfNodeShouldChange(barLineNode);
+        nodeViews.forEach(this::checkIfNodeShouldChange);
+    }
+
+    private void checkIfNodeShouldChange(MusicNodeView node) {
+        Bounds boundsInScene = node.localToScene(node.getBoundsInLocal());
+        double nodeX = boundsInScene.getMaxX() - 15;
+        if (nodeX < Config.NOTE_DISAPPEAR_X) {
+            node.setVisible(false);
+        } else if (nodeX < Config.CONTROL_LINE_X) {
+            node.setFaded();
         }
     }
 }

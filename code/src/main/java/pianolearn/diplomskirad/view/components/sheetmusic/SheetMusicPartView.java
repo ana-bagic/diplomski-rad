@@ -17,9 +17,9 @@ public class SheetMusicPartView extends BaseView {
 
     private final StackPane rootPane = new StackPane();
     private final Pane notesView = new Pane();
+    private final StaffView staffView = new StaffView();
     private final ClefTimeKeyView clefTimeKeyView = new ClefTimeKeyView();
     private final LinkedList<MeasureView> measureViews = new LinkedList<>();
-    private final StaffView staffView = new StaffView();
     private final Pane controlLineContainer = new Pane();
     private final Rectangle controlLine = new Rectangle();
 
@@ -31,7 +31,7 @@ public class SheetMusicPartView extends BaseView {
     protected void addViews() {
         notesView.getChildren().add(clefTimeKeyView);
         controlLineContainer.getChildren().add(controlLine);
-        rootPane.getChildren().addAll(notesView, staffView, controlLineContainer);
+        rootPane.getChildren().addAll(staffView, notesView, controlLineContainer);
         bindToSelf(rootPane);
     }
 
@@ -42,14 +42,6 @@ public class SheetMusicPartView extends BaseView {
 
         notesView.setMinHeight(STAFF_HEIGHT);
         notesView.setMaxHeight(STAFF_HEIGHT);
-
-        clefTimeKeyView.setMinWidth(CLEF_TIME_KEY_WIDTH);
-        clefTimeKeyView.setMaxWidth(CLEF_TIME_KEY_WIDTH);
-        clefTimeKeyView.setMinHeight(STAFF_HEIGHT);
-        clefTimeKeyView.setMaxHeight(STAFF_HEIGHT);
-        clefTimeKeyView.setViewOrder(-1);
-
-        staffView.setViewOrder(-1);
 
         controlLine.setLayoutX(CONTROL_LINE_X);
         controlLine.setLayoutY(0);
@@ -66,13 +58,13 @@ public class SheetMusicPartView extends BaseView {
     }
 
     public void translateMeasures(double amount) {
-        measureViews.forEach(m -> m.setLayoutX(m.getLayoutX() - amount));
+        measureViews.forEach(m -> m.translate(amount));
     }
 
     public void removeMeasuresIfNeeded() {
         while (measureViews.size() >= 2) {
             MeasureView nextMeasure = measureViews.get(1);
-            if (nextMeasure.getLayoutX() > CLEF_TIME_KEY_WIDTH) break;
+            if (nextMeasure.getLayoutX() > 0) break;
             measureViews.pop();
             notesView.getChildren().remove(1);
             System.out.println("removed measure");

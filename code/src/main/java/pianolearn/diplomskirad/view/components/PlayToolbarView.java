@@ -38,7 +38,7 @@ public class PlayToolbarView extends BaseView {
     private EventListener leftHandButtonListener;
     private EventListener rightHandButtonListener;
 
-    private boolean isPlay = true;
+    private boolean isPlaying = false;
     private int oldSliderIndex = 0;
     private final PlaybackSpeed[] playbackSpeeds = PlaybackSpeed.values();
     private boolean isLeftShown = true;
@@ -95,14 +95,12 @@ public class PlayToolbarView extends BaseView {
     }
 
     private void playPauseClicked() {
-        isPlay = !isPlay;
-        changePlayPauseButton(isPlay);
+        setPaused(isPlaying);
         playPauseButtonListener.onAction();
     }
 
     private void stopButtonClicked() {
-        isPlay = true;
-        changePlayPauseButton(true);
+        setPaused(true);
         stopButtonListener.onAction();
     }
 
@@ -132,9 +130,9 @@ public class PlayToolbarView extends BaseView {
         }
     }
 
-    private void changePlayPauseButton(boolean isPlay) {
-        StylesHelper.setButtonTooltip(playPauseButton, isPlay ? Strings.playButtonTooltip : Strings.pauseButtonTooltip);
-        bindImageToButton(isPlay ? Images.playIcon : Images.pauseIcon, playPauseButton);
+    private void changePlayPauseButton(boolean isPlaying) {
+        StylesHelper.setButtonTooltip(playPauseButton, isPlaying ? Strings.pauseButtonTooltip : Strings.playButtonTooltip);
+        bindImageToButton(isPlaying ? Images.pauseIcon : Images.playIcon, playPauseButton);
     }
 
     public void setUsesBothHands(boolean usesBothHands) {
@@ -142,6 +140,11 @@ public class PlayToolbarView extends BaseView {
             showNode(leftHandButton, false);
             showNode(rightHandButton, false);
         }
+    }
+
+    public void setPaused(boolean isPaused) {
+        isPlaying = !isPaused;
+        changePlayPauseButton(isPlaying);
     }
 
     public void setPlayPauseButtonListener(EventListener listener) {
