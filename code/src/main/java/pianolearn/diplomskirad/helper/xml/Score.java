@@ -5,10 +5,12 @@ import pianolearn.diplomskirad.constants.Config;
 import pianolearn.diplomskirad.controller.MainEngine;
 import pianolearn.diplomskirad.helper.ScaleHelper;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
+import pianolearn.diplomskirad.model.score.NoteType;
 import pianolearn.diplomskirad.model.score.ScoreAttributes;
 import pianolearn.diplomskirad.model.viewmodel.*;
 
 import javax.xml.bind.JAXBElement;
+import java.lang.Double;
 import java.lang.String;
 import java.math.BigInteger;
 import java.util.*;
@@ -62,12 +64,20 @@ public class Score {
         Optional<Attributes> optionalAttributes = measure.getNoteOrBackupOrForward()
                 .stream().filter(n -> n instanceof Attributes).map(a -> (Attributes) a).findAny();
         if (optionalAttributes.isEmpty()) return null;
-
         Attributes attributes = optionalAttributes.get();
+
+        Optional<Metronome> optionalMetronome = measure.getNoteOrBackupOrForward()
+                .stream().filter(n -> n instanceof Direction).map(d -> ((Direction) d).getDirectionType())
+                .flatMap(List::stream).map(DirectionType::getMetronome)
+                .filter(Objects::nonNull).filter(m -> m.getBeatUnit() != null).findAny();
+        Metronome metronome = optionalMetronome.orElse(null);
+
         boolean isRightHandTreble = true;
         boolean isLeftHandTreble = false;
-        String timeNumerator = "4";
-        String timeDenominator = "4";
+        String beats = "4";
+        String beatUnit = "4";
+        double bpm = 60;
+        NoteType beatUnitTempo = NoteType.QUARTER;
         int fifths = 0;
         Set<NoteAlphabet> scale = Collections.emptySet();
         int staves = 1;
@@ -87,9 +97,9 @@ public class Score {
                 for (JAXBElement<String> element : time) {
                     String localName = element.getName().getLocalPart();
                     if (localName.equalsIgnoreCase("beats")) {
-                        timeNumerator = element.getValue();
+                        beats = element.getValue();
                     } else if (localName.equalsIgnoreCase("beat-type")) {
-                        timeDenominator = element.getValue();
+                        beatUnit = element.getValue();
                     }
                 }
             }
@@ -106,28 +116,38 @@ public class Score {
             staves = stavesInteger.intValue();
         }
 
-        return new ScoreAttributes(isRightHandTreble, isLeftHandTreble, timeNumerator, timeDenominator, fifths, scale, staves);
+        if (metronome != null) {
+            String beatUnitString = (String) metronome.getBeatUnit().getFirst();
+            beatUnitTempo = NoteType.fromType(beatUnitString);
+            PerMinute perMinute = metronome.getPerMinute();
+            if (perMinute != null) {
+                bpm = Double.parseDouble(perMinute.getValue());
+            }
+        }
+
+        return new ScoreAttributes(isRightHandTreble, isLeftHandTreble,
+                beats, beatUnit, bpm, beatUnitTempo, fifths, scale, staves);
     }
 
     public static ClefTimeKeyModel clefTimeKey(ScoreAttributes attributes, boolean rightHand) {
         String clef = trebleClef;
-        String numerator = time4;
-        String denominator = time4;
+        String beats = time4;
+        String beatsUnit = time4;
         List<Integer> accidentalPositions = Collections.emptyList();
         String accidental = sharp;
 
-        if (attributes == null) return new ClefTimeKeyModel(clef, numerator, denominator, accidentalPositions, accidental);
+        if (attributes == null) return new ClefTimeKeyModel(clef, beats, beatsUnit, accidentalPositions, accidental);
 
         boolean isHandTreble = rightHand ? attributes.isRightHandTreble() : attributes.isLeftHandTreble();
         clef = BravuraConverter.getBravuraClef(isHandTreble);
-        numerator = BravuraConverter.getBravuraTime(attributes.timeNumerator());
-        denominator = BravuraConverter.getBravuraTime(attributes.timeDenominator());
+        beats = BravuraConverter.getBravuraTime(attributes.beats());
+        beatsUnit = BravuraConverter.getBravuraTime(attributes.beatUnit());
 
         int fifths = attributes.fifths();
         accidentalPositions = ScaleHelper.getAccidentalPositions(fifths, isHandTreble);
         accidental = BravuraConverter.getBravuraAccidentalFromFifths(fifths);
 
-        return new ClefTimeKeyModel(clef, numerator, denominator, accidentalPositions, accidental);
+        return new ClefTimeKeyModel(clef, beats, beatsUnit, accidentalPositions, accidental);
     }
 
     public static String title() {

@@ -7,8 +7,8 @@ import java.util.List;
 public record ClefTimeKeyModel(
 
         String clef,
-        String numerator,
-        String denominator,
+        String beats,
+        String beatsUnit,
         List<Integer> accidentalPositions,
         String accidental
 ) {

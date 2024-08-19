@@ -6,9 +6,14 @@ public record ScoreAttributes(
 
         boolean isRightHandTreble,
         boolean isLeftHandTreble,
-        String timeNumerator,
-        String timeDenominator,
+
+        String beats,
+        String beatUnit,
+        double bpm,
+        NoteType beatUnitTempo,
+
         int fifths,
         Set<NoteAlphabet> scale,
+
         int staves
 ) {}

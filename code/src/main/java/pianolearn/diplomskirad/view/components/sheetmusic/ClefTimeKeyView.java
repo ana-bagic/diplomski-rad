@@ -13,8 +13,8 @@ public class ClefTimeKeyView extends BaseView {
     private final Pane rootPane = new Pane();
     private final NoteView barLineNode = new NoteView();
     private final NoteView clefNode = new NoteView();
-    private final NoteView timeNumeratorNode = new NoteView();
-    private final NoteView timeDenominatorNode = new NoteView();
+    private final NoteView beatsNode = new NoteView();
+    private final NoteView beatUnitNode = new NoteView();
 
     public ClefTimeKeyView() {
         setupGUI();
@@ -22,7 +22,7 @@ public class ClefTimeKeyView extends BaseView {
 
     @Override
     protected void addViews() {
-        rootPane.getChildren().addAll(barLineNode, clefNode, timeNumeratorNode, timeDenominatorNode);
+        rootPane.getChildren().addAll(barLineNode, clefNode, beatsNode, beatUnitNode);
         bindToSelf(rootPane);
     }
 
@@ -34,24 +34,24 @@ public class ClefTimeKeyView extends BaseView {
 
         clefNode.putAfter(barLineNode, ClefTimeKeyModel.spacing());
 
-        timeNumeratorNode.position(6);
+        beatsNode.position(6);
 
-        timeDenominatorNode.position(2);
+        beatUnitNode.position(2);
     }
 
     public void setModel(ClefTimeKeyModel model) {
         clefNode.setText(model.clef());
-        timeNumeratorNode.setText(model.numerator());
-        timeDenominatorNode.setText(model.denominator());
+        beatsNode.setText(model.beats());
+        beatUnitNode.setText(model.beatsUnit());
 
-        timeNumeratorNode.putAfter(clefNode, ClefTimeKeyModel.spacing());
-        timeDenominatorNode.putAfter(clefNode, ClefTimeKeyModel.spacing());
+        beatsNode.putAfter(clefNode, ClefTimeKeyModel.spacing());
+        beatUnitNode.putAfter(clefNode, ClefTimeKeyModel.spacing());
 
         NoteView prevAcc = null;
         for (Integer position : model.accidentalPositions()) {
             NoteView acc = new NoteView(model.accidental(), position);
             if (prevAcc == null) {
-                acc.putAfter(timeNumeratorNode, ClefTimeKeyModel.timeAccidentalSpacing());
+                acc.putAfter(beatsNode, ClefTimeKeyModel.timeAccidentalSpacing());
             } else {
                 acc.putAfter(prevAcc, 0);
             }

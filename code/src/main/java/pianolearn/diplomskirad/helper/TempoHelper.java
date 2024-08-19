@@ -1,6 +1,7 @@
 package pianolearn.diplomskirad.helper;
 
 import pianolearn.diplomskirad.model.score.NoteType;
+import pianolearn.diplomskirad.model.score.ScoreAttributes;
 
 public class TempoHelper {
 
@@ -20,5 +21,12 @@ public class TempoHelper {
 
     public static double getDurationOfNote(int divisions, int duration, double durationOfQuarter) {
         return durationOfQuarter * ((double) duration / divisions);
+    }
+
+    public static double getDurationOfMeasure(double durationOfQuarter, ScoreAttributes attributes) {
+        int beats = Integer.parseInt(attributes.beats());
+        int beatUnit = Integer.parseInt(attributes.beatUnit());
+        double durationOfBeatUnit = durationOfQuarter * (4.0 / beatUnit);
+        return durationOfBeatUnit * beats;
     }
 }
