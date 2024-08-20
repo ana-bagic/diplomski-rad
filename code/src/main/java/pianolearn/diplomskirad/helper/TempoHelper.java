@@ -6,9 +6,9 @@ import pianolearn.diplomskirad.model.score.ScoreAttributes;
 public class TempoHelper {
 
     // duration is in millisecond
-    public static double getDurationOfQuarter(NoteType beatUnit, double bpm) {
-        double beatUnitDuration = 60000 / bpm;
-        return switch (beatUnit) {
+    public static double getDurationOfQuarter(ScoreAttributes attributes) {
+        double beatUnitDuration = 60000 / attributes.bpm();
+        return switch (attributes.beatUnitTempo()) {
             case WHOLE -> beatUnitDuration / 4;
             case HALF -> beatUnitDuration / 2;
             case QUARTER, OTHER -> beatUnitDuration;

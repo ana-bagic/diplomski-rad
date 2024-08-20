@@ -31,15 +31,15 @@ public enum MainEngine {
     private double durationOfMeasure;
 
     private final List<MeasurePair> measurePairs = new LinkedList<>();
-    private int nextDisplayMeasureIndex = 0;
-    private int nextPlayMeasureIndex = -1;
-    private boolean isBeginningOfMeasure = true;
+    private int nextDisplayMeasureIndex;
+    private int nextPlayMeasureIndex;
+    private boolean isBeginningOfMeasure;
 
     private double remainingDistance;
     private double tickDistance;
-    private int remainingTickCounts = 0;
+    private int remainingTickCounts;
 
-    private boolean isPlaying = false;
+    private boolean isPlaying;
     private double playbackSpeed = 1;
     private boolean isWait = true;
     private boolean rightHandShows = true;
@@ -59,8 +59,20 @@ public enum MainEngine {
         if (part == null || attributes == null) return;
 
         leftHandShows = attributes.staves() == 2;
-        durationOfQuarter = TempoHelper.getDurationOfQuarter(attributes.beatUnitTempo(), attributes.bpm());
+        durationOfQuarter = TempoHelper.getDurationOfQuarter(attributes);
         durationOfMeasure = TempoHelper.getDurationOfMeasure(durationOfQuarter, attributes);
+
+        resetValues();
+    }
+
+    private void resetValues() {
+        measurePairs.clear();
+        nextDisplayMeasureIndex = 0;
+        nextPlayMeasureIndex = -1;
+        isBeginningOfMeasure = true;
+
+        remainingTickCounts = 0;
+        isPlaying = false;
     }
 
     private void mainLoop() {
@@ -147,11 +159,7 @@ public enum MainEngine {
     }
 
     public void stopButtonClicked() {
-        isPlaying = false;
-        measurePairs.clear();
-        nextDisplayMeasureIndex = 0;
-        nextPlayMeasureIndex = -1;
-        remainingTickCounts = 0;
+        resetValues();
         stopClickedListener.onAction();
     }
 
