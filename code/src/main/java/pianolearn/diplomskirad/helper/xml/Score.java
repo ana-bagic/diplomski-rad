@@ -90,9 +90,9 @@ public class Score {
 
         boolean isRightHandTreble = true;
         boolean isLeftHandTreble = false;
-        String beats = "4";
-        String beatUnit = "4";
-        double bpm = 60;
+        int beats = 4;
+        int beatUnit = 4;
+        int bpm = 60;
         NoteType beatUnitTempo = NoteType.QUARTER;
         int divisions = 8;
         int fifths = 0;
@@ -114,9 +114,9 @@ public class Score {
                 for (JAXBElement<String> element : time) {
                     String localName = element.getName().getLocalPart();
                     if (localName.equalsIgnoreCase("beats")) {
-                        beats = element.getValue();
+                        beats = Integer.parseInt(element.getValue());
                     } else if (localName.equalsIgnoreCase("beat-type")) {
-                        beatUnit = element.getValue();
+                        beatUnit = Integer.parseInt(element.getValue());
                     }
                 }
             }
@@ -143,7 +143,7 @@ public class Score {
             beatUnitTempo = NoteType.fromType(beatUnitString);
             PerMinute perMinute = metronome.getPerMinute();
             if (perMinute != null) {
-                bpm = Double.parseDouble(perMinute.getValue());
+                bpm = (int) Double.parseDouble(perMinute.getValue());
             }
         }
 

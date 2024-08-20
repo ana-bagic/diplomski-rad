@@ -14,6 +14,9 @@ public class Config {
             new KeyboardModel(new PitchModel(NoteAlphabet.A, 0), new PitchModel(NoteAlphabet.C, 8));
 
     // maybe put font sizes here
+    public static final int METRONOME_ACCENT_SOUND = 48;
+    public static final int METRONOME_SOUND = 37;
+    public static final int METRONOME_VOLUME = 600;
 
     // sheet music
     public static final double STAFF_LINE_SPACING = 16;

@@ -9,6 +9,7 @@ import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.controller.components.PianoKeyboardController;
 import pianolearn.diplomskirad.controller.components.SheetMusicController;
 import pianolearn.diplomskirad.helper.TempoHelper;
+import pianolearn.diplomskirad.helper.midi.Metronome;
 import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
 import pianolearn.diplomskirad.model.score.ScoreAttributes;
@@ -16,6 +17,7 @@ import pianolearn.diplomskirad.model.viewmodel.MeasurePair;
 import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.screens.PlayView;
 
+import javax.sound.midi.MidiUnavailableException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,19 +31,23 @@ public class PlayViewController implements BaseViewController {
     private final PianoKeyboardController pianoKeyboardController;
 
     private final ScoreAttributes attributes;
-    private double durationOfQuarter;
-    private double durationOfMeasure;
+    private final long durationOfBeatUnit;
+    private double actualDurationOfBeatUnit;
+    private double actualDurationOfQuarter;
+
+    private Metronome metronome = new Metronome();
+    Thread metronomeThread;
 
     private final List<MeasurePair> measurePairs = new LinkedList<>();
     private int nextPlayMeasureIndex;
     private boolean isBeginningOfMeasure;
+    private double durationOfLast;
 
     private double remainingDistance;
     private double tickDistance;
     private int remainingTickCounts;
 
     private boolean isPlaying;
-    private double playbackSpeed = 1;
     private boolean isWait = true;
     private boolean rightHandShows = true;
     private boolean leftHandShows;
@@ -56,9 +62,22 @@ public class PlayViewController implements BaseViewController {
 
         setupListeners();
         setupView();
-        setupValues();
+
+        leftHandShows = attributes.usesBothHands();
+        durationOfBeatUnit = TempoHelper.getDurationOfBeatUnit(attributes.bpm());
+        actualDurationOfBeatUnit = durationOfBeatUnit;
+        actualDurationOfQuarter = TempoHelper.getDurationOfQuarter(actualDurationOfBeatUnit, attributes.beatUnitTempo());
+
+        resetValues();
 
         sheetMusicController.addNextMeasure();
+
+        try {
+            metronome.open();
+            metronome.setBeats(attributes.beats());
+        } catch (MidiUnavailableException e) {
+            metronome = null;
+        }
     }
 
     @Override
@@ -67,7 +86,10 @@ public class PlayViewController implements BaseViewController {
     }
 
     private void setupListeners() {
-        view.setBackButtonListener(NavigationController.INSTANCE::pop);
+        view.setBackButtonListener(() -> {
+            NavigationController.INSTANCE.pop();
+            metronome.close();
+        });
 
         view.setPlayPauseButtonListener(this::playPauseButtonClicked);
         view.setStopButtonListener(this::stopButtonClicked);
@@ -76,20 +98,14 @@ public class PlayViewController implements BaseViewController {
         view.setLeftHandButtonListener(this::leftHandButtonClicked);
 
         sheetMusicController.setMeasurePairCreatedListener(measurePairs::add);
+
+        NavigationController.INSTANCE.getStage().setOnCloseRequest(e -> metronome.close());
     }
 
     private void setupView() {
         view.setUsesBothHands(attributes.usesBothHands());
         view.setSheetMusicView(sheetMusicController.getView());
         view.setPianoKeyboardView(pianoKeyboardController.getView());
-    }
-
-    private void setupValues() {
-        leftHandShows = attributes.usesBothHands();
-        durationOfQuarter = TempoHelper.getDurationOfQuarter(attributes);
-        durationOfMeasure = TempoHelper.getDurationOfMeasure(durationOfQuarter, attributes);
-
-        resetValues();
     }
 
     private void resetValues() {
@@ -112,7 +128,8 @@ public class PlayViewController implements BaseViewController {
     }
 
     private void speedChanged(PlaybackSpeed speed) {
-        playbackSpeed = speed.getSpeed();
+        actualDurationOfBeatUnit = durationOfBeatUnit / speed.getSpeed();
+        actualDurationOfQuarter = TempoHelper.getDurationOfQuarter(actualDurationOfBeatUnit, attributes.beatUnitTempo());
         isWait = speed == PlaybackSpeed.WAIT;
     }
 
@@ -128,10 +145,14 @@ public class PlayViewController implements BaseViewController {
 
     private void mainLoop() {
         if (isPlaying) {
-            if (remainingTickCounts == 0 && !setupNewRegion()) {
-                isPlaying = false;
-                view.setPaused();
-                return;
+            try {
+                if (remainingTickCounts == 0 && !setupNewRegion()) {
+                    isPlaying = false;
+                    view.setPaused();
+                    return;
+                }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
 
             Timeline timeline = new Timeline(new KeyFrame(Duration.millis(TICK_DURATION_MS), event -> {
@@ -146,34 +167,47 @@ public class PlayViewController implements BaseViewController {
         }
     }
 
-    private boolean setupNewRegion() {
+    private boolean setupNewRegion() throws InterruptedException {
+        if (nextPlayMeasureIndex >= measurePairs.size()) {
+            metronomeThread.join();
+            return false;
+        }
+
         double durationOfRegion;
+
         if (nextPlayMeasureIndex < 0) {
             remainingDistance = CTRL_LINE_MEASURE_DISTANCE + BARLINE_NOTE_SPACE;
-            durationOfRegion = durationOfMeasure;
+            durationOfRegion = actualDurationOfBeatUnit * attributes.beats();
             nextPlayMeasureIndex++;
-        } else if (nextPlayMeasureIndex < measurePairs.size()) {
+
+            metronome.setInterval((long) (actualDurationOfBeatUnit));
+            metronomeThread = new Thread(metronome);
+            metronomeThread.start();
+        } else {
             MeasurePair measurePair = measurePairs.get(nextPlayMeasureIndex);
-            int lastDuration = measurePair.getMainHand().getLast().getDuration();
             double notesWidthWithoutLast = measurePair.getNotesWidthWithoutLast();
-            double durationOfLast = TempoHelper.getDurationOfNote(durationOfQuarter, attributes.divisions(), lastDuration);
 
             if (isBeginningOfMeasure) {
+                int lastDuration = measurePair.getMainHand().getLast().getDuration();
+                durationOfLast = TempoHelper.getDurationOfNote(actualDurationOfQuarter, attributes.divisions(), lastDuration);
+
                 remainingDistance = notesWidthWithoutLast;
-                durationOfRegion = durationOfMeasure - durationOfLast;
+                durationOfRegion = actualDurationOfBeatUnit * attributes.beats() - durationOfLast;
                 isBeginningOfMeasure = false;
+
+                metronomeThread.join();
+                metronome.setInterval((long) actualDurationOfBeatUnit);
+                metronomeThread = new Thread(metronome);
+                metronomeThread.start();
             } else  {
                 remainingDistance = measurePair.getWidth() - notesWidthWithoutLast;
                 durationOfRegion = durationOfLast;
                 isBeginningOfMeasure = true;
                 nextPlayMeasureIndex++;
             }
-        } else {
-            return false;
         }
 
-        double actualDuration = durationOfRegion / playbackSpeed;
-        remainingTickCounts = (int) Math.round(actualDuration / TICK_DURATION_MS);
+        remainingTickCounts = (int) Math.round(durationOfRegion / TICK_DURATION_MS);
         tickDistance = remainingDistance / remainingTickCounts;
         return true;
     }

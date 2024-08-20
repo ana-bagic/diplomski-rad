@@ -1,6 +1,8 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import pianolearn.diplomskirad.model.score.PitchModel;
 import pianolearn.diplomskirad.model.viewmodel.MusicNodeModel;
 import pianolearn.diplomskirad.model.viewmodel.NoteModel;
 import pianolearn.diplomskirad.view.BaseView;
@@ -35,6 +37,10 @@ public class MusicNodeView extends BaseView {
         bindToSelf(rootPane);
     }
 
+    public List<PitchModel> getPitches() {
+        return noteViews.stream().map(NoteView::getPitch).toList();
+    }
+
     public void setText(String text) {
         if (!noteViews.isEmpty()) {
             noteViews.getFirst().setText(text);
@@ -51,11 +57,11 @@ public class MusicNodeView extends BaseView {
         setLayoutX(xPosition);
     }
 
-    public void setFaded() {
-        noteViews.forEach(NoteView::setFaded);
-    }
-
     private double getNodeWidth() {
         return noteViews.isEmpty() ? 0 : noteViews.getFirst().prefWidth(-1);
+    }
+
+    public void setColor(Color color) {
+        noteViews.forEach(n -> n.setColor(color));
     }
 }

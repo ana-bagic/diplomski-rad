@@ -7,9 +7,9 @@ public record ScoreAttributes(
         boolean isRightHandTreble,
         boolean isLeftHandTreble,
 
-        String beats,
-        String beatUnit,
-        double bpm,
+        int beats,
+        int beatUnit,
+        int bpm,
         NoteType beatUnitTempo,
         int divisions,
 

@@ -2,13 +2,14 @@ package pianolearn.diplomskirad.view.components.sheetmusic;
 
 import javafx.geometry.Bounds;
 import javafx.scene.layout.Pane;
-import pianolearn.diplomskirad.constants.Config;
+import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.model.viewmodel.MusicNodeModel;
 import pianolearn.diplomskirad.view.BaseView;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import static pianolearn.diplomskirad.constants.Config.*;
 import static pianolearn.diplomskirad.constants.SheetMusicSymbols.barLine;
 
 public class MeasureView extends BaseView {
@@ -54,10 +55,12 @@ public class MeasureView extends BaseView {
     private void checkIfNodeShouldChange(MusicNodeView node) {
         Bounds boundsInScene = node.localToScene(node.getBoundsInLocal());
         double nodeX = boundsInScene.getMaxX() - 15;
-        if (nodeX < Config.NOTE_DISAPPEAR_X) {
+        if (nodeX < NOTE_DISAPPEAR_X) {
             node.setVisible(false);
-        } else if (nodeX < Config.CONTROL_LINE_X) {
-            node.setFaded();
+        } else if (nodeX < CONTROL_LINE_X) {
+            node.setColor(Colors.notesFaded);
+        } else if (nodeX < CONTROL_LINE_X + CONTROL_LINE_WIDTH && node != barLineNode) {
+            node.setColor(Colors.highlight);
         }
     }
 }

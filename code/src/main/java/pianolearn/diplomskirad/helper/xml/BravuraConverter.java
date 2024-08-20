@@ -10,17 +10,17 @@ public class BravuraConverter {
         return isTreble ? trebleClef : bassClef;
     }
 
-    public static String getBravuraTime(String time) {
+    public static String getBravuraTime(int time) {
         return switch (time) {
-            case "1" -> time1;
-            case "2" -> time2;
-            case "3" -> time3;
+            case 1 -> time1;
+            case 2 -> time2;
+            case 3 -> time3;
             default -> time4;
-            case "5" -> time5;
-            case "6" -> time6;
-            case "7" -> time7;
-            case "8" -> time8;
-            case "9" -> time9;
+            case 5 -> time5;
+            case 6 -> time6;
+            case 7 -> time7;
+            case 8 -> time8;
+            case 9 -> time9;
         };
     }
 

@@ -1,9 +1,11 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
 import javafx.geometry.VPos;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
+import pianolearn.diplomskirad.model.score.PitchModel;
 import pianolearn.diplomskirad.model.viewmodel.NoteModel;
 
 import static pianolearn.diplomskirad.constants.Config.*;
@@ -11,12 +13,15 @@ import static pianolearn.diplomskirad.constants.Config.NOTE_PITCH_SPACING;
 
 public class NoteView extends Text {
 
+    private PitchModel pitch = null;
+
     public NoteView() {
         setupNode();
     }
 
     public NoteView(NoteModel model) {
         this(String.format("%s %s %s", model.getAccidental(), model.getType(), model.getDot()), model.getPosition());
+        pitch = model.getPitch();
     }
 
     public NoteView(String type, int position) {
@@ -32,11 +37,15 @@ public class NoteView extends Text {
         setFill(Colors.notes);
     }
 
+    public PitchModel getPitch() {
+        return pitch;
+    }
+
     public void setPosition(int position) {
         setTranslateY(-position * NOTE_PITCH_SPACING);
     }
 
-    public void setFaded() {
-        setFill(Colors.notesFaded);
+    public void setColor(Color color) {
+        setFill(color);
     }
 }
