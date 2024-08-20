@@ -4,5 +4,5 @@ import pianolearn.diplomskirad.model.PlaybackSpeed;
 
 public interface SpeedChangeListener {
 
-    void onSpeedChanged(PlaybackSpeed speed);
+    void onAction(PlaybackSpeed speed);
 }

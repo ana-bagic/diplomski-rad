@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.constants.XmlFiles;
-import pianolearn.diplomskirad.controller.MainEngine;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.controller.screens.PlayViewController;
 import pianolearn.diplomskirad.controller.screens.TitleViewController;
@@ -25,7 +24,6 @@ public class PianoLearn extends Application {
         // ovo treba obrisati za finalnu verziju
         File file = XmlFiles.getXmlFile(XmlFiles.mozartSonata);
         XMLConverter.INSTANCE.unmarshall(file);
-        MainEngine.INSTANCE.init();
         NavigationController.INSTANCE.push(new PlayViewController());
     }
 

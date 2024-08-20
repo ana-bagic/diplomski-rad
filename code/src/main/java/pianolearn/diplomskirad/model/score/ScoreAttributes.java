@@ -17,4 +17,9 @@ public record ScoreAttributes(
         Set<NoteAlphabet> scale,
 
         int staves
-) {}
+) {
+
+    public boolean usesBothHands() {
+        return staves == 2;
+    }
+}

@@ -27,9 +27,9 @@ public class MidiInputReceiver implements Receiver {
             // int length = message.getLength();
 
             if (status == 144 && speed != 0) {
-                keyPressedListener.keyInteracted(key);
+                keyPressedListener.onAction(key);
             } else {
-                keyReleasedListener.keyInteracted(key);
+                keyReleasedListener.onAction(key);
             }
         }
     }

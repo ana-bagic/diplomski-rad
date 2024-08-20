@@ -2,5 +2,5 @@ package pianolearn.diplomskirad.listener;
 
 public interface PianoKeyInteractListener {
 
-    void keyInteracted(int midiKey);
+    void onAction(int midiKey);
 }

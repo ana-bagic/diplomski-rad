@@ -1,7 +1,6 @@
 package pianolearn.diplomskirad.helper.xml;
 
 import org.audiveris.proxymusic.*;
-import pianolearn.diplomskirad.controller.MainEngine;
 import pianolearn.diplomskirad.helper.ScaleHelper;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
 import pianolearn.diplomskirad.model.score.NoteType;
@@ -40,6 +39,29 @@ public class Score {
         return false;
     }
 
+    public static int staves() {
+        Attributes attributes = attributes(pianoPart());
+        if (attributes == null) return 0;
+
+        BigInteger stavesInteger = attributes.getStaves();
+        if (stavesInteger != null) {
+            return stavesInteger.intValue();
+        }
+
+        return 1;
+    }
+
+    private static Attributes attributes(ScorePartwise.Part part) {
+        if (part == null || part.getMeasure().isEmpty()) return null;
+
+        ScorePartwise.Part.Measure measure = part.getMeasure().getFirst();
+        if (measure == null) return null;
+
+        Optional<Attributes> optionalAttributes = measure.getNoteOrBackupOrForward()
+                .stream().filter(n -> n instanceof Attributes).map(a -> (Attributes) a).findAny();
+        return optionalAttributes.orElse(null);
+    }
+
     public static ScorePartwise.Part pianoPart() {
         if (noPianoPart()) return null;
 
@@ -56,18 +78,11 @@ public class Score {
         return null;
     }
 
-    public static ScoreAttributes attributes(ScorePartwise.Part part) {
-        if (part == null || part.getMeasure().isEmpty()) return null;
+    public static ScoreAttributes scoreAttributes(ScorePartwise.Part part) {
+        Attributes attributes = attributes(part);
+        if (attributes == null) return null;
 
-        ScorePartwise.Part.Measure measure = part.getMeasure().getFirst();
-        if (measure == null) return null;
-
-        Optional<Attributes> optionalAttributes = measure.getNoteOrBackupOrForward()
-                .stream().filter(n -> n instanceof Attributes).map(a -> (Attributes) a).findAny();
-        if (optionalAttributes.isEmpty()) return null;
-        Attributes attributes = optionalAttributes.get();
-
-        Optional<Metronome> optionalMetronome = measure.getNoteOrBackupOrForward()
+        Optional<Metronome> optionalMetronome = part.getMeasure().getFirst().getNoteOrBackupOrForward()
                 .stream().filter(n -> n instanceof Direction).map(d -> ((Direction) d).getDirectionType())
                 .flatMap(List::stream).map(DirectionType::getMetronome)
                 .filter(Objects::nonNull).filter(m -> m.getBeatUnit() != null).findAny();
@@ -182,14 +197,14 @@ public class Score {
         return null;
     }
 
-    public static MeasurePair measures(ScorePartwise.Part.Measure measure) {
+    public static MeasurePair measures(ScorePartwise.Part.Measure measure, ScoreAttributes attributes) {
         if (measure == null) return null;
 
         LinkedList<Object> nbfList = new LinkedList<>(measure.getNoteOrBackupOrForward());
-        List<MusicNodeModel> rightHandMeasure = measureModel(nbfList, true);
+        List<MusicNodeModel> rightHandMeasure = measureModel(nbfList, true, attributes);
 
         boolean hasBothHands = !nbfList.isEmpty();
-        List<MusicNodeModel> leftHandMeasure = hasBothHands ? measureModel(nbfList, false) : Collections.emptyList();
+        List<MusicNodeModel> leftHandMeasure = hasBothHands ? measureModel(nbfList, false, attributes) : Collections.emptyList();
 
         MeasurePair measurePair = new MeasurePair(hasBothHands, rightHandMeasure, leftHandMeasure);
         calculateDistances(measurePair);
@@ -197,8 +212,7 @@ public class Score {
         return measurePair;
     }
 
-    private static List<MusicNodeModel> measureModel(LinkedList<Object> nbfList, boolean rightHand) {
-        ScoreAttributes attributes = MainEngine.INSTANCE.getAttributes();
+    private static List<MusicNodeModel> measureModel(LinkedList<Object> nbfList, boolean rightHand, ScoreAttributes attributes) {
         boolean isTreble = rightHand ? attributes.isRightHandTreble() : attributes.isLeftHandTreble();
 
         List<MusicNodeModel> nodes = new LinkedList<>();

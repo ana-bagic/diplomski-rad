@@ -108,7 +108,7 @@ public class PlayToolbarView extends BaseView {
         int index = speedSlider.valueProperty().intValue();
         if (index != oldSliderIndex) {
             oldSliderIndex = index;
-            speedSliderListener.onSpeedChanged(playbackSpeeds[index]);
+            speedSliderListener.onAction(playbackSpeeds[index]);
         }
     }
 
