@@ -7,6 +7,7 @@ import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.helper.StylesHelper;
 import pianolearn.diplomskirad.listener.EventListener;
+import pianolearn.diplomskirad.listener.PlayNotesListener;
 import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
 import pianolearn.diplomskirad.model.viewmodel.MeasurePair;
 import pianolearn.diplomskirad.view.BaseView;
@@ -55,7 +56,6 @@ public class SheetMusicView extends BaseView {
             leftHandPartView.addMeasure(measurePair.getLeftHandMeasure(), lastMeasureEnd);
         }
 
-        System.out.println("added measures");
         lastMeasureEnd += measurePair.getWidth();
         fetchRemoveMeasures();
     }
@@ -86,10 +86,6 @@ public class SheetMusicView extends BaseView {
         lastMeasureEnd = MEASURE_START_X;
     }
 
-    public void setNewMeasureNeededListener(EventListener listener) {
-        newMeasureNeededListener = listener;
-    }
-
     private void fetchRemoveMeasures() {
         double sceneWidth = scene.getWidth();
 
@@ -99,5 +95,14 @@ public class SheetMusicView extends BaseView {
 
         rightHandPartView.removeMeasuresIfNeeded();
         leftHandPartView.removeMeasuresIfNeeded();
+    }
+
+    public void setNewMeasureNeededListener(EventListener listener) {
+        newMeasureNeededListener = listener;
+    }
+
+    public void setPlayNotesListeners(PlayNotesListener rightHandListener, PlayNotesListener leftHandListener) {
+        rightHandPartView.setPlayNotesListener(rightHandListener);
+        leftHandPartView.setPlayNotesListener(leftHandListener);
     }
 }

@@ -4,6 +4,7 @@ import org.audiveris.proxymusic.ScorePartwise;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.listener.MeasurePairCreatedListener;
+import pianolearn.diplomskirad.listener.PlayNotesListener;
 import pianolearn.diplomskirad.model.score.ScoreAttributes;
 import pianolearn.diplomskirad.model.viewmodel.MeasurePair;
 import pianolearn.diplomskirad.view.BaseView;
@@ -84,5 +85,9 @@ public class SheetMusicController implements BaseViewController {
 
     public void setMeasurePairCreatedListener(MeasurePairCreatedListener listener) {
         measurePairCreatedListener = listener;
+    }
+
+    public void setPlayNotesListeners(PlayNotesListener rightHandListener, PlayNotesListener leftHandListener) {
+        view.setPlayNotesListeners(rightHandListener, leftHandListener);
     }
 }

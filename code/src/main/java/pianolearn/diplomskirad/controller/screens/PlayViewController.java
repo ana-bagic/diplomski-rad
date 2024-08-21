@@ -98,6 +98,8 @@ public class PlayViewController implements BaseViewController {
         view.setLeftHandButtonListener(this::leftHandButtonClicked);
 
         sheetMusicController.setMeasurePairCreatedListener(measurePairs::add);
+        sheetMusicController.setPlayNotesListeners(
+                pianoKeyboardController::playNotesRightHand, pianoKeyboardController::playNotesLeftHand);
 
         NavigationController.INSTANCE.getStage().setOnCloseRequest(e -> metronome.close());
     }
@@ -125,6 +127,7 @@ public class PlayViewController implements BaseViewController {
     private void stopButtonClicked() {
         resetValues();
         sheetMusicController.reset();
+        pianoKeyboardController.reset();
     }
 
     private void speedChanged(PlaybackSpeed speed) {
@@ -180,7 +183,7 @@ public class PlayViewController implements BaseViewController {
             durationOfRegion = actualDurationOfBeatUnit * attributes.beats();
             nextPlayMeasureIndex++;
 
-            metronome.setInterval((long) (actualDurationOfBeatUnit));
+            metronome.setInterval((long) (actualDurationOfBeatUnit) + 100);
             metronomeThread = new Thread(metronome);
             metronomeThread.start();
         } else {
@@ -196,7 +199,7 @@ public class PlayViewController implements BaseViewController {
                 isBeginningOfMeasure = false;
 
                 metronomeThread.join();
-                metronome.setInterval((long) actualDurationOfBeatUnit);
+                metronome.setInterval((long) actualDurationOfBeatUnit + 100);
                 metronomeThread = new Thread(metronome);
                 metronomeThread.start();
             } else  {

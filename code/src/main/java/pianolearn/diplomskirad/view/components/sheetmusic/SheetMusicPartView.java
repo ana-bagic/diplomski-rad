@@ -4,6 +4,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import pianolearn.diplomskirad.constants.Colors;
+import pianolearn.diplomskirad.listener.PlayNotesListener;
 import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
 import pianolearn.diplomskirad.model.viewmodel.MusicNodeModel;
 import pianolearn.diplomskirad.view.BaseView;
@@ -22,6 +23,8 @@ public class SheetMusicPartView extends BaseView {
     private final LinkedList<MeasureView> measureViews = new LinkedList<>();
     private final Pane controlLineContainer = new Pane();
     private final Rectangle controlLine = new Rectangle();
+
+    private PlayNotesListener  playNotesListener;
 
     public SheetMusicPartView() {
         setupGUI();
@@ -52,6 +55,7 @@ public class SheetMusicPartView extends BaseView {
 
     public void addMeasure(List<MusicNodeModel> measure, double measureStartX) {
         MeasureView measureView = new MeasureView(measure);
+        measureView.setPlayNotesListener(playNotesListener);
         measureViews.add(measureView);
         notesView.getChildren().add(measureView);
         measureView.setLayoutX(measureStartX);
@@ -67,7 +71,6 @@ public class SheetMusicPartView extends BaseView {
             if (nextMeasure.getLayoutX() > 0) break;
             measureViews.pop();
             notesView.getChildren().remove(1);
-            System.out.println("removed measure");
         }
     }
 
@@ -79,5 +82,9 @@ public class SheetMusicPartView extends BaseView {
         measureViews.clear();
         notesView.getChildren().clear();
         notesView.getChildren().add(clefTimeKeyView);
+    }
+
+    public void setPlayNotesListener(PlayNotesListener listener) {
+        playNotesListener = listener;
     }
 }

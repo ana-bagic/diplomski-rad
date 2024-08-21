@@ -35,7 +35,7 @@ public class Config {
     public static final double CTRL_LINE_MEASURE_DISTANCE = 400;
     public static final double MEASURE_START_X = CONTROL_LINE_X + CTRL_LINE_MEASURE_DISTANCE;
 
-    public static final double TICK_DURATION_MS = 40;
+    public static final double TICK_DURATION_MS = 30;
 
     // keyboard
     public static final double WHITE_KEY_HEIGHT_MULTIPLIER = 5;
