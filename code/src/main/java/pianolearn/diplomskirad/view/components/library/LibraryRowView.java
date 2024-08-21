@@ -7,52 +7,46 @@ import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.listener.EventWithIdListener;
 import pianolearn.diplomskirad.model.viewmodel.LibraryItem;
-import pianolearn.diplomskirad.view.BaseView;
 
-public class LibraryRowView extends BaseView {
+import java.util.LinkedList;
+import java.util.List;
 
-    private final HBox rootPane = new HBox();
+public class LibraryRowView extends HBox {
+
     private final Label rowLabel = new Label();
-    private final LibraryRowItemView[] rowItems;
+    private final List<LibraryRowItemView> rowItems = new LinkedList<>();
 
     private double rowPrefHeight;
 
     public LibraryRowView(LibraryItem[] items) {
-        this.rowItems = new LibraryRowItemView[items.length];
-        for (int i = 0; i < items.length; i++) {
-            LibraryRowItemView view = new LibraryRowItemView();
-            view.setItem(items[i]);
-            rowItems[i] = view;
+        for (LibraryItem item : items) {
+            LibraryRowItemView view = new LibraryRowItemView(item);
+            rowItems.add(view);
             rowPrefHeight = view.getPrefHeight();
         }
-        setupGUI();
+
+        setupView();
     }
 
-    @Override
-    protected void addViews() {
-        rootPane.getChildren().add(rowLabel);
-        rootPane.getChildren().addAll(rowItems);
-        bindToSelf(rootPane);
-    }
-
-    @Override
-    protected void styleViews() {
-        rootPane.setAlignment(Pos.CENTER);
-        rootPane.setSpacing(40);
-        rootPane.setMinHeight(rowPrefHeight);
-        rootPane.setMaxHeight(rowPrefHeight);
+    private void setupView() {
+        getChildren().add(rowLabel);
+        getChildren().addAll(rowItems);
+        setAlignment(Pos.CENTER);
+        setSpacing(40);
+        setMinHeight(rowPrefHeight);
+        setMaxHeight(rowPrefHeight);
 
         rowLabel.setFont(Fonts.body);
         rowLabel.setTextFill(Colors.text);
+    }
+
+    public void setLabel(String label) {
+        rowLabel.setText(label);
     }
 
     public void setCoverButtonListeners(EventWithIdListener listener) {
         for (LibraryRowItemView view : rowItems) {
             view.setCoverButtonListener(listener);
         }
-    }
-
-    public void setLabel(String label) {
-        rowLabel.setText(label);
     }
 }

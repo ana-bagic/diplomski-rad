@@ -20,14 +20,10 @@ public class NoteView extends Text {
     }
 
     public NoteView(NoteModel model) {
-        this(String.format("%s %s %s", model.getAccidental(), model.getType(), model.getDot()), model.getPosition());
+        super(String.format("%s %s %s", model.getAccidental(), model.getType(), model.getDot()));
+        setPosition(model.getPosition());
         pitch = model.getPitch();
-    }
-
-    public NoteView(String type, int position) {
-        super(type);
         setupNode();
-        setPosition(position);
     }
 
     private void setupNode() {

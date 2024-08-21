@@ -1,9 +1,11 @@
 package pianolearn.diplomskirad.helper;
 
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -15,11 +17,16 @@ import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
 
-public class StylesHelper {
+public class StyleHelper {
 
     public static Background background(Color color, Integer radius) {
         CornerRadii backgroundRadius = radius == null ? CornerRadii.EMPTY : new CornerRadii(radius);
         return new Background(new BackgroundFill(color, backgroundRadius, Insets.EMPTY));
+    }
+
+    public static void setButtonSize(Button button, double size) {
+        button.setMinSize(size, size);
+        button.setMaxSize(size, size);
     }
 
     public static void setButtonBackground(Button button, Color normalColor, Color hoverColor, int radius) {
@@ -33,6 +40,14 @@ public class StylesHelper {
         }
     }
 
+    public static void setButtonImage(Button button, Image image) {
+        ImageView imageView = new ImageView(image);
+        imageView.setPreserveRatio(true);
+        imageView.fitWidthProperty().bind(button.widthProperty());
+        imageView.fitHeightProperty().bind(button.heightProperty());
+        button.setGraphic(imageView);
+    }
+
     public static void setButtonTooltip(Button button, String tooltipText) {
         String tooltipStyle = String.format(
                 "-fx-background-color: %s; -fx-text-fill: %s;",
@@ -43,11 +58,6 @@ public class StylesHelper {
         tooltip.setFont(Fonts.tooltip);
         tooltip.setStyle(tooltipStyle);
         Tooltip.install(button, tooltip);
-    }
-
-    public static void setButtonSize(Button button, double size) {
-        button.setMinSize(size, size);
-        button.setMaxSize(size, size);
     }
 
     public static void setImageViewSizeAndRadius(ImageView imageView, double size, double radius) {
@@ -94,5 +104,10 @@ public class StylesHelper {
         int b = (int) (color.getBlue() * 255);
 
         return String.format("#%02X%02X%02X", r, g, b);
+    }
+
+    public static void showNode(Node node, boolean visible) {
+        node.setVisible(visible);
+        node.setManaged(visible);
     }
 }

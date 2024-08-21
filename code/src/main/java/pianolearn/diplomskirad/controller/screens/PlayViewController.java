@@ -2,6 +2,7 @@ package pianolearn.diplomskirad.controller.screens;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import org.audiveris.proxymusic.ScorePartwise;
 import pianolearn.diplomskirad.controller.BaseViewController;
@@ -14,7 +15,6 @@ import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
 import pianolearn.diplomskirad.model.score.ScoreAttributes;
 import pianolearn.diplomskirad.model.viewmodel.MeasurePair;
-import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.screens.PlayView;
 
 import javax.sound.midi.MidiUnavailableException;
@@ -81,7 +81,7 @@ public class PlayViewController implements BaseViewController {
     }
 
     @Override
-    public BaseView getView() {
+    public Pane getView() {
         return view;
     }
 

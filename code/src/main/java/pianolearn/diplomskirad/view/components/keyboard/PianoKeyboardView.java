@@ -8,16 +8,14 @@ import pianolearn.diplomskirad.model.KeyboardModel;
 import pianolearn.diplomskirad.model.score.KeyIterator;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
 import pianolearn.diplomskirad.model.score.PitchModel;
-import pianolearn.diplomskirad.view.BaseView;
 
 import java.util.HashMap;
 import java.util.Iterator;
 
 import static pianolearn.diplomskirad.constants.Config.*;
 
-public class PianoKeyboardView extends BaseView {
+public class PianoKeyboardView extends StackPane {
 
-    private final StackPane rootPane = new StackPane();
     private final Pane whiteKeysHBox = new Pane();
     private final Pane blackKeysHBox = new Pane();
     private final PianoKeyView[] keys;
@@ -29,11 +27,16 @@ public class PianoKeyboardView extends BaseView {
     public PianoKeyboardView(KeyboardModel model) {
         this.model = model;
         keys = new PianoKeyView[model.getNumberOfWhiteKeys() * 2 - 1];
-        setupGUI();
+
+        setupView();
     }
 
-    @Override
-    protected void addViews() {
+    private void setupView() {
+        scene.widthProperty().addListener(e -> changeSize());
+        scene.heightProperty().addListener(e -> changeSize());
+
+        getChildren().addAll(whiteKeysHBox, blackKeysHBox);
+
         Iterator<PitchModel> keysIterator = new KeyIterator(model.getFirstPitch(), model.getLastPitch());
         boolean isCurrentWhite = true;
         NoteAlphabet lastWhiteKey = null;
@@ -69,15 +72,7 @@ public class PianoKeyboardView extends BaseView {
             i++;
         }
 
-        rootPane.getChildren().addAll(whiteKeysHBox, blackKeysHBox);
-        bindToSelf(rootPane);
-    }
-
-    @Override
-    protected void styleViews() {
         changeSize();
-        scene.widthProperty().addListener(e -> changeSize());
-        scene.heightProperty().addListener(e -> changeSize());
     }
 
     private void changeSize() {
@@ -89,8 +84,8 @@ public class PianoKeyboardView extends BaseView {
         double blackKeyWidth = whiteKeyWidth * BLACK_KEY_WIDTH_MULTIPLIER;
         double blackKeyHeight = Math.ceil(blackKeyWidth * BLACK_KEY_HEIGHT_MULTIPLIER);
 
-        rootPane.setMinHeight(whiteKeyHeight);
-        rootPane.setMaxHeight(whiteKeyHeight);
+        setMinHeight(whiteKeyHeight);
+        setMaxHeight(whiteKeyHeight);
 
         double whiteKeyX = 0;
         for (PianoKeyView key : keys) {

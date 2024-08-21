@@ -1,5 +1,6 @@
 package pianolearn.diplomskirad.controller.components;
 
+import javafx.scene.layout.Pane;
 import org.audiveris.proxymusic.ScorePartwise;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.helper.xml.Score;
@@ -7,7 +8,6 @@ import pianolearn.diplomskirad.listener.MeasurePairCreatedListener;
 import pianolearn.diplomskirad.listener.PlayNotesListener;
 import pianolearn.diplomskirad.model.score.ScoreAttributes;
 import pianolearn.diplomskirad.model.viewmodel.MeasurePair;
-import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.components.sheetmusic.SheetMusicView;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class SheetMusicController implements BaseViewController {
     }
 
     @Override
-    public BaseView getView() {
+    public Pane getView() {
         return view;
     }
 

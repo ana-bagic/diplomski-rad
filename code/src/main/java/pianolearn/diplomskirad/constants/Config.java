@@ -6,21 +6,16 @@ import pianolearn.diplomskirad.model.score.PitchModel;
 
 public class Config {
 
-    public static final boolean DEBUG = true;
-
-    public static final boolean KEYBOARD_CONNECTED = false;
-
-    public static final KeyboardModel KEYBOARD_MODEL =
-            new KeyboardModel(new PitchModel(NoteAlphabet.A, 0), new PitchModel(NoteAlphabet.C, 8));
-
-    // maybe put font sizes here
+    // metronome
     public static final int METRONOME_ACCENT_SOUND = 48;
     public static final int METRONOME_SOUND = 37;
     public static final int METRONOME_VOLUME = 600;
 
     // sheet music
     public static final double STAFF_LINE_SPACING = 16;
-    public static final double STAFF_HEIGHT = STAFF_LINE_SPACING * 8;
+    public static final int STAFF_LINES = 5;
+    public static  final int STAFF_LEDGERS = 4;
+    public static final double STAFF_HEIGHT = STAFF_LINE_SPACING * (2 * STAFF_LEDGERS + STAFF_LINES - 1);
     public static final double FONT_CENTER_FIX = 8;
     public static final double NOTE_PITCH_SPACING = STAFF_LINE_SPACING / 2;
 
@@ -38,6 +33,10 @@ public class Config {
     public static final double TICK_DURATION_MS = 30;
 
     // keyboard
+    public static final boolean KEYBOARD_CONNECTED = false;
+    public static final KeyboardModel KEYBOARD_DISPLAY_MODEL =
+            new KeyboardModel(new PitchModel(NoteAlphabet.A, 0), new PitchModel(NoteAlphabet.C, 8));
+
     public static final double WHITE_KEY_HEIGHT_MULTIPLIER = 5;
     public static final double BLACK_KEY_HEIGHT_MULTIPLIER = 4.5;
     public static final double BLACK_KEY_WIDTH_MULTIPLIER = 0.7;

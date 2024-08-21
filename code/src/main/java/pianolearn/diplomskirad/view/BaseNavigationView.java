@@ -7,38 +7,33 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Images;
-import pianolearn.diplomskirad.helper.StylesHelper;
+import pianolearn.diplomskirad.helper.StyleHelper;
 import pianolearn.diplomskirad.listener.EventListener;
 
-public class BaseNavigationView extends BaseView {
+import static pianolearn.diplomskirad.helper.StyleHelper.*;
 
-    protected final BorderPane rootPane = new BorderPane();
+public class BaseNavigationView extends BorderPane {
+
     protected final StackPane topStackPane = new StackPane();
     private final Button backButton = new Button();
 
     private EventListener backButtonListener;
 
-    @Override
-    protected void addViews() {
-        topStackPane.getChildren().add(backButton);
-        rootPane.setTop(topStackPane);
-        bindToSelf(rootPane);
+    public BaseNavigationView() {
+        setupView();
     }
 
-    @Override
-    protected void styleViews() {
-        rootPane.setBackground(StylesHelper.background(Colors.background, null));
+    private void setupView() {
+        setTop(topStackPane);
+        setBackground(StyleHelper.background(Colors.background, null));
 
+        topStackPane.getChildren().add(backButton);
         topStackPane.setPadding(new Insets(50));
 
-        StylesHelper.setButtonSize(backButton, 80);
-        StylesHelper.setButtonBackground(backButton, Colors.background, null, 0);
-        bindImageToButton(Images.backArrowIcon, backButton);
+        setButtonSize(backButton, 80);
+        setButtonBackground(backButton, Colors.background, null, 0);
+        setButtonImage(backButton, Images.backArrowIcon);
         StackPane.setAlignment(backButton, Pos.CENTER_LEFT);
-    }
-
-    @Override
-    protected void setupActions() {
         backButton.setOnAction(e -> backButtonListener.onAction());
     }
 

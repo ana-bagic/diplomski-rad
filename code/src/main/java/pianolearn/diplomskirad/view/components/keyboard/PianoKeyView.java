@@ -20,8 +20,8 @@ public class PianoKeyView extends StackPane {
         getChildren().add(rectangle);
 
         minWidthProperty().bind(rectangle.widthProperty());
-        minHeightProperty().bind(rectangle.heightProperty());
         maxWidthProperty().bind(rectangle.widthProperty());
+        minHeightProperty().bind(rectangle.heightProperty());
         maxHeightProperty().bind(rectangle.heightProperty());
 
         setAlignment(Pos.BOTTOM_CENTER);

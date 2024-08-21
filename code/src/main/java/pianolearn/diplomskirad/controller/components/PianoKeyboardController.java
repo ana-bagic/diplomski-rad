@@ -1,12 +1,12 @@
 package pianolearn.diplomskirad.controller.components;
 
+import javafx.scene.layout.Pane;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Config;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.helper.midi.MidiDeviceManager;
 import pianolearn.diplomskirad.helper.midi.MidiInputReceiver;
 import pianolearn.diplomskirad.model.score.PitchModel;
-import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.components.keyboard.PianoKeyboardView;
 
 import java.util.LinkedList;
@@ -22,13 +22,13 @@ public class PianoKeyboardController implements BaseViewController {
     private final MidiInputReceiver midiInputReceiver = MidiDeviceManager.getReceiver();
 
     public PianoKeyboardController() {
-        view = new PianoKeyboardView(Config.KEYBOARD_MODEL);
+        view = new PianoKeyboardView(Config.KEYBOARD_DISPLAY_MODEL);
 
         setupListeners();
     }
 
     @Override
-    public BaseView getView() {
+    public Pane getView() {
         return view;
     }
 

@@ -8,7 +8,7 @@ import javafx.scene.layout.VBox;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Strings;
-import pianolearn.diplomskirad.helper.StylesHelper;
+import pianolearn.diplomskirad.helper.StyleHelper;
 import pianolearn.diplomskirad.listener.EventWithIdListener;
 import pianolearn.diplomskirad.model.viewmodel.LibraryItem;
 import pianolearn.diplomskirad.view.BaseNavigationView;
@@ -26,22 +26,13 @@ public class LibraryView extends BaseNavigationView {
     public LibraryView(LibraryItem[] classicalSongs, LibraryItem[] modernSongs) {
         classicalRowView = new LibraryRowView(classicalSongs);
         modernRowView = new LibraryRowView(modernSongs);
-        setupGUI();
+        setupView();
     }
 
-    @Override
-    protected void addViews() {
-        super.addViews();
-        songsVBox.getChildren().addAll(classicalRowView, modernRowView);
-        scrollPane.setContent(songsVBox);
+    private void setupView() {
+        setCenter(centerVBox);
+
         centerVBox.getChildren().addAll(pickASongLabel, scrollPane);
-        rootPane.setCenter(centerVBox);
-    }
-
-    @Override
-    protected void styleViews() {
-        super.styleViews();
-
         centerVBox.setAlignment(Pos.TOP_CENTER);
 
         pickASongLabel.setFont(Fonts.header);
@@ -49,13 +40,15 @@ public class LibraryView extends BaseNavigationView {
         pickASongLabel.setPadding(new Insets(0, 0, 20, 0));
         pickASongLabel.setText(Strings.libraryLabel);
 
+        scrollPane.setContent(songsVBox);
         scrollPane.setFitToWidth(true);
         scrollPane.setPannable(true);
-        scrollPane.setBackground(StylesHelper.background(Colors.background, null));
+        scrollPane.setBackground(StyleHelper.background(Colors.background, null));
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
+        songsVBox.getChildren().addAll(classicalRowView, modernRowView);
+        songsVBox.setBackground(StyleHelper.background(Colors.background, null));
         songsVBox.setAlignment(Pos.CENTER);
-        songsVBox.setBackground(StylesHelper.background(Colors.background, null));
 
         classicalRowView.setLabel(Strings.classicRow);
 

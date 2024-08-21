@@ -1,12 +1,12 @@
 package pianolearn.diplomskirad.controller.screens;
 
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.helper.xml.XMLConverter;
-import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.screens.UploadView;
 
 import java.io.File;
@@ -20,7 +20,7 @@ public class UploadViewController implements BaseViewController {
     }
 
     @Override
-    public BaseView getView() {
+    public Pane getView() {
         return view;
     }
 

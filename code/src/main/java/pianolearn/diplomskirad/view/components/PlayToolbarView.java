@@ -13,17 +13,16 @@ import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Images;
 import pianolearn.diplomskirad.constants.Strings;
-import pianolearn.diplomskirad.helper.StylesHelper;
 import pianolearn.diplomskirad.listener.EventListener;
 import pianolearn.diplomskirad.listener.SpeedChangeListener;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
-import pianolearn.diplomskirad.view.BaseView;
 
 import java.util.Objects;
 
-public class PlayToolbarView extends BaseView {
+import static pianolearn.diplomskirad.helper.StyleHelper.*;
 
-    private final HBox rootPane = new HBox();
+public class PlayToolbarView extends HBox {
+
     private final Button playPauseButton = new Button();
     private final Button stopButton = new Button();
     private final VBox speedVBox = new VBox();
@@ -32,37 +31,34 @@ public class PlayToolbarView extends BaseView {
     private final Button leftHandButton = new Button();
     private final Button rightHandButton = new Button();
 
-    private EventListener playPauseButtonListener;
-    private EventListener stopButtonListener;
-    private SpeedChangeListener speedSliderListener;
-    private EventListener leftHandButtonListener;
-    private EventListener rightHandButtonListener;
-
     private boolean isPlaying = false;
     private int oldSliderIndex = 0;
     private final PlaybackSpeed[] playbackSpeeds = PlaybackSpeed.values();
     private boolean isLeftShown = true;
     private boolean isRightShown = true;
 
+    private EventListener playPauseButtonListener;
+    private EventListener stopButtonListener;
+    private SpeedChangeListener speedSliderListener;
+    private EventListener leftHandButtonListener;
+    private EventListener rightHandButtonListener;
+
     public PlayToolbarView() {
-        setupGUI();
+        setupView();
     }
 
-    @Override
-    protected void addViews() {
-        speedVBox.getChildren().addAll(speedLabel, speedSlider);
-        rootPane.getChildren().addAll(playPauseButton, stopButton, speedVBox, leftHandButton, rightHandButton);
-        bindToSelf(rootPane);
-    }
-
-    @Override
-    protected void styleViews() {
-        rootPane.setSpacing(20);
-        rootPane.setAlignment(Pos.CENTER);
+    private void setupView() {
+        getChildren().addAll(playPauseButton, stopButton, speedVBox, leftHandButton, rightHandButton);
+        setSpacing(20);
+        setAlignment(Pos.CENTER);
 
         setupButton(playPauseButton, Colors.text, Strings.playButtonTooltip, Images.playIcon);
-        setupButton(stopButton, Colors.text, Strings.stopButtonTooltip, Images.stopIcon);
+        playPauseButton.setOnAction(e -> playPauseClicked());
 
+        setupButton(stopButton, Colors.text, Strings.stopButtonTooltip, Images.stopIcon);
+        stopButton.setOnAction(e -> stopButtonClicked());
+
+        speedVBox.getChildren().addAll(speedLabel, speedSlider);
         speedVBox.setSpacing(10);
         speedVBox.setPadding(new Insets(0, 15, 0, 15));
         speedVBox.setAlignment(Pos.CENTER);
@@ -71,27 +67,22 @@ public class PlayToolbarView extends BaseView {
         speedLabel.setTextFill(Colors.text);
         speedLabel.setText(Strings.speedLabel);
 
-        StylesHelper.setupLabelSlider(speedSlider, playbackSpeeds);
+        setupLabelSlider(speedSlider, playbackSpeeds);
         speedSlider.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
+        speedSlider.setOnMouseReleased(e -> sliderChanged());
 
         setupButton(leftHandButton, Colors.accent, Strings.leftHandButtonTooltip, Images.leftHandIcon);
+        leftHandButton.setOnAction(e -> leftHandButtonClicked());
+
         setupButton(rightHandButton, Colors.accent, Strings.rightHandButtonTooltip, Images.rightHandIcon);
+        rightHandButton.setOnAction(e -> rightHandButtonClicked());
     }
 
     private void setupButton(Button button, Color backgroundColor, String tooltipText, Image image) {
-        StylesHelper.setButtonSize(button, 80);
-        StylesHelper.setButtonBackground(button, backgroundColor, Colors.highlight, 20);
-        StylesHelper.setButtonTooltip(button, tooltipText);
-        bindImageToButton(image, button);
-    }
-
-    @Override
-    protected void setupActions() {
-        playPauseButton.setOnAction(e -> playPauseClicked());
-        stopButton.setOnAction(e -> stopButtonClicked());
-        speedSlider.setOnMouseReleased(e -> sliderChanged());
-        leftHandButton.setOnAction(e -> leftHandButtonClicked());
-        rightHandButton.setOnAction(e -> rightHandButtonClicked());
+        setButtonSize(button, 80);
+        setButtonBackground(button, backgroundColor, Colors.highlight, 20);
+        setButtonTooltip(button, tooltipText);
+        setButtonImage(button, image);
     }
 
     private void playPauseClicked() {
@@ -116,7 +107,7 @@ public class PlayToolbarView extends BaseView {
         if (!isLeftShown || isRightShown) {
             isLeftShown = !isLeftShown;
             Color backgroundColor = isLeftShown ? Colors.accent : Colors.text;
-            StylesHelper.setButtonBackground(leftHandButton, backgroundColor, Colors.highlight, 20);
+            setButtonBackground(leftHandButton, backgroundColor, Colors.highlight, 20);
             leftHandButtonListener.onAction();
         }
     }
@@ -125,14 +116,15 @@ public class PlayToolbarView extends BaseView {
         if (!isRightShown || isLeftShown) {
             isRightShown = !isRightShown;
             Color backgroundColor = isRightShown ? Colors.accent : Colors.text;
-            StylesHelper.setButtonBackground(rightHandButton, backgroundColor, Colors.highlight, 20);
+            setButtonBackground(rightHandButton, backgroundColor, Colors.highlight, 20);
             rightHandButtonListener.onAction();
         }
     }
 
-    private void changePlayPauseButton(boolean isPlaying) {
-        StylesHelper.setButtonTooltip(playPauseButton, isPlaying ? Strings.pauseButtonTooltip : Strings.playButtonTooltip);
-        bindImageToButton(isPlaying ? Images.pauseIcon : Images.playIcon, playPauseButton);
+    public void setPaused(boolean isPaused) {
+        isPlaying = !isPaused;
+        setButtonTooltip(playPauseButton, isPlaying ? Strings.pauseButtonTooltip : Strings.playButtonTooltip);
+        setButtonImage(playPauseButton, isPlaying ? Images.pauseIcon : Images.playIcon);
     }
 
     public void setUsesBothHands(boolean usesBothHands) {
@@ -140,11 +132,6 @@ public class PlayToolbarView extends BaseView {
             showNode(leftHandButton, false);
             showNode(rightHandButton, false);
         }
-    }
-
-    public void setPaused(boolean isPaused) {
-        isPlaying = !isPaused;
-        changePlayPauseButton(isPlaying);
     }
 
     public void setPlayPauseButtonListener(EventListener listener) {

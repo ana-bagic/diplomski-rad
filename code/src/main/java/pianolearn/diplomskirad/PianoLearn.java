@@ -24,7 +24,7 @@ public class PianoLearn extends Application {
         // ovo treba obrisati za finalnu verziju
         File file = XmlFiles.getXmlFile(XmlFiles.mozartSonata);
         XMLConverter.INSTANCE.unmarshall(file);
-        NavigationController.INSTANCE.push(new PlayViewController());
+        //NavigationController.INSTANCE.push(new PlayViewController());
     }
 
     public static void main(String[] args) {

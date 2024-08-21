@@ -1,11 +1,11 @@
 package pianolearn.diplomskirad.controller.screens;
 
+import javafx.scene.layout.Pane;
 import pianolearn.diplomskirad.constants.LibraryData;
 import pianolearn.diplomskirad.constants.XmlFiles;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.helper.xml.XMLConverter;
-import pianolearn.diplomskirad.view.BaseView;
 import pianolearn.diplomskirad.view.screens.LibraryView;
 
 import java.io.File;
@@ -21,7 +21,7 @@ public class LibraryViewController implements BaseViewController {
     }
 
     @Override
-    public BaseView getView() {
+    public Pane getView() {
         return view;
     }
 

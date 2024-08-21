@@ -6,7 +6,6 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Transmitter;
 import java.util.List;
 
-import static pianolearn.diplomskirad.constants.Config.DEBUG;
 import static pianolearn.diplomskirad.constants.Config.KEYBOARD_CONNECTED;
 
 public class MidiDeviceManager {
@@ -38,7 +37,6 @@ public class MidiDeviceManager {
                 throw new RuntimeException(e);
             }
             List<Transmitter> transmitters = device.getTransmitters();
-            if (DEBUG) System.out.println("Broj postojećih transmittera: " + transmitters.size());
 
             transmitter.setReceiver(receiver);
         }

@@ -15,20 +15,13 @@ public class SettingsView extends BaseNavigationView {
     private final Label settingsLabel = new Label();
 
     public SettingsView() {
-        setupGUI();
+        setupView();
     }
 
-    @Override
-    protected void addViews() {
-        super.addViews();
+    private void setupView() {
+        setCenter(centerVBox);
+
         centerVBox.getChildren().add(settingsLabel);
-        rootPane.setCenter(centerVBox);
-    }
-
-    @Override
-    protected void styleViews() {
-        super.styleViews();
-
         centerVBox.setAlignment(Pos.TOP_CENTER);
         centerVBox.setPadding(new Insets(50));
 

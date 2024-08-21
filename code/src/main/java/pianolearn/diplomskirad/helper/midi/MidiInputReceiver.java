@@ -5,8 +5,6 @@ import pianolearn.diplomskirad.listener.PianoKeyInteractListener;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Receiver;
 
-import static pianolearn.diplomskirad.constants.Config.DEBUG;
-
 public class MidiInputReceiver implements Receiver {
 
     private PianoKeyInteractListener keyPressedListener;
@@ -34,9 +32,7 @@ public class MidiInputReceiver implements Receiver {
     }
 
     @Override
-    public void close() {
-        if (DEBUG) System.out.println("MidiInputReceiver closed");
-    }
+    public void close() {}
 
     public void setKeyPressedListener(PianoKeyInteractListener listener) {
         keyPressedListener = listener;

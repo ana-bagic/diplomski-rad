@@ -6,76 +6,66 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
-import pianolearn.diplomskirad.helper.StylesHelper;
 import pianolearn.diplomskirad.listener.EventWithIdListener;
 import pianolearn.diplomskirad.model.viewmodel.LibraryItem;
-import pianolearn.diplomskirad.view.BaseView;
 
-public class LibraryRowItemView extends BaseView {
+import static pianolearn.diplomskirad.helper.StyleHelper.*;
 
-    private final VBox rootPane = new VBox();
+public class LibraryRowItemView extends VBox {
+
     private final StackPane coverStackPane = new StackPane();
     private final Button coverButton = new Button();
     private final ImageView coverImageView = new ImageView();
     private final Label songNameLabel = new Label();
     private final Label artistNameLabel = new Label();
 
+    private final String fileName;
+
     private EventWithIdListener coverButtonListener;
-    private String fileName;
 
-    public LibraryRowItemView() {
-        setupGUI();
-    }
-
-    @Override
-    protected void addViews() {
-        coverStackPane.getChildren().addAll(coverButton, coverImageView);
-        rootPane.getChildren().addAll(coverStackPane, songNameLabel, artistNameLabel);
-        bindToSelf(rootPane);
-    }
-
-    @Override
-    protected void styleViews() {
-        setPrefHeight(320);
-
-        rootPane.setAlignment(Pos.CENTER);
-        rootPane.setSpacing(10);
-
-        StylesHelper.setButtonSize(coverButton, 160);
-        StylesHelper.setButtonBackground(coverButton, Colors.text, Colors.highlight, 20);
-
-        StylesHelper.setImageViewSizeAndRadius(coverImageView, 130, 130);
-        coverImageView.setMouseTransparent(true);
-
-        songNameLabel.setFont(Fonts.body);
-        songNameLabel.setTextFill(Colors.accent);
-        songNameLabel.setWrapText(true);
-        songNameLabel.setTextAlignment(TextAlignment.CENTER);
-        songNameLabel.setAlignment(Pos.CENTER);
-
-        artistNameLabel.setFont(Fonts.micro);
-        artistNameLabel.setTextFill(Colors.text);
-        artistNameLabel.setWrapText(true);
-        artistNameLabel.setTextAlignment(TextAlignment.CENTER);
-        artistNameLabel.setAlignment(Pos.CENTER);
-    }
-
-    @Override
-    protected void setupActions() {
-        coverButton.setOnAction(e -> coverButtonListener.onAction(fileName));
-    }
-
-    public void setCoverButtonListener(EventWithIdListener listener) {
-        coverButtonListener = listener;
-    }
-
-    public void setItem(LibraryItem item) {
+    public LibraryRowItemView(LibraryItem item) {
         songNameLabel.setText(item.songName());
         artistNameLabel.setText(item.artist());
         coverImageView.setImage(item.coverImage());
         fileName = item.fileName();
+
+        setupView();
+    }
+
+    private void setupView() {
+        getChildren().addAll(coverStackPane, songNameLabel, artistNameLabel);
+        setAlignment(Pos.CENTER);
+        setSpacing(10);
+        setPrefHeight(320);
+
+        coverStackPane.getChildren().addAll(coverButton, coverImageView);
+
+        setButtonSize(coverButton, 160);
+        setButtonBackground(coverButton, Colors.text, Colors.highlight, 20);
+        coverButton.setOnAction(e -> coverButtonListener.onAction(fileName));
+
+        setImageViewSizeAndRadius(coverImageView, 130, 130);
+        coverImageView.setMouseTransparent(true);
+
+        setupLabel(songNameLabel, Fonts.body, Colors.accent);
+
+        setupLabel(artistNameLabel, Fonts.micro, Colors.text);
+    }
+
+    private void setupLabel(Label label, Font font, Color color) {
+        label.setFont(font);
+        label.setTextFill(color);
+        label.setWrapText(true);
+        label.setTextAlignment(TextAlignment.CENTER);
+        label.setAlignment(Pos.CENTER);
+    }
+
+    public void setCoverButtonListener(EventWithIdListener listener) {
+        coverButtonListener = listener;
     }
 }

@@ -8,28 +8,20 @@ import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.helper.xml.Score;
-import pianolearn.diplomskirad.view.BaseView;
 
-public class SongMetadataView extends BaseView {
+public class SongMetadataView extends VBox {
 
-    private final VBox rootPane = new VBox();
     private final Label titleLabel = new Label();
     private final Label artistLabel = new Label();
 
     public SongMetadataView() {
-        setupGUI();
+        setupView();
     }
 
-    @Override
-    protected void addViews() {
-        rootPane.getChildren().addAll(titleLabel, artistLabel);
-        bindToSelf(rootPane);
-    }
-
-    @Override
-    protected void styleViews() {
-        rootPane.setAlignment(Pos.CENTER);
-        rootPane.setPadding(new Insets(0, 20, 0, 20));
+    private void setupView() {
+        getChildren().addAll(titleLabel, artistLabel);
+        setAlignment(Pos.CENTER);
+        setPadding(new Insets(0, 20, 0, 20));
 
         titleLabel.setFont(Fonts.header);
         titleLabel.setTextFill(Colors.text);

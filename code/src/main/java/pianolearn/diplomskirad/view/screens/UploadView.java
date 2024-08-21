@@ -11,9 +11,10 @@ import javafx.scene.text.TextAlignment;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Strings;
-import pianolearn.diplomskirad.helper.StylesHelper;
 import pianolearn.diplomskirad.listener.EventListener;
 import pianolearn.diplomskirad.view.BaseNavigationView;
+
+import static pianolearn.diplomskirad.helper.StyleHelper.*;
 
 public class UploadView extends BaseNavigationView {
 
@@ -31,26 +32,18 @@ public class UploadView extends BaseNavigationView {
     private EventListener confirmButtonListener;
 
     public UploadView() {
-        setupGUI();
+        setupView();
     }
 
-    @Override
-    protected void addViews() {
-        super.addViews();
-        infoFlowPane.getChildren().addAll(infoLabel, chosenFileLabel);
-        actionHBox.getChildren().addAll(confirmButton, orLabel, fileChooserButton);
+    private void setupView() {
+        setCenter(centerVBox);
+
         centerVBox.getChildren().addAll(infoFlowPane, errorLabel, actionHBox);
-        rootPane.setCenter(centerVBox);
-    }
-
-    @Override
-    protected void styleViews() {
-        super.styleViews();
-
         centerVBox.setAlignment(Pos.TOP_CENTER);
         centerVBox.setSpacing(80);
         centerVBox.setPadding(new Insets(150, 20, 0, 20));
 
+        infoFlowPane.getChildren().addAll(infoLabel, chosenFileLabel);
         infoFlowPane.setAlignment(Pos.CENTER);
 
         infoLabel.setFont(Fonts.header);
@@ -67,14 +60,16 @@ public class UploadView extends BaseNavigationView {
         errorLabel.setTextAlignment(TextAlignment.CENTER);
         showNode(errorLabel, false);
 
+        actionHBox.getChildren().addAll(confirmButton, orLabel, fileChooserButton);
         actionHBox.setAlignment(Pos.CENTER);
 
         confirmButton.setFont(Fonts.body);
         confirmButton.setTextFill(Colors.background);
-        confirmButton.setPadding(new Insets(20));
-        StylesHelper.setButtonBackground(confirmButton, Colors.text, Colors.highlight, 20);
+        setButtonBackground(confirmButton, Colors.text, Colors.highlight, 20);
         confirmButton.setText(Strings.confirm);
+        confirmButton.setPadding(new Insets(20));
         showNode(confirmButton, false);
+        confirmButton.setOnAction(e -> confirmButtonListener.onAction());
 
         orLabel.setFont(Fonts.body);
         orLabel.setTextFill(Colors.text);
@@ -84,24 +79,10 @@ public class UploadView extends BaseNavigationView {
 
         fileChooserButton.setFont(Fonts.body);
         fileChooserButton.setTextFill(Colors.background);
-        fileChooserButton.setPadding(new Insets(20));
-        StylesHelper.setButtonBackground(fileChooserButton, Colors.text, Colors.highlight, 20);
+        setButtonBackground(fileChooserButton, Colors.text, Colors.highlight, 20);
         fileChooserButton.setText(Strings.chooseFile);
-    }
-
-    @Override
-    protected void setupActions() {
-        super.setupActions();
+        fileChooserButton.setPadding(new Insets(20));
         fileChooserButton.setOnAction(e -> fileChooserButtonListener.onAction());
-        confirmButton.setOnAction(e -> confirmButtonListener.onAction());
-    }
-
-    public void setFileChooserButtonListener(EventListener listener) {
-        fileChooserButtonListener = listener;
-    }
-
-    public void setConfirmButtonListener(EventListener listener) {
-        confirmButtonListener = listener;
     }
 
     public void setFileChosen(String fileChosen) {
@@ -124,5 +105,13 @@ public class UploadView extends BaseNavigationView {
     public void clearError() {
         errorLabel.setText(Strings.empty);
         showNode(errorLabel, false);
+    }
+
+    public void setFileChooserButtonListener(EventListener listener) {
+        fileChooserButtonListener = listener;
+    }
+
+    public void setConfirmButtonListener(EventListener listener) {
+        confirmButtonListener = listener;
     }
 }

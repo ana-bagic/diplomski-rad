@@ -6,13 +6,13 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import pianolearn.diplomskirad.constants.*;
-import pianolearn.diplomskirad.helper.StylesHelper;
+import pianolearn.diplomskirad.helper.StyleHelper;
 import pianolearn.diplomskirad.listener.EventListener;
-import pianolearn.diplomskirad.view.BaseView;
 
-public class TitleView extends BaseView {
+import static pianolearn.diplomskirad.helper.StyleHelper.*;
 
-    private final VBox rootPane = new VBox();
+public class TitleView extends VBox {
+
     private final Label titleLabel = new Label();
     private final HBox buttonsStackHBox = new HBox();
     private final Button uploadButton = new Button();
@@ -24,46 +24,38 @@ public class TitleView extends BaseView {
     private EventListener settingsButtonListener;
 
     public TitleView() {
-        setupGUI();
+        setupView();
     }
 
-    @Override
-    protected void addViews() {
+    private void setupView() {
+        getChildren().addAll(titleLabel, buttonsStackHBox);
+        setBackground(background(Colors.background, null));
+        setAlignment(Pos.CENTER);
+        setSpacing(70);
+
         buttonsStackHBox.getChildren().addAll(uploadButton, libraryButton, settingsButton);
-        rootPane.getChildren().addAll(titleLabel, buttonsStackHBox);
-        bindToSelf(rootPane);
-    }
-
-    @Override
-    protected void styleViews() {
-        rootPane.setBackground(StylesHelper.background(Colors.background, null));
-        rootPane.setAlignment(Pos.CENTER);
-        rootPane.setSpacing(70);
+        buttonsStackHBox.setAlignment(Pos.CENTER);
+        buttonsStackHBox.setSpacing(50);
 
         titleLabel.setFont(Fonts.title);
         titleLabel.setTextFill(Colors.accent);
         titleLabel.setText(Strings.appTitle);
 
-        buttonsStackHBox.setAlignment(Pos.CENTER);
-        buttonsStackHBox.setSpacing(50);
-
         setupButton(uploadButton, Strings.uploadButtonTooltip, Images.uploadIcon);
-        setupButton(libraryButton, Strings.libraryButtonTooltip, Images.musicLibraryIcon);
-        setupButton(settingsButton, Strings.settingsButtonTooltip, Images.settingsIcon);
-    }
-
-    @Override
-    protected void setupActions() {
         uploadButton.setOnAction(e -> uploadButtonListener.onAction());
+
+        setupButton(libraryButton, Strings.libraryButtonTooltip, Images.musicLibraryIcon);
         libraryButton.setOnAction(e -> libraryButtonListener.onAction());
+
+        setupButton(settingsButton, Strings.settingsButtonTooltip, Images.settingsIcon);
         settingsButton.setOnAction(e -> settingsButtonListener.onAction());
     }
 
     private void setupButton(Button button, String tooltipText, Image image) {
-        StylesHelper.setButtonSize(button, 200);
-        StylesHelper.setButtonBackground(button, Colors.text, Colors.highlight, 20);
-        StylesHelper.setButtonTooltip(button, tooltipText);
-        bindImageToButton(image, button);
+        StyleHelper.setButtonSize(button, 200);
+        StyleHelper.setButtonBackground(button, Colors.text, Colors.highlight, 20);
+        StyleHelper.setButtonImage(button, image);
+        StyleHelper.setButtonTooltip(button, tooltipText);
     }
 
     public void setUploadButtonListener(EventListener listener) {
