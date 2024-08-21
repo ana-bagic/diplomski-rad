@@ -1,6 +1,6 @@
 package pianolearn.diplomskirad.listener;
 
-public interface EventWithIdListener {
+public interface FileChoseListener {
 
     void onAction(String id);
 }

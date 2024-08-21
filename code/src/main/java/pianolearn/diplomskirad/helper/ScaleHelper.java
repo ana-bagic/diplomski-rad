@@ -1,11 +1,10 @@
 package pianolearn.diplomskirad.helper;
 
 import org.audiveris.proxymusic.Pitch;
-import pianolearn.diplomskirad.helper.custom.BidirectionalMap;
 import pianolearn.diplomskirad.helper.xml.BravuraConverter;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
 import pianolearn.diplomskirad.model.score.PitchModel;
-import pianolearn.diplomskirad.model.score.ScoreAttributes;
+import pianolearn.diplomskirad.model.score.AttributesModel;
 import pianolearn.diplomskirad.model.viewmodel.NoteModel;
 
 import java.math.BigDecimal;
@@ -16,9 +15,10 @@ import static pianolearn.diplomskirad.model.score.NoteAlphabet.*;
 public class ScaleHelper {
 
     public static final NoteAlphabet[] ALPHABET = new NoteAlphabet[] {C, CSH, D, DSH, E, F, FSH, G, GSH, A, ASH, B};
-    private static final BidirectionalMap<Integer, NoteAlphabet> NATURALS = BidirectionalMap.ofEntries(
-            Map.entry(0, C), Map.entry(1, D), Map.entry(2, E), Map.entry(3, F),
-            Map.entry(4, G), Map.entry(5, A), Map.entry(6, B)
+
+    private static final Map<NoteAlphabet, Integer> NATURALS = Map.ofEntries(
+            Map.entry(C, 0), Map.entry(D, 1), Map.entry(E, 2), Map.entry(F, 3),
+            Map.entry(G, 4), Map.entry(A, 5), Map.entry(B, 6)
     );
 
     private static final List<Integer> sharpAccidentalTreblePositions = List.of(4, 1, 5, 2, -1, 3, 0);
@@ -66,8 +66,8 @@ public class ScaleHelper {
     }
 
     public static int getInterval(PitchModel first, PitchModel last) {
-        int startNoteIndex = NATURALS.getFromValue(first.key());
-        int endNoteIndex = NATURALS.getFromValue(last.key());
+        int startNoteIndex = NATURALS.get(first.key());
+        int endNoteIndex = NATURALS.get(last.key());
 
         int interval = 0;
 
@@ -98,7 +98,7 @@ public class ScaleHelper {
         }
     }
 
-    public static void setNoteModelPitch(NoteModel noteModel, Pitch pitch, boolean trebleClef, ScoreAttributes attributes) {
+    public static void setNoteModelPitch(NoteModel noteModel, Pitch pitch, boolean trebleClef, AttributesModel attributes) {
         PitchModel pitchModel = ScaleHelper.getPitchWithAlter(pitch);
         NoteAlphabet note = pitchModel.key();
 

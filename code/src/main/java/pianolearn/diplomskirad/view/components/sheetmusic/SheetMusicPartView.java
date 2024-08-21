@@ -5,7 +5,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import pianolearn.diplomskirad.constants.Colors;
-import pianolearn.diplomskirad.listener.PlayNotesListener;
+import pianolearn.diplomskirad.listener.NotesPlayListener;
 import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
 import pianolearn.diplomskirad.model.viewmodel.MusicNodeModel;
 
@@ -23,7 +23,7 @@ public class SheetMusicPartView extends StackPane {
     private final Pane controlLineContainer = new Pane();
     private final Rectangle controlLine = new Rectangle();
 
-    private PlayNotesListener  playNotesListener;
+    private NotesPlayListener notesPlayListener;
 
     public SheetMusicPartView() {
         setupView();
@@ -41,11 +41,6 @@ public class SheetMusicPartView extends StackPane {
             staffView.getChildren().add(line);
         }
         staffView.getChildren().add(clefTimeKeyView);
-        staffView.setMinHeight(STAFF_HEIGHT);
-        staffView.setMaxHeight(STAFF_HEIGHT);
-
-        notesView.setMinHeight(STAFF_HEIGHT);
-        notesView.setMaxHeight(STAFF_HEIGHT);
 
         controlLineContainer.getChildren().add(controlLine);
 
@@ -62,7 +57,7 @@ public class SheetMusicPartView extends StackPane {
 
     public void addMeasure(List<MusicNodeModel> measure, double measureStartX) {
         MeasureView measureView = new MeasureView(measure);
-        measureView.setPlayNotesListener(playNotesListener);
+        measureView.setPlayNotesListener(notesPlayListener);
         measureViews.add(measureView);
         notesView.getChildren().add(measureView);
         measureView.setLayoutX(measureStartX);
@@ -86,7 +81,7 @@ public class SheetMusicPartView extends StackPane {
         notesView.getChildren().clear();
     }
 
-    public void setPlayNotesListener(PlayNotesListener listener) {
-        playNotesListener = listener;
+    public void setNotesPlayListener(NotesPlayListener listener) {
+        notesPlayListener = listener;
     }
 }

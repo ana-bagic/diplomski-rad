@@ -2,6 +2,9 @@ package pianolearn.diplomskirad.helper.midi;
 
 import javax.sound.midi.*;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import static pianolearn.diplomskirad.constants.Config.*;
 
 public class Metronome implements Runnable {
@@ -9,25 +12,28 @@ public class Metronome implements Runnable {
     private Synthesizer synthesizer;
     private MidiChannel channel;
 
+    private Timer timer;
+    private int beatCounter;
+
     private long interval;
     private int beats;
 
     @Override
     public void run() {
-        try {
-            start();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void start() throws InterruptedException {
-        for (int i = 0; i < beats; i++) {
-            int sound = i == 0 ? METRONOME_ACCENT_SOUND : METRONOME_SOUND;
-            channel.noteOn(sound, METRONOME_VOLUME);
-            Thread.sleep(interval);
-            channel.noteOff(sound);
-        }
+        beatCounter = 0;
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (beatCounter < beats) {
+                    int sound = beatCounter == 0 ? METRONOME_ACCENT_SOUND : METRONOME_SOUND;
+                    channel.noteOn(sound, METRONOME_VOLUME);
+                    beatCounter++;
+                } else {
+                    timer.cancel();
+                }
+            }
+        }, 0, interval);
     }
 
     public void open() throws MidiUnavailableException {
@@ -42,6 +48,9 @@ public class Metronome implements Runnable {
 
     public void close() {
         synthesizer.close();
+        if (timer != null) {
+            timer.cancel();
+        }
     }
 
     public void setInterval(long interval) {

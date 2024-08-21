@@ -2,7 +2,7 @@ package pianolearn.diplomskirad.model.score;
 
 import java.util.Set;
 
-public record ScoreAttributes(
+public record AttributesModel(
 
         boolean isRightHandTreble,
         boolean isLeftHandTreble,

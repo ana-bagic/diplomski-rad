@@ -33,7 +33,6 @@ public class Config {
     public static final double TICK_DURATION_MS = 30;
 
     // keyboard
-    public static final boolean KEYBOARD_CONNECTED = false;
     public static final KeyboardModel KEYBOARD_DISPLAY_MODEL =
             new KeyboardModel(new PitchModel(NoteAlphabet.A, 0), new PitchModel(NoteAlphabet.C, 8));
 

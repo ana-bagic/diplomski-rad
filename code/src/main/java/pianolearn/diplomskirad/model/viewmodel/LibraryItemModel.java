@@ -2,7 +2,7 @@ package pianolearn.diplomskirad.model.viewmodel;
 
 import javafx.scene.image.Image;
 
-public record LibraryItem(
+public record LibraryItemModel(
 
         String songName,
         String artist,

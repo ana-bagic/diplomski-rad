@@ -27,7 +27,7 @@ public class LibraryViewController implements BaseViewController {
 
     private void setupListeners() {
         view.setBackButtonListener(NavigationController.INSTANCE::pop);
-        view.setCoverButtonListeners(this::chooseSong);
+        view.setFileChoseListeners(this::chooseSong);
     }
 
     private void chooseSong(String fileName) {

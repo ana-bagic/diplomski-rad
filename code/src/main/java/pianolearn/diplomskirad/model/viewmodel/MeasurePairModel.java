@@ -2,7 +2,7 @@ package pianolearn.diplomskirad.model.viewmodel;
 
 import java.util.List;
 
-public class MeasurePair {
+public class MeasurePairModel {
 
     private final boolean hasBothHands;
     private final List<MusicNodeModel> rightHandMeasure;
@@ -11,7 +11,7 @@ public class MeasurePair {
     private double notesWidthWithoutLast;
     private List<MusicNodeModel> mainHand;
 
-    public MeasurePair(boolean hasBothHands, List<MusicNodeModel> rightHandMeasure, List<MusicNodeModel> leftHandMeasure) {
+    public MeasurePairModel(boolean hasBothHands, List<MusicNodeModel> rightHandMeasure, List<MusicNodeModel> leftHandMeasure) {
         this.hasBothHands = hasBothHands;
         this.rightHandMeasure = rightHandMeasure;
         this.leftHandMeasure = leftHandMeasure;

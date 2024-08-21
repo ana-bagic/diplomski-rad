@@ -4,7 +4,7 @@ import pianolearn.diplomskirad.model.score.PitchModel;
 
 import java.util.List;
 
-public interface PlayNotesListener {
+public interface NotesPlayListener {
 
     void onAction(List<PitchModel> pitches);
 }

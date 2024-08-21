@@ -4,13 +4,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import pianolearn.diplomskirad.controller.NavigationController;
+import pianolearn.diplomskirad.helper.ScaleHelper;
 import pianolearn.diplomskirad.model.KeyboardModel;
-import pianolearn.diplomskirad.model.score.KeyIterator;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
 import pianolearn.diplomskirad.model.score.PitchModel;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
 import static pianolearn.diplomskirad.constants.Config.*;
 
@@ -37,24 +36,25 @@ public class PianoKeyboardView extends StackPane {
 
         getChildren().addAll(whiteKeysHBox, blackKeysHBox);
 
-        Iterator<PitchModel> keysIterator = new KeyIterator(model.getFirstPitch(), model.getLastPitch());
+        PitchModel pitch = model.getFirstPitch();
         boolean isCurrentWhite = true;
         NoteAlphabet lastWhiteKey = null;
         int i = 0;
 
-        while (keysIterator.hasNext()) {
+        while (pitch.lessThanOrEquals(model.getLastPitch())) {
             if (isCurrentWhite) {
                 PianoKeyView key = PianoKeyView.whiteKey();
                 whiteKeysHBox.getChildren().add(key);
                 keys[i] = key;
 
-                PitchModel pitch = keysIterator.next();
                 lastWhiteKey = pitch.key();
                 keysMap.put(pitch.toString(), key);
 
                 if (pitch.key() == NoteAlphabet.C) {
                     key.addLabel(pitch.toString());
                 }
+
+                pitch = ScaleHelper.adjustPitch(pitch.key().getChromaNumber(), pitch.octave(), 1);
             } else {
                 PianoKeyView key = PianoKeyView.blackKey();
                 blackKeysHBox.getChildren().add(key);
@@ -63,8 +63,8 @@ public class PianoKeyboardView extends StackPane {
                 if (lastWhiteKey == NoteAlphabet.E || lastWhiteKey == NoteAlphabet.B) {
                     key.setVisible(false);
                 } else {
-                    String keyCode = keysIterator.next().toString();
-                    keysMap.put(keyCode, key);
+                    keysMap.put(pitch.toString(), key);
+                    pitch = ScaleHelper.adjustPitch(pitch.key().getChromaNumber(), pitch.octave(), 1);
                 }
             }
 

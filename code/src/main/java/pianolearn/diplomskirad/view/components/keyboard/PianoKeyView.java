@@ -40,6 +40,7 @@ public class PianoKeyView extends StackPane {
         PianoKeyView key = new PianoKeyView();
         key.isWhite = false;
         key.rectangle.setFill(Colors.blackKey);
+        key.rectangle.setStroke(Colors.blackKey);
         return key;
     }
 

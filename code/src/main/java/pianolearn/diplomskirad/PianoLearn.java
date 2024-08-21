@@ -17,7 +17,7 @@ public class PianoLearn extends Application {
     public void start(Stage stage) {
         stage.setTitle(Strings.appTitle);
         stage.setMinWidth(1000);
-        stage.setMinHeight(800);
+        stage.setMinHeight(850);
 
         NavigationController.INSTANCE.init(stage, new TitleViewController());
 

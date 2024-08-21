@@ -4,10 +4,10 @@ import javafx.scene.layout.Pane;
 import org.audiveris.proxymusic.ScorePartwise;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.helper.xml.Score;
-import pianolearn.diplomskirad.listener.MeasurePairCreatedListener;
-import pianolearn.diplomskirad.listener.PlayNotesListener;
-import pianolearn.diplomskirad.model.score.ScoreAttributes;
-import pianolearn.diplomskirad.model.viewmodel.MeasurePair;
+import pianolearn.diplomskirad.listener.MeasurePairCreateListener;
+import pianolearn.diplomskirad.listener.NotesPlayListener;
+import pianolearn.diplomskirad.model.score.AttributesModel;
+import pianolearn.diplomskirad.model.viewmodel.MeasurePairModel;
 import pianolearn.diplomskirad.view.components.sheetmusic.SheetMusicView;
 
 import java.util.List;
@@ -17,13 +17,13 @@ public class SheetMusicController implements BaseViewController {
     private final SheetMusicView view = new SheetMusicView();
 
     private final ScorePartwise.Part part;
-    private final ScoreAttributes attributes;
+    private final AttributesModel attributes;
 
     private int nextDisplayMeasureIndex = 0;
 
-    private MeasurePairCreatedListener measurePairCreatedListener;
+    private MeasurePairCreateListener measurePairCreateListener;
 
-    public SheetMusicController(ScorePartwise.Part part, ScoreAttributes attributes) {
+    public SheetMusicController(ScorePartwise.Part part, AttributesModel attributes) {
         this.part = part;
         this.attributes = attributes;
 
@@ -53,12 +53,12 @@ public class SheetMusicController implements BaseViewController {
         if (part == null) return;
 
         List<ScorePartwise.Part.Measure> measures = part.getMeasure();
-        MeasurePair measurePair = null;
+        MeasurePairModel measurePair = null;
 
         if (nextDisplayMeasureIndex < measures.size()) {
             ScorePartwise.Part.Measure measure = measures.get(nextDisplayMeasureIndex++);
             measurePair = Score.measures(measure, attributes);
-            measurePairCreatedListener.onAction(measurePair);
+            measurePairCreateListener.onAction(measurePair);
         }
 
         if (measurePair == null) return;
@@ -83,11 +83,11 @@ public class SheetMusicController implements BaseViewController {
         view.translateMeasures(amount);
     }
 
-    public void setMeasurePairCreatedListener(MeasurePairCreatedListener listener) {
-        measurePairCreatedListener = listener;
+    public void setMeasurePairCreateListener(MeasurePairCreateListener listener) {
+        measurePairCreateListener = listener;
     }
 
-    public void setPlayNotesListeners(PlayNotesListener rightHandListener, PlayNotesListener leftHandListener) {
-        view.setPlayNotesListeners(rightHandListener, leftHandListener);
+    public void setNotesPlayListeners(NotesPlayListener rightHandListener, NotesPlayListener leftHandListener) {
+        view.setNotesPlayListeners(rightHandListener, leftHandListener);
     }
 }

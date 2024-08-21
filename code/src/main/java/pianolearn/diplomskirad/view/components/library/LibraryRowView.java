@@ -5,8 +5,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
-import pianolearn.diplomskirad.listener.EventWithIdListener;
-import pianolearn.diplomskirad.model.viewmodel.LibraryItem;
+import pianolearn.diplomskirad.listener.FileChoseListener;
+import pianolearn.diplomskirad.model.viewmodel.LibraryItemModel;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,8 +18,8 @@ public class LibraryRowView extends HBox {
 
     private double rowPrefHeight;
 
-    public LibraryRowView(LibraryItem[] items) {
-        for (LibraryItem item : items) {
+    public LibraryRowView(LibraryItemModel[] items) {
+        for (LibraryItemModel item : items) {
             LibraryRowItemView view = new LibraryRowItemView(item);
             rowItems.add(view);
             rowPrefHeight = view.getPrefHeight();
@@ -44,9 +44,9 @@ public class LibraryRowView extends HBox {
         rowLabel.setText(label);
     }
 
-    public void setCoverButtonListeners(EventWithIdListener listener) {
+    public void setFileChoseListeners(FileChoseListener listener) {
         for (LibraryRowItemView view : rowItems) {
-            view.setCoverButtonListener(listener);
+            view.setFileChoseListener(listener);
         }
     }
 }

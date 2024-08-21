@@ -1,15 +1,14 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.helper.StyleHelper;
 import pianolearn.diplomskirad.listener.EventListener;
-import pianolearn.diplomskirad.listener.PlayNotesListener;
+import pianolearn.diplomskirad.listener.NotesPlayListener;
 import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
-import pianolearn.diplomskirad.model.viewmodel.MeasurePair;
+import pianolearn.diplomskirad.model.viewmodel.MeasurePairModel;
 import pianolearn.diplomskirad.view.components.SongMetadataView;
 
 import static pianolearn.diplomskirad.constants.Config.MEASURE_START_X;
@@ -38,8 +37,6 @@ public class SheetMusicView extends VBox {
 
         sheetMusicVBox.getChildren().addAll(rightHandPartView, leftHandPartView);
         sheetMusicVBox.setBackground(StyleHelper.background(Colors.text, null));
-        sheetMusicVBox.setSpacing(50);
-        sheetMusicVBox.setPadding(new Insets(40, 0, 40, 0));
     }
 
     public void showPart(boolean rightHandPart, boolean show) {
@@ -54,7 +51,7 @@ public class SheetMusicView extends VBox {
         }
     }
 
-    public void addMeasure(MeasurePair measurePair) {
+    public void addMeasure(MeasurePairModel measurePair) {
         rightHandPartView.addMeasure(measurePair.getRightHandMeasure(), lastMeasureEnd);
         if (measurePair.hasBothHands()) {
             leftHandPartView.addMeasure(measurePair.getLeftHandMeasure(), lastMeasureEnd);
@@ -93,8 +90,8 @@ public class SheetMusicView extends VBox {
         newMeasureNeededListener = listener;
     }
 
-    public void setPlayNotesListeners(PlayNotesListener rightHandListener, PlayNotesListener leftHandListener) {
-        rightHandPartView.setPlayNotesListener(rightHandListener);
-        leftHandPartView.setPlayNotesListener(leftHandListener);
+    public void setNotesPlayListeners(NotesPlayListener rightHandListener, NotesPlayListener leftHandListener) {
+        rightHandPartView.setNotesPlayListener(rightHandListener);
+        leftHandPartView.setNotesPlayListener(leftHandListener);
     }
 }

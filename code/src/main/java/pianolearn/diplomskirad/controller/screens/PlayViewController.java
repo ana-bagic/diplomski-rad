@@ -13,8 +13,8 @@ import pianolearn.diplomskirad.helper.TempoHelper;
 import pianolearn.diplomskirad.helper.midi.Metronome;
 import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
-import pianolearn.diplomskirad.model.score.ScoreAttributes;
-import pianolearn.diplomskirad.model.viewmodel.MeasurePair;
+import pianolearn.diplomskirad.model.score.AttributesModel;
+import pianolearn.diplomskirad.model.viewmodel.MeasurePairModel;
 import pianolearn.diplomskirad.view.screens.PlayView;
 
 import javax.sound.midi.MidiUnavailableException;
@@ -30,7 +30,7 @@ public class PlayViewController implements BaseViewController {
     private final SheetMusicController sheetMusicController;
     private final PianoKeyboardController pianoKeyboardController;
 
-    private final ScoreAttributes attributes;
+    private final AttributesModel attributes;
     private final long durationOfBeatUnit;
     private double actualDurationOfBeatUnit;
     private double actualDurationOfQuarter;
@@ -38,7 +38,7 @@ public class PlayViewController implements BaseViewController {
     private Metronome metronome = new Metronome();
     Thread metronomeThread;
 
-    private final List<MeasurePair> measurePairs = new LinkedList<>();
+    private final List<MeasurePairModel> measurePairs = new LinkedList<>();
     private int nextPlayMeasureIndex;
     private boolean isBeginningOfMeasure;
     private double durationOfLast;
@@ -97,8 +97,8 @@ public class PlayViewController implements BaseViewController {
         view.setRightHandButtonListener(this::rightHandButtonClicked);
         view.setLeftHandButtonListener(this::leftHandButtonClicked);
 
-        sheetMusicController.setMeasurePairCreatedListener(measurePairs::add);
-        sheetMusicController.setPlayNotesListeners(
+        sheetMusicController.setMeasurePairCreateListener(measurePairs::add);
+        sheetMusicController.setNotesPlayListeners(
                 pianoKeyboardController::playNotesRightHand, pianoKeyboardController::playNotesLeftHand);
 
         NavigationController.INSTANCE.getStage().setOnCloseRequest(e -> metronome.close());
@@ -187,7 +187,7 @@ public class PlayViewController implements BaseViewController {
             metronomeThread = new Thread(metronome);
             metronomeThread.start();
         } else {
-            MeasurePair measurePair = measurePairs.get(nextPlayMeasureIndex);
+            MeasurePairModel measurePair = measurePairs.get(nextPlayMeasureIndex);
             double notesWidthWithoutLast = measurePair.getNotesWidthWithoutLast();
 
             if (isBeginningOfMeasure) {

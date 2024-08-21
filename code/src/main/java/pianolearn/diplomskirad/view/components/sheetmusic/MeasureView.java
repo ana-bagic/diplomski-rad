@@ -2,7 +2,7 @@ package pianolearn.diplomskirad.view.components.sheetmusic;
 
 import javafx.scene.layout.Pane;
 import pianolearn.diplomskirad.constants.Colors;
-import pianolearn.diplomskirad.listener.PlayNotesListener;
+import pianolearn.diplomskirad.listener.NotesPlayListener;
 import pianolearn.diplomskirad.model.viewmodel.MusicNodeModel;
 
 import java.util.LinkedList;
@@ -16,7 +16,7 @@ public class MeasureView extends Pane {
     private final MusicNodeView barLineNode = new MusicNodeView();
     private final List<MusicNodeView> nodeViews = new LinkedList<>();
 
-    private PlayNotesListener playNotesListener;
+    private NotesPlayListener notesPlayListener;
 
     public MeasureView(List<MusicNodeModel> measure) {
         setupView();
@@ -25,6 +25,8 @@ public class MeasureView extends Pane {
 
     private void setupView() {
         getChildren().add(barLineNode);
+        setMinHeight(STAFF_HEIGHT);
+        setMaxHeight(STAFF_HEIGHT);
 
         barLineNode.setText(barLine);
 
@@ -51,12 +53,12 @@ public class MeasureView extends Pane {
                 node.setColor(Colors.notesFaded);
             } else if (nodeX < CONTROL_LINE_X + CONTROL_LINE_WIDTH && node != barLineNode) {
                 node.setColor(Colors.highlight);
-                playNotesListener.onAction(node.getPitches());
+                notesPlayListener.onAction(node.getPitches());
             }
         }
     }
 
-    public void setPlayNotesListener(PlayNotesListener listener) {
-        playNotesListener = listener;
+    public void setPlayNotesListener(NotesPlayListener listener) {
+        notesPlayListener = listener;
     }
 }

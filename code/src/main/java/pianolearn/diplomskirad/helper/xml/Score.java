@@ -4,7 +4,7 @@ import org.audiveris.proxymusic.*;
 import pianolearn.diplomskirad.helper.ScaleHelper;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
 import pianolearn.diplomskirad.model.score.NoteType;
-import pianolearn.diplomskirad.model.score.ScoreAttributes;
+import pianolearn.diplomskirad.model.score.AttributesModel;
 import pianolearn.diplomskirad.model.viewmodel.*;
 
 import javax.xml.bind.JAXBElement;
@@ -78,7 +78,7 @@ public class Score {
         return null;
     }
 
-    public static ScoreAttributes scoreAttributes(ScorePartwise.Part part) {
+    public static AttributesModel scoreAttributes(ScorePartwise.Part part) {
         Attributes attributes = attributes(part);
         if (attributes == null) return null;
 
@@ -147,11 +147,11 @@ public class Score {
             }
         }
 
-        return new ScoreAttributes(isRightHandTreble, isLeftHandTreble,
+        return new AttributesModel(isRightHandTreble, isLeftHandTreble,
                 beats, beatUnit, bpm, beatUnitTempo, divisions, fifths, scale, staves);
     }
 
-    public static ClefTimeKeyModel clefTimeKey(ScoreAttributes attributes, boolean rightHand) {
+    public static ClefTimeKeyModel clefTimeKey(AttributesModel attributes, boolean rightHand) {
         String clef = trebleClef;
         String beats = time4;
         String beatsUnit = time4;
@@ -197,7 +197,7 @@ public class Score {
         return null;
     }
 
-    public static MeasurePair measures(ScorePartwise.Part.Measure measure, ScoreAttributes attributes) {
+    public static MeasurePairModel measures(ScorePartwise.Part.Measure measure, AttributesModel attributes) {
         if (measure == null) return null;
 
         LinkedList<Object> nbfList = new LinkedList<>(measure.getNoteOrBackupOrForward());
@@ -206,13 +206,13 @@ public class Score {
         boolean hasBothHands = !nbfList.isEmpty();
         List<MusicNodeModel> leftHandMeasure = hasBothHands ? measureModel(nbfList, false, attributes) : Collections.emptyList();
 
-        MeasurePair measurePair = new MeasurePair(hasBothHands, rightHandMeasure, leftHandMeasure);
+        MeasurePairModel measurePair = new MeasurePairModel(hasBothHands, rightHandMeasure, leftHandMeasure);
         calculateDistances(measurePair);
 
         return measurePair;
     }
 
-    private static List<MusicNodeModel> measureModel(LinkedList<Object> nbfList, boolean rightHand, ScoreAttributes attributes) {
+    private static List<MusicNodeModel> measureModel(LinkedList<Object> nbfList, boolean rightHand, AttributesModel attributes) {
         boolean isTreble = rightHand ? attributes.isRightHandTreble() : attributes.isLeftHandTreble();
 
         List<MusicNodeModel> nodes = new LinkedList<>();
@@ -262,7 +262,7 @@ public class Score {
         return nodes;
     }
 
-    private static NoteModel noteModel(Note note, boolean trebleClef, ScoreAttributes attributes) {
+    private static NoteModel noteModel(Note note, boolean trebleClef, AttributesModel attributes) {
         if (note.getType() == null) return null;
         String noteType = note.getType().getValue();
 
@@ -292,7 +292,7 @@ public class Score {
         return stem.getValue().value().equalsIgnoreCase("up");
     }
 
-    private static void calculateDistances(MeasurePair measurePair) {
+    private static void calculateDistances(MeasurePairModel measurePair) {
         List<MusicNodeModel> rightHand = measurePair.getRightHandMeasure();
         List<MusicNodeModel> leftHand = measurePair.getLeftHandMeasure();
         if (rightHand.isEmpty()) return;
@@ -326,7 +326,7 @@ public class Score {
         }
     }
 
-    private static void setMainHand(MeasurePair measurePair) {
+    private static void setMainHand(MeasurePairModel measurePair) {
         if (measurePair.hasBothHands()) {
             int rightLastDuration = measurePair.getRightHandMeasure().getLast().getDuration();
             int leftLastDuration = measurePair.getLeftHandMeasure().getLast().getDuration();

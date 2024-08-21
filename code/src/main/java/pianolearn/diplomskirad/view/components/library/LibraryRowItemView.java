@@ -11,8 +11,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
-import pianolearn.diplomskirad.listener.EventWithIdListener;
-import pianolearn.diplomskirad.model.viewmodel.LibraryItem;
+import pianolearn.diplomskirad.listener.FileChoseListener;
+import pianolearn.diplomskirad.model.viewmodel.LibraryItemModel;
 
 import static pianolearn.diplomskirad.helper.StyleHelper.*;
 
@@ -26,9 +26,9 @@ public class LibraryRowItemView extends VBox {
 
     private final String fileName;
 
-    private EventWithIdListener coverButtonListener;
+    private FileChoseListener fileChoseListener;
 
-    public LibraryRowItemView(LibraryItem item) {
+    public LibraryRowItemView(LibraryItemModel item) {
         songNameLabel.setText(item.songName());
         artistNameLabel.setText(item.artist());
         coverImageView.setImage(item.coverImage());
@@ -47,7 +47,7 @@ public class LibraryRowItemView extends VBox {
 
         setButtonSize(coverButton, 160);
         setButtonBackground(coverButton, Colors.text, Colors.highlight, 20);
-        coverButton.setOnAction(e -> coverButtonListener.onAction(fileName));
+        coverButton.setOnAction(e -> fileChoseListener.onAction(fileName));
 
         setImageViewSizeAndRadius(coverImageView, 130, 130);
         coverImageView.setMouseTransparent(true);
@@ -65,7 +65,7 @@ public class LibraryRowItemView extends VBox {
         label.setAlignment(Pos.CENTER);
     }
 
-    public void setCoverButtonListener(EventWithIdListener listener) {
-        coverButtonListener = listener;
+    public void setFileChoseListener(FileChoseListener listener) {
+        fileChoseListener = listener;
     }
 }

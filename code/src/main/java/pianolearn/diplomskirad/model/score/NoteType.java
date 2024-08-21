@@ -17,10 +17,6 @@ public enum NoteType {
         this.type = type;
     }
 
-    public String getType() {
-        return type;
-    }
-
     public static NoteType fromType(String type) {
         for (NoteType noteType : NoteType.values()) {
             if (noteType.getType().equalsIgnoreCase(type)) {
@@ -28,5 +24,9 @@ public enum NoteType {
             }
         }
         return OTHER;
+    }
+
+    public String getType() {
+        return type;
     }
 }

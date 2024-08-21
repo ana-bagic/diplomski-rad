@@ -9,8 +9,8 @@ import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.helper.StyleHelper;
-import pianolearn.diplomskirad.listener.EventWithIdListener;
-import pianolearn.diplomskirad.model.viewmodel.LibraryItem;
+import pianolearn.diplomskirad.listener.FileChoseListener;
+import pianolearn.diplomskirad.model.viewmodel.LibraryItemModel;
 import pianolearn.diplomskirad.view.BaseNavigationView;
 import pianolearn.diplomskirad.view.components.library.LibraryRowView;
 
@@ -23,7 +23,7 @@ public class LibraryView extends BaseNavigationView {
     private final LibraryRowView classicalRowView;
     private final LibraryRowView modernRowView;
 
-    public LibraryView(LibraryItem[] classicalSongs, LibraryItem[] modernSongs) {
+    public LibraryView(LibraryItemModel[] classicalSongs, LibraryItemModel[] modernSongs) {
         classicalRowView = new LibraryRowView(classicalSongs);
         modernRowView = new LibraryRowView(modernSongs);
         setupView();
@@ -55,8 +55,8 @@ public class LibraryView extends BaseNavigationView {
         modernRowView.setLabel(Strings.modernRow);
     }
 
-    public void setCoverButtonListeners(EventWithIdListener listener) {
-        classicalRowView.setCoverButtonListeners(listener);
-        modernRowView.setCoverButtonListeners(listener);
+    public void setFileChoseListeners(FileChoseListener listener) {
+        classicalRowView.setFileChoseListeners(listener);
+        modernRowView.setFileChoseListeners(listener);
     }
 }
