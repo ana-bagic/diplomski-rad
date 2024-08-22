@@ -23,7 +23,7 @@ public class Config {
 
     public static final double ATTRIBUTES_SPACE = 15;
     public static final double BARLINE_NOTE_SPACE = 30;
-    public static final double NOTE_NOTE_SPACE = 60;
+    public static final double NOTE_NOTE_SPACE = 70;
 
     public static final double CONTROL_LINE_X = 500;
     public static final double CONTROL_LINE_WIDTH = 30;

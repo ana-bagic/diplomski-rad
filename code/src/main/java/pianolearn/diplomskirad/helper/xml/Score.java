@@ -1,10 +1,12 @@
 package pianolearn.diplomskirad.helper.xml;
 
 import org.audiveris.proxymusic.*;
+import pianolearn.diplomskirad.helper.BravuraHelper;
 import pianolearn.diplomskirad.helper.ScaleHelper;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
 import pianolearn.diplomskirad.model.score.NoteType;
 import pianolearn.diplomskirad.model.score.AttributesModel;
+import pianolearn.diplomskirad.model.score.PitchModel;
 import pianolearn.diplomskirad.model.viewmodel.*;
 
 import javax.xml.bind.JAXBElement;
@@ -15,7 +17,6 @@ import java.math.BigInteger;
 import java.util.*;
 
 import static pianolearn.diplomskirad.constants.Config.*;
-import static pianolearn.diplomskirad.constants.SheetMusicSymbols.*;
 
 public class Score {
 
@@ -151,27 +152,6 @@ public class Score {
                 beats, beatUnit, bpm, beatUnitTempo, divisions, fifths, scale, staves);
     }
 
-    public static ClefTimeKeyModel clefTimeKey(AttributesModel attributes, boolean rightHand) {
-        String clef = trebleClef;
-        String beats = time4;
-        String beatsUnit = time4;
-        List<Integer> accidentalPositions = Collections.emptyList();
-        String accidental = sharp;
-
-        if (attributes == null) return new ClefTimeKeyModel(clef, beats, beatsUnit, accidentalPositions, accidental);
-
-        boolean isHandTreble = rightHand ? attributes.isRightHandTreble() : attributes.isLeftHandTreble();
-        clef = BravuraConverter.getBravuraClef(isHandTreble);
-        beats = BravuraConverter.getBravuraTime(attributes.beats());
-        beatsUnit = BravuraConverter.getBravuraTime(attributes.beatUnit());
-
-        int fifths = attributes.fifths();
-        accidentalPositions = ScaleHelper.getAccidentalPositions(fifths, isHandTreble);
-        accidental = BravuraConverter.getBravuraAccidentalFromFifths(fifths);
-
-        return new ClefTimeKeyModel(clef, beats, beatsUnit, accidentalPositions, accidental);
-    }
-
     public static String title() {
         ScorePartwise score = XMLConverter.INSTANCE.getScore();
         if (score == null) return null;
@@ -197,7 +177,7 @@ public class Score {
         return null;
     }
 
-    public static MeasurePairModel measures(ScorePartwise.Part.Measure measure, AttributesModel attributes) {
+    public static MeasurePairModel measurePair(ScorePartwise.Part.Measure measure, AttributesModel attributes) {
         if (measure == null) return null;
 
         LinkedList<Object> nbfList = new LinkedList<>(measure.getNoteOrBackupOrForward());
@@ -252,8 +232,7 @@ public class Score {
                 musicNodeModel.addNote(noteModel, duration);
 
                 isNextNoteInChord = false;
-            } else if (nbf instanceof Backup backup) {
-                int duration = backup.getDuration().intValue();
+            } else if (nbf instanceof Backup) {
                 isNextNoteInChord = true;
             }
         }
@@ -262,28 +241,37 @@ public class Score {
         return nodes;
     }
 
-    private static NoteModel noteModel(Note note, boolean trebleClef, AttributesModel attributes) {
+    private static NoteModel noteModel(Note note, boolean isTreble, AttributesModel attributes) {
         if (note.getType() == null) return null;
         String noteType = note.getType().getValue();
 
         Pitch pitch = note.getPitch();
         if (pitch != null) {
-            String type = BravuraConverter.getBravuraNote(noteType, isStemUp(note));
-            String dot = BravuraConverter.getBravuraDot(note.getDot().size());
+            String type = BravuraHelper.getBravuraNote(noteType, isStemUp(note));
+            String dot = BravuraHelper.getBravuraDot(note.getDot().size());
 
             NoteModel noteModel = new NoteModel(type);
             noteModel.setDot(dot);
 
-            ScaleHelper.setNoteModelPitch(noteModel, pitch, trebleClef, attributes);
+            PitchModel pitchModel = pitchModel(pitch);
+            ScaleHelper.setNoteModelPitch(noteModel, pitchModel, isTreble, attributes);
             return noteModel;
         }
 
         if (note.getRest() != null) {
-            String type = BravuraConverter.getBravuraRest(noteType);
+            String type = BravuraHelper.getBravuraRest(noteType);
             return new NoteModel(type);
         }
 
         return null;
+    }
+
+    private static PitchModel pitchModel(Pitch pitch) {
+        NoteAlphabet step = NoteAlphabet.fromStep(pitch.getStep());
+        BigDecimal alter = pitch.getAlter();
+        int accidental = alter == null ? 0 : alter.intValue();
+
+        return ScaleHelper.adjustPitch(step, pitch.getOctave(), accidental);
     }
 
     private static boolean isStemUp(Note note) {

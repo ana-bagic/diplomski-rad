@@ -24,6 +24,11 @@ public class StyleHelper {
         return new Background(new BackgroundFill(color, backgroundRadius, Insets.EMPTY));
     }
 
+    public static void showNode(Node node, boolean visible) {
+        node.setVisible(visible);
+        node.setManaged(visible);
+    }
+
     public static void setButtonSize(Button button, double size) {
         button.setMinSize(size, size);
         button.setMaxSize(size, size);
@@ -71,7 +76,7 @@ public class StyleHelper {
         imageView.setClip(clip);
     }
 
-    public static void setupLabelSlider(Slider slider, PlaybackSpeed[] speeds) {
+    public static void setupSlider(Slider slider, PlaybackSpeed[] speeds) {
         slider.setMin(0);
         slider.setMax(speeds.length - 1);
         slider.setValue(0);
@@ -104,10 +109,5 @@ public class StyleHelper {
         int b = (int) (color.getBlue() * 255);
 
         return String.format("#%02X%02X%02X", r, g, b);
-    }
-
-    public static void showNode(Node node, boolean visible) {
-        node.setVisible(visible);
-        node.setManaged(visible);
     }
 }

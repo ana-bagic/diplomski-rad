@@ -41,7 +41,7 @@ public class PianoKeyboardView extends StackPane {
         NoteAlphabet lastWhiteKey = null;
         int i = 0;
 
-        while (pitch.lessThanOrEquals(model.getLastPitch())) {
+        while (pitch.compareTo(model.getLastPitch()) <= 0) {
             if (isCurrentWhite) {
                 PianoKeyView key = PianoKeyView.whiteKey();
                 whiteKeysHBox.getChildren().add(key);
@@ -54,7 +54,7 @@ public class PianoKeyboardView extends StackPane {
                     key.addLabel(pitch.toString());
                 }
 
-                pitch = ScaleHelper.adjustPitch(pitch.key().getChromaNumber(), pitch.octave(), 1);
+                pitch = ScaleHelper.adjustPitch(pitch.key(), pitch.octave(), 1);
             } else {
                 PianoKeyView key = PianoKeyView.blackKey();
                 blackKeysHBox.getChildren().add(key);
@@ -64,7 +64,7 @@ public class PianoKeyboardView extends StackPane {
                     key.setVisible(false);
                 } else {
                     keysMap.put(pitch.toString(), key);
-                    pitch = ScaleHelper.adjustPitch(pitch.key().getChromaNumber(), pitch.octave(), 1);
+                    pitch = ScaleHelper.adjustPitch(pitch.key(), pitch.octave(), 1);
                 }
             }
 

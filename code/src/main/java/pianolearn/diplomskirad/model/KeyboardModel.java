@@ -10,8 +10,8 @@ public class KeyboardModel {
     private final int numberOfWhiteKeys;
 
     public KeyboardModel(PitchModel firstPitch, PitchModel lastPitch) {
-        if (lastPitch.lessThanOrEquals(firstPitch)) {
-            throw new IllegalArgumentException("First pitch must be less than or equal to the last pitch");
+        if (firstPitch.compareTo(lastPitch) >= 0) {
+            throw new IllegalArgumentException("First pitch must lower than the last pitch");
         }
 
         this.firstPitch = firstPitch;

@@ -7,6 +7,7 @@ import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.listener.MeasurePairCreateListener;
 import pianolearn.diplomskirad.listener.NotesPlayListener;
 import pianolearn.diplomskirad.model.score.AttributesModel;
+import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
 import pianolearn.diplomskirad.model.viewmodel.MeasurePairModel;
 import pianolearn.diplomskirad.view.components.sheetmusic.SheetMusicView;
 
@@ -43,9 +44,11 @@ public class SheetMusicController implements BaseViewController {
     private void setupView() {
         view.showPart(false, attributes.usesBothHands());
 
-        view.setClefTimeKey(true, Score.clefTimeKey(attributes, true));
+        ClefTimeKeyModel rightCTKModel = ClefTimeKeyModel.fromAttributes(attributes, true);
+        view.setClefTimeKey(true, rightCTKModel);
         if (attributes.usesBothHands()) {
-            view.setClefTimeKey(false, Score.clefTimeKey(attributes, false));
+            ClefTimeKeyModel leftCTKModel = ClefTimeKeyModel.fromAttributes(attributes, false);
+            view.setClefTimeKey(false, leftCTKModel);
         }
     }
 
@@ -57,11 +60,12 @@ public class SheetMusicController implements BaseViewController {
 
         if (nextDisplayMeasureIndex < measures.size()) {
             ScorePartwise.Part.Measure measure = measures.get(nextDisplayMeasureIndex++);
-            measurePair = Score.measures(measure, attributes);
-            measurePairCreateListener.onAction(measurePair);
+            measurePair = Score.measurePair(measure, attributes);
         }
 
         if (measurePair == null) return;
+
+        measurePairCreateListener.onAction(measurePair);
         view.addMeasure(measurePair);
     }
 

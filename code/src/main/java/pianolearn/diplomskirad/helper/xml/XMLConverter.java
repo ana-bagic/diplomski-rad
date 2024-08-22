@@ -18,7 +18,6 @@ public enum XMLConverter {
             score = (ScorePartwise) unmarshalledObject;
             return true;
         } catch (Marshalling.UnmarshallingException | ClassCastException | NullPointerException | IOException e) {
-            System.out.println(e.getMessage());
             return false;
         }
     }

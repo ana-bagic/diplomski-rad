@@ -182,10 +182,6 @@ public class PlayViewController implements BaseViewController {
             remainingDistance = CTRL_LINE_MEASURE_DISTANCE + BARLINE_NOTE_SPACE;
             durationOfRegion = actualDurationOfBeatUnit * attributes.beats();
             nextPlayMeasureIndex++;
-
-            metronome.setInterval((long) (actualDurationOfBeatUnit) + 100);
-            metronomeThread = new Thread(metronome);
-            metronomeThread.start();
         } else {
             MeasurePairModel measurePair = measurePairs.get(nextPlayMeasureIndex);
             double notesWidthWithoutLast = measurePair.getNotesWidthWithoutLast();
@@ -199,9 +195,7 @@ public class PlayViewController implements BaseViewController {
                 isBeginningOfMeasure = false;
 
                 metronomeThread.join();
-                metronome.setInterval((long) actualDurationOfBeatUnit + 100);
-                metronomeThread = new Thread(metronome);
-                metronomeThread.start();
+                setMetronome();
             } else  {
                 remainingDistance = measurePair.getWidth() - notesWidthWithoutLast;
                 durationOfRegion = durationOfLast;
@@ -213,5 +207,13 @@ public class PlayViewController implements BaseViewController {
         remainingTickCounts = (int) Math.round(durationOfRegion / TICK_DURATION_MS);
         tickDistance = remainingDistance / remainingTickCounts;
         return true;
+    }
+
+    private void setMetronome() {
+        if (isWait) return;
+
+        metronome.setInterval((long) (actualDurationOfBeatUnit) + 100);
+        metronomeThread = new Thread(metronome);
+        metronomeThread.start();
     }
 }

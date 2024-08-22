@@ -28,7 +28,7 @@ public class UploadView extends BaseNavigationView {
     private final Label orLabel = new Label();
     private final Button fileChooserButton = new Button();
 
-    private EventListener fileChooserButtonListener;
+    private EventListener fileChooseButtonListener;
     private EventListener confirmButtonListener;
 
     public UploadView() {
@@ -82,7 +82,7 @@ public class UploadView extends BaseNavigationView {
         setButtonBackground(fileChooserButton, Colors.text, Colors.highlight, 20);
         fileChooserButton.setText(Strings.chooseFile);
         fileChooserButton.setPadding(new Insets(20));
-        fileChooserButton.setOnAction(e -> fileChooserButtonListener.onAction());
+        fileChooserButton.setOnAction(e -> fileChooseButtonListener.onAction());
     }
 
     public void setFileChosen(String fileChosen) {
@@ -107,8 +107,8 @@ public class UploadView extends BaseNavigationView {
         showNode(errorLabel, false);
     }
 
-    public void setFileChooserButtonListener(EventListener listener) {
-        fileChooserButtonListener = listener;
+    public void setFileChooseButtonListener(EventListener listener) {
+        fileChooseButtonListener = listener;
     }
 
     public void setConfirmButtonListener(EventListener listener) {

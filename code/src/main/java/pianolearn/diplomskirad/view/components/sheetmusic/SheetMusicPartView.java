@@ -72,7 +72,7 @@ public class SheetMusicPartView extends StackPane {
             MeasureView nextMeasure = measureViews.get(1);
             if (nextMeasure.getLayoutX() > 0) break;
             measureViews.pop();
-            notesView.getChildren().remove(1);
+            notesView.getChildren().removeFirst();
         }
     }
 

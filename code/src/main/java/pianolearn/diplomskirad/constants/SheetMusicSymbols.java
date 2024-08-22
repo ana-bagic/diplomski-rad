@@ -2,7 +2,6 @@ package pianolearn.diplomskirad.constants;
 
 public class SheetMusicSymbols {
 
-    public static final String staff = "\uE014";
     public static final String ledger = "\uE022";
 
     public static final String barLine = "\uE030";

@@ -67,7 +67,7 @@ public class PlayToolbarView extends HBox {
         speedLabel.setTextFill(Colors.text);
         speedLabel.setText(Strings.speedLabel);
 
-        setupLabelSlider(speedSlider, playbackSpeeds);
+        setupSlider(speedSlider, playbackSpeeds);
         speedSlider.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
         speedSlider.setOnMouseReleased(e -> sliderChanged());
 

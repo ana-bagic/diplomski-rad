@@ -48,8 +48,7 @@ public class PianoKeyboardController implements BaseViewController {
     }
 
     public void playNotesRightHand(List<PitchModel> notes) {
-        rightHandNotesPlaying.forEach(n -> view.removeHighlight(n.toString()));
-        rightHandNotesPlaying.clear();
+        clearNotes(rightHandNotesPlaying);
 
         for (PitchModel note : notes) {
             if (note != null) {
@@ -60,8 +59,7 @@ public class PianoKeyboardController implements BaseViewController {
     }
 
     public void playNotesLeftHand(List<PitchModel> notes) {
-        leftHandNotesPlaying.forEach(n -> view.removeHighlight(n.toString()));
-        leftHandNotesPlaying.clear();
+        clearNotes(leftHandNotesPlaying);
 
         for (PitchModel note : notes) {
             if (note != null) {
@@ -72,20 +70,12 @@ public class PianoKeyboardController implements BaseViewController {
     }
 
     public void reset() {
-        rightHandNotesPlaying.forEach(n -> view.removeHighlight(n.toString()));
-        rightHandNotesPlaying.clear();
-        leftHandNotesPlaying.forEach(n -> view.removeHighlight(n.toString()));
-        leftHandNotesPlaying.clear();
+        clearNotes(rightHandNotesPlaying);
+        clearNotes(leftHandNotesPlaying);
     }
 
-    //    private void tempKeyPress() {
-//        Scene scene = NavigationController.INSTANCE.getStage().getScene();
-//        scene.setOnKeyPressed(event -> {
-//            if (event.getCode() == KeyCode.T) {
-//                System.out.println("Key 'T' was pressed!");
-//            } else if (event.getCode() == KeyCode.F) {
-//                System.out.println("Key 'F' was pressed!");
-//            }
-//        });
-//    }
+    private void clearNotes(List<PitchModel> notes) {
+        notes.forEach(n -> view.removeHighlight(n.toString()));
+        notes.clear();
+    }
 }

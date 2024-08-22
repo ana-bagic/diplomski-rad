@@ -1,10 +1,10 @@
-package pianolearn.diplomskirad.helper.xml;
+package pianolearn.diplomskirad.helper;
 
 import pianolearn.diplomskirad.model.score.NoteType;
 
 import static pianolearn.diplomskirad.constants.SheetMusicSymbols.*;
 
-public class BravuraConverter {
+public class BravuraHelper {
     
     public static String getBravuraClef(boolean isTreble) {
         return isTreble ? trebleClef : bassClef;
@@ -15,12 +15,12 @@ public class BravuraConverter {
             case 1 -> time1;
             case 2 -> time2;
             case 3 -> time3;
-            default -> time4;
             case 5 -> time5;
             case 6 -> time6;
             case 7 -> time7;
             case 8 -> time8;
             case 9 -> time9;
+            default -> time4;
         };
     }
 
