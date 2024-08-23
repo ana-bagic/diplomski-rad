@@ -91,15 +91,17 @@ public class PlayViewController implements BaseViewController {
             metronome.close();
         });
 
-        view.setPlayPauseButtonListener(this::playPauseButtonClicked);
-        view.setStopButtonListener(this::stopButtonClicked);
+        view.setPlayPauseButtonListener(this::playPauseClicked);
+        view.setStopButtonListener(this::stopClicked);
         view.setSpeedSliderListener(this::speedChanged);
-        view.setRightHandButtonListener(this::rightHandButtonClicked);
-        view.setLeftHandButtonListener(this::leftHandButtonClicked);
+        view.setRightHandButtonListener(this::rightHandChanged);
+        view.setLeftHandButtonListener(this::leftHandChanged);
 
         sheetMusicController.setMeasurePairCreateListener(measurePairs::add);
         sheetMusicController.setNotesPlayListeners(
                 pianoKeyboardController::playNotesRightHand, pianoKeyboardController::playNotesLeftHand);
+
+        pianoKeyboardController.setPlayPauseListener(this::playPauseClicked);
 
         NavigationController.INSTANCE.getStage().setOnCloseRequest(e -> metronome.close());
     }
@@ -119,12 +121,12 @@ public class PlayViewController implements BaseViewController {
         isPlaying = false;
     }
 
-    private void playPauseButtonClicked() {
-        isPlaying = !isPlaying;
+    private void playPauseClicked(boolean play) {
+        isPlaying = play;
         mainLoop();
     }
 
-    private void stopButtonClicked() {
+    private void stopClicked() {
         resetValues();
         sheetMusicController.reset();
         pianoKeyboardController.reset();
@@ -136,12 +138,12 @@ public class PlayViewController implements BaseViewController {
         isWait = speed == PlaybackSpeed.WAIT;
     }
 
-    private void rightHandButtonClicked() {
+    private void rightHandChanged() {
         rightHandShows = !rightHandShows;
         sheetMusicController.rightHandChanged(rightHandShows);
     }
 
-    private void leftHandButtonClicked() {
+    private void leftHandChanged() {
         leftHandShows = !leftHandShows;
         sheetMusicController.leftHandChanged(leftHandShows);
     }

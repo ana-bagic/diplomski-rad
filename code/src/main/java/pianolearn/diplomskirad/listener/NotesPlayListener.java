@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface NotesPlayListener {
 
-    void onAction(List<PitchModel> pitches);
+    void onAction(List<String> notes);
 }

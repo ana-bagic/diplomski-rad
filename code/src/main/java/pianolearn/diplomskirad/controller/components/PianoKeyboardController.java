@@ -6,20 +6,24 @@ import pianolearn.diplomskirad.constants.Config;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.helper.midi.MidiDeviceManager;
 import pianolearn.diplomskirad.helper.midi.MidiInputReceiver;
+import pianolearn.diplomskirad.listener.PlayPauseListener;
 import pianolearn.diplomskirad.model.score.PitchModel;
 import pianolearn.diplomskirad.view.components.keyboard.PianoKeyboardView;
 
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PianoKeyboardController implements BaseViewController {
 
     private final PianoKeyboardView view;
 
-    private final List<PitchModel> rightHandNotesPlaying = new LinkedList<>();
-    private final List<PitchModel> leftHandNotesPlaying = new LinkedList<>();
+    private final Map<String, Boolean> rightHandNotesPlaying = new HashMap<>();
+    private final Map<String, Boolean> leftHandNotesPlaying = new HashMap<>();
 
     private final MidiInputReceiver midiInputReceiver = MidiDeviceManager.getReceiver();
+
+    private PlayPauseListener playPauseListener;
 
     public PianoKeyboardController() {
         view = new PianoKeyboardView(Config.KEYBOARD_DISPLAY_MODEL);
@@ -40,6 +44,18 @@ public class PianoKeyboardController implements BaseViewController {
     private void keyPressed(int midiKey) {
         PitchModel key = PitchModel.fromMidi(midiKey);
         view.setHighlight(key.toString(), Colors.accent);
+
+        if (rightHandNotesPlaying.containsKey(key.toString())) {
+            rightHandNotesPlaying.put(key.toString(), true);
+        }
+
+        if (leftHandNotesPlaying.containsKey(key.toString())) {
+            leftHandNotesPlaying.put(key.toString(), true);
+        }
+
+        if (rightHandNotesPlaying.containsValue(false) || leftHandNotesPlaying.containsValue(false)) return;
+
+        playPauseListener.onAction(true);
     }
 
     private void keyReleased(int midiKey) {
@@ -47,25 +63,25 @@ public class PianoKeyboardController implements BaseViewController {
         view.removeHighlight(key.toString());
     }
 
-    public void playNotesRightHand(List<PitchModel> notes) {
+    public void playNotesRightHand(List<String> notes) {
+        playPauseListener.onAction(false);
+
         clearNotes(rightHandNotesPlaying);
 
-        for (PitchModel note : notes) {
-            if (note != null) {
-                view.setHighlight(note.toString(), Colors.accent);
-                rightHandNotesPlaying.add(note);
-            }
+        for (String note : notes) {
+            view.setHighlight(note, Colors.accent);
+            rightHandNotesPlaying.put(note, false);
         }
     }
 
-    public void playNotesLeftHand(List<PitchModel> notes) {
+    public void playNotesLeftHand(List<String> notes) {
+        playPauseListener.onAction(false);
+
         clearNotes(leftHandNotesPlaying);
 
-        for (PitchModel note : notes) {
-            if (note != null) {
-                view.setHighlight(note.toString(), Colors.highlight);
-                leftHandNotesPlaying.add(note);
-            }
+        for (String note : notes) {
+            view.setHighlight(note, Colors.highlight);
+            leftHandNotesPlaying.put(note, false);
         }
     }
 
@@ -74,8 +90,12 @@ public class PianoKeyboardController implements BaseViewController {
         clearNotes(leftHandNotesPlaying);
     }
 
-    private void clearNotes(List<PitchModel> notes) {
-        notes.forEach(n -> view.removeHighlight(n.toString()));
+    private void clearNotes(Map<String, Boolean> notes) {
+        notes.keySet().forEach(view::removeHighlight);
         notes.clear();
+    }
+
+    public void setPlayPauseListener(PlayPauseListener listener) {
+        playPauseListener = listener;
     }
 }

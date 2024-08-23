@@ -14,6 +14,7 @@ import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Images;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.listener.EventListener;
+import pianolearn.diplomskirad.listener.PlayPauseListener;
 import pianolearn.diplomskirad.listener.SpeedChangeListener;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
 
@@ -37,7 +38,7 @@ public class PlayToolbarView extends HBox {
     private boolean isLeftShown = true;
     private boolean isRightShown = true;
 
-    private EventListener playPauseButtonListener;
+    private PlayPauseListener playPauseButtonListener;
     private EventListener stopButtonListener;
     private SpeedChangeListener speedSliderListener;
     private EventListener leftHandButtonListener;
@@ -87,7 +88,7 @@ public class PlayToolbarView extends HBox {
 
     private void playPauseClicked() {
         setPaused(isPlaying);
-        playPauseButtonListener.onAction();
+        playPauseButtonListener.onAction(isPlaying);
     }
 
     private void stopButtonClicked() {
@@ -134,7 +135,7 @@ public class PlayToolbarView extends HBox {
         }
     }
 
-    public void setPlayPauseButtonListener(EventListener listener) {
+    public void setPlayPauseButtonListener(PlayPauseListener listener) {
         playPauseButtonListener = listener;
     }
 

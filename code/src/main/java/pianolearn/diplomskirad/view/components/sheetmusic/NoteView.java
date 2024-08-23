@@ -33,8 +33,8 @@ public class NoteView extends Text {
         setFill(Colors.notes);
     }
 
-    public PitchModel getPitch() {
-        return pitch;
+    public String getNote() {
+        return pitch == null ? null : pitch.toString();
     }
 
     public void setPosition(int position) {

@@ -22,9 +22,9 @@ public class PianoLearn extends Application {
         NavigationController.INSTANCE.init(stage, new TitleViewController());
 
         // ovo treba obrisati za finalnu verziju
-        File file = XmlFiles.getXmlFile(XmlFiles.mozartSonata);
+        File file = XmlFiles.getXmlFile(XmlFiles.echigoJishi);
         XMLConverter.INSTANCE.unmarshall(file);
-        //NavigationController.INSTANCE.push(new PlayViewController());
+        NavigationController.INSTANCE.push(new PlayViewController());
     }
 
     public static void main(String[] args) {
