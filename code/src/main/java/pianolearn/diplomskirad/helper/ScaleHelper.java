@@ -1,8 +1,10 @@
 package pianolearn.diplomskirad.helper;
 
+import pianolearn.diplomskirad.constants.SheetMusicSymbols;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
 import pianolearn.diplomskirad.model.score.PitchModel;
 import pianolearn.diplomskirad.model.score.AttributesModel;
+import pianolearn.diplomskirad.model.viewmodel.MusicNodeModel;
 import pianolearn.diplomskirad.model.viewmodel.NoteModel;
 
 import java.util.*;
@@ -122,6 +124,30 @@ public class ScaleHelper {
         noteModel.setPosition(position);
         noteModel.setAccidental(accidental);
         noteModel.setPitch(pitch);
+    }
+
+    public static void setLedgers(List<MusicNodeModel> nodes) {
+        for (MusicNodeModel node : nodes) {
+            int highestPosition = node.getNotes().stream().mapToInt(NoteModel::getPosition).max().orElse(0);
+            if (highestPosition % 2 == 1) highestPosition--;
+
+            while (highestPosition > 4) {
+                NoteModel ledger = new NoteModel(SheetMusicSymbols.ledger);
+                ledger.setPosition(highestPosition);
+                node.addNote(ledger, 0);
+                highestPosition -= 2;
+            }
+
+            int lowestPosition = node.getNotes().stream().mapToInt(NoteModel::getPosition).min().orElse(0);
+            if (lowestPosition % 2 == 1) lowestPosition++;
+
+            while (lowestPosition < -4) {
+                NoteModel ledger = new NoteModel(SheetMusicSymbols.ledger);
+                ledger.setPosition(lowestPosition);
+                node.addNote(ledger, 0);
+                lowestPosition += 2;
+            }
+        }
     }
 
     private static boolean isSharp(NoteAlphabet note, int fifths) {

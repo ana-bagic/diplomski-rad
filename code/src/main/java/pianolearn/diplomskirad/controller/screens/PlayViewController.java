@@ -36,7 +36,7 @@ public class PlayViewController implements BaseViewController {
     private double actualDurationOfQuarter;
 
     private Metronome metronome = new Metronome();
-    Thread metronomeThread;
+    private Thread metronomeThread;
 
     private final List<MeasurePairModel> measurePairs = new LinkedList<>();
     private int nextPlayMeasureIndex;
@@ -172,7 +172,7 @@ public class PlayViewController implements BaseViewController {
 
     private boolean setupNewRegion() throws InterruptedException {
         if (nextPlayMeasureIndex >= measurePairs.size()) {
-            metronomeThread.join();
+            if (metronomeThread != null) metronomeThread.join();
             return false;
         }
 
@@ -194,7 +194,7 @@ public class PlayViewController implements BaseViewController {
                 durationOfRegion = actualDurationOfBeatUnit * attributes.beats() - durationOfLast;
                 isBeginningOfMeasure = false;
 
-                metronomeThread.join();
+                if (metronomeThread != null) metronomeThread.join();
                 setMetronome();
             } else  {
                 remainingDistance = measurePair.getWidth() - notesWidthWithoutLast;

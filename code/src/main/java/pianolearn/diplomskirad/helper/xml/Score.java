@@ -182,9 +182,11 @@ public class Score {
 
         LinkedList<Object> nbfList = new LinkedList<>(measure.getNoteOrBackupOrForward());
         List<MusicNodeModel> rightHandMeasure = measureModel(nbfList, true, attributes);
+        ScaleHelper.setLedgers(rightHandMeasure);
 
         boolean hasBothHands = !nbfList.isEmpty();
         List<MusicNodeModel> leftHandMeasure = hasBothHands ? measureModel(nbfList, false, attributes) : Collections.emptyList();
+        ScaleHelper.setLedgers(leftHandMeasure);
 
         MeasurePairModel measurePair = new MeasurePairModel(hasBothHands, rightHandMeasure, leftHandMeasure);
         calculateDistances(measurePair);
