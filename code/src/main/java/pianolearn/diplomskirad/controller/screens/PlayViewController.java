@@ -136,6 +136,7 @@ public class PlayViewController implements BaseViewController {
         actualDurationOfBeatUnit = durationOfBeatUnit / speed.getSpeed();
         actualDurationOfQuarter = TempoHelper.getDurationOfQuarter(actualDurationOfBeatUnit, attributes.beatUnitTempo());
         isWait = speed == PlaybackSpeed.WAIT;
+        pianoKeyboardController.setWait(isWait);
     }
 
     private void rightHandChanged() {

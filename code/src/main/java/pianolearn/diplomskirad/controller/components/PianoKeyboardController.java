@@ -21,6 +21,8 @@ public class PianoKeyboardController implements BaseViewController {
     private final Map<String, Boolean> rightHandNotesPlaying = new HashMap<>();
     private final Map<String, Boolean> leftHandNotesPlaying = new HashMap<>();
 
+    private boolean isWait = true;
+
     private final MidiInputReceiver midiInputReceiver = MidiDeviceManager.getReceiver();
 
     private PlayPauseListener playPauseListener;
@@ -45,6 +47,8 @@ public class PianoKeyboardController implements BaseViewController {
         PitchModel key = PitchModel.fromMidi(midiKey);
         view.setHighlight(key.toString(), Colors.accent);
 
+        if (!isWait) return;
+
         if (rightHandNotesPlaying.containsKey(key.toString())) {
             rightHandNotesPlaying.put(key.toString(), true);
         }
@@ -64,7 +68,7 @@ public class PianoKeyboardController implements BaseViewController {
     }
 
     public void playNotesRightHand(List<String> notes) {
-        playPauseListener.onAction(false);
+        if (isWait) playPauseListener.onAction(false);
 
         clearNotes(rightHandNotesPlaying);
 
@@ -75,7 +79,7 @@ public class PianoKeyboardController implements BaseViewController {
     }
 
     public void playNotesLeftHand(List<String> notes) {
-        playPauseListener.onAction(false);
+        if (isWait) playPauseListener.onAction(false);
 
         clearNotes(leftHandNotesPlaying);
 
@@ -93,6 +97,10 @@ public class PianoKeyboardController implements BaseViewController {
     private void clearNotes(Map<String, Boolean> notes) {
         notes.keySet().forEach(view::removeHighlight);
         notes.clear();
+    }
+
+    public void setWait(boolean isWait) {
+        this.isWait = isWait;
     }
 
     public void setPlayPauseListener(PlayPauseListener listener) {
