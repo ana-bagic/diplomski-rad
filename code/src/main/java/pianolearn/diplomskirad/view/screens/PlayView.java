@@ -2,7 +2,8 @@ package pianolearn.diplomskirad.view.screens;
 
 import javafx.scene.layout.*;
 import pianolearn.diplomskirad.listener.EventListener;
-import pianolearn.diplomskirad.listener.PlayPauseListener;
+import pianolearn.diplomskirad.listener.HandChangedListener;
+import pianolearn.diplomskirad.listener.PlayChangedListener;
 import pianolearn.diplomskirad.listener.SpeedChangeListener;
 import pianolearn.diplomskirad.view.BaseNavigationView;
 import pianolearn.diplomskirad.view.components.PlayToolbarView;
@@ -38,8 +39,8 @@ public class PlayView extends BaseNavigationView {
         setBottom(view);
     }
 
-    public void setPlayPauseButtonListener(PlayPauseListener listener) {
-        playToolbarView.setPlayPauseButtonListener(listener);
+    public void setPlayButtonListener(PlayChangedListener listener) {
+        playToolbarView.setPlayButtonListener(listener);
     }
 
     public void setStopButtonListener(EventListener listener) {
@@ -50,11 +51,7 @@ public class PlayView extends BaseNavigationView {
         playToolbarView.setSpeedSliderListener(listener);
     }
 
-    public void setLeftHandButtonListener(EventListener listener) {
-        playToolbarView.setLeftHandButtonListener(listener);
-    }
-
-    public void setRightHandButtonListener(EventListener listener) {
-        playToolbarView.setRightHandButtonListener(listener);
+    public void setHandChangedListener(HandChangedListener listener) {
+        playToolbarView.setHandChangedListener(listener);
     }
 }

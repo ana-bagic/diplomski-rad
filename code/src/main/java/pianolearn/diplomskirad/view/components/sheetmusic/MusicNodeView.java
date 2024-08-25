@@ -13,6 +13,8 @@ public class MusicNodeView extends Pane {
 
     private final List<NoteView> noteViews = new LinkedList<>();
 
+    private boolean played = false;
+
     public MusicNodeView() {
         NoteView noteView = new NoteView();
         getChildren().add(noteView);
@@ -35,6 +37,10 @@ public class MusicNodeView extends Pane {
         return noteViews.isEmpty() ? 0 : noteViews.getFirst().prefWidth(-1);
     }
 
+    public boolean isPlayed() {
+        return played;
+    }
+
     public void setText(String text) {
         noteViews.forEach(noteView -> noteView.setText(text));
     }
@@ -51,5 +57,9 @@ public class MusicNodeView extends Pane {
 
     public void setColor(Color color) {
         noteViews.forEach(n -> n.setColor(color));
+    }
+
+    public void setPlayed(boolean played) {
+        this.played = played;
     }
 }

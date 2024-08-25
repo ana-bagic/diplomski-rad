@@ -53,7 +53,10 @@ public class MeasureView extends Pane {
                 node.setColor(Colors.notesFaded);
             } else if (nodeX < CONTROL_LINE_X + CONTROL_LINE_WIDTH && node != barLineNode) {
                 node.setColor(Colors.highlight);
-                notesPlayListener.onAction(node.getNotes());
+                if (!node.isPlayed()) {
+                    notesPlayListener.onAction(node.getNotes());
+                    node.setPlayed(true);
+                }
             }
         }
     }

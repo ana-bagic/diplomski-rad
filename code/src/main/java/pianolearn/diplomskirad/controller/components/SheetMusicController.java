@@ -6,6 +6,7 @@ import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.listener.MeasurePairCreateListener;
 import pianolearn.diplomskirad.listener.NotesPlayListener;
+import pianolearn.diplomskirad.model.Hand;
 import pianolearn.diplomskirad.model.score.AttributesModel;
 import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
 import pianolearn.diplomskirad.model.viewmodel.MeasurePairModel;
@@ -42,13 +43,13 @@ public class SheetMusicController implements BaseViewController {
     }
 
     private void setupView() {
-        view.showPart(false, attributes.usesBothHands());
+        view.showPart(Hand.LEFT, attributes.usesBothHands());
 
         ClefTimeKeyModel rightCTKModel = ClefTimeKeyModel.fromAttributes(attributes, true);
-        view.setClefTimeKey(true, rightCTKModel);
+        view.setClefTimeKey(Hand.RIGHT, rightCTKModel);
         if (attributes.usesBothHands()) {
             ClefTimeKeyModel leftCTKModel = ClefTimeKeyModel.fromAttributes(attributes, false);
-            view.setClefTimeKey(false, leftCTKModel);
+            view.setClefTimeKey(Hand.LEFT, leftCTKModel);
         }
     }
 
@@ -75,12 +76,8 @@ public class SheetMusicController implements BaseViewController {
         addNextMeasure();
     }
 
-    public void rightHandChanged(boolean show) {
-        view.showPart(true, show);
-    }
-
-    public void leftHandChanged(boolean show) {
-        view.showPart(false, show);
+    public void handChanged(Hand hand, boolean show) {
+        view.showPart(hand, show);
     }
 
     public void translateMeasures(double amount) {

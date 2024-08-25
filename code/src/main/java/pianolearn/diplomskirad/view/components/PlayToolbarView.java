@@ -14,8 +14,10 @@ import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Images;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.listener.EventListener;
-import pianolearn.diplomskirad.listener.PlayPauseListener;
+import pianolearn.diplomskirad.listener.HandChangedListener;
+import pianolearn.diplomskirad.listener.PlayChangedListener;
 import pianolearn.diplomskirad.listener.SpeedChangeListener;
+import pianolearn.diplomskirad.model.Hand;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
 
 import java.util.Objects;
@@ -38,11 +40,10 @@ public class PlayToolbarView extends HBox {
     private boolean isLeftShown = true;
     private boolean isRightShown = true;
 
-    private PlayPauseListener playPauseButtonListener;
+    private PlayChangedListener playButtonListener;
     private EventListener stopButtonListener;
     private SpeedChangeListener speedSliderListener;
-    private EventListener leftHandButtonListener;
-    private EventListener rightHandButtonListener;
+    private HandChangedListener handChangedListener;
 
     public PlayToolbarView() {
         setupView();
@@ -88,7 +89,7 @@ public class PlayToolbarView extends HBox {
 
     private void playPauseClicked() {
         setPaused(isPlaying);
-        playPauseButtonListener.onAction(isPlaying);
+        playButtonListener.onAction(isPlaying);
     }
 
     private void stopButtonClicked() {
@@ -109,7 +110,7 @@ public class PlayToolbarView extends HBox {
             isLeftShown = !isLeftShown;
             Color backgroundColor = isLeftShown ? Colors.accent : Colors.text;
             setButtonBackground(leftHandButton, backgroundColor, Colors.highlight, 20);
-            leftHandButtonListener.onAction();
+            handChangedListener.onAction(Hand.LEFT, isLeftShown);
         }
     }
 
@@ -118,7 +119,7 @@ public class PlayToolbarView extends HBox {
             isRightShown = !isRightShown;
             Color backgroundColor = isRightShown ? Colors.accent : Colors.text;
             setButtonBackground(rightHandButton, backgroundColor, Colors.highlight, 20);
-            rightHandButtonListener.onAction();
+            handChangedListener.onAction(Hand.RIGHT, isRightShown);
         }
     }
 
@@ -135,8 +136,8 @@ public class PlayToolbarView extends HBox {
         }
     }
 
-    public void setPlayPauseButtonListener(PlayPauseListener listener) {
-        playPauseButtonListener = listener;
+    public void setPlayButtonListener(PlayChangedListener listener) {
+        playButtonListener = listener;
     }
 
     public void setStopButtonListener(EventListener listener) {
@@ -147,11 +148,7 @@ public class PlayToolbarView extends HBox {
         speedSliderListener = listener;
     }
 
-    public void setLeftHandButtonListener(EventListener listener) {
-        leftHandButtonListener = listener;
-    }
-
-    public void setRightHandButtonListener(EventListener listener) {
-        rightHandButtonListener = listener;
+    public void setHandChangedListener(HandChangedListener listener) {
+        handChangedListener = listener;
     }
 }

@@ -12,6 +12,7 @@ import pianolearn.diplomskirad.controller.components.SheetMusicController;
 import pianolearn.diplomskirad.helper.TempoHelper;
 import pianolearn.diplomskirad.helper.midi.Metronome;
 import pianolearn.diplomskirad.helper.xml.Score;
+import pianolearn.diplomskirad.model.Hand;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
 import pianolearn.diplomskirad.model.score.AttributesModel;
 import pianolearn.diplomskirad.model.viewmodel.MeasurePairModel;
@@ -49,8 +50,6 @@ public class PlayViewController implements BaseViewController {
 
     private boolean isPlaying;
     private boolean isWait = true;
-    private boolean rightHandShows = true;
-    private boolean leftHandShows;
 
     public PlayViewController() {
         ScorePartwise.Part part = Score.pianoPart();
@@ -63,7 +62,6 @@ public class PlayViewController implements BaseViewController {
         setupListeners();
         setupView();
 
-        leftHandShows = attributes.usesBothHands();
         durationOfBeatUnit = TempoHelper.getDurationOfBeatUnit(attributes.bpm());
         actualDurationOfBeatUnit = durationOfBeatUnit;
         actualDurationOfQuarter = TempoHelper.getDurationOfQuarter(actualDurationOfBeatUnit, attributes.beatUnitTempo());
@@ -91,17 +89,16 @@ public class PlayViewController implements BaseViewController {
             metronome.close();
         });
 
-        view.setPlayPauseButtonListener(this::playPauseClicked);
+        view.setPlayButtonListener(this::playChanged);
         view.setStopButtonListener(this::stopClicked);
         view.setSpeedSliderListener(this::speedChanged);
-        view.setRightHandButtonListener(this::rightHandChanged);
-        view.setLeftHandButtonListener(this::leftHandChanged);
+        view.setHandChangedListener(this::handChanged);
 
         sheetMusicController.setMeasurePairCreateListener(measurePairs::add);
         sheetMusicController.setNotesPlayListeners(
                 pianoKeyboardController::playNotesRightHand, pianoKeyboardController::playNotesLeftHand);
 
-        pianoKeyboardController.setPlayPauseListener(this::playPauseClicked);
+        pianoKeyboardController.setPlayPauseListener(this::playChanged);
 
         NavigationController.INSTANCE.getStage().setOnCloseRequest(e -> metronome.close());
     }
@@ -121,7 +118,7 @@ public class PlayViewController implements BaseViewController {
         isPlaying = false;
     }
 
-    private void playPauseClicked(boolean play) {
+    private void playChanged(boolean play) {
         isPlaying = play;
         mainLoop();
     }
@@ -139,14 +136,9 @@ public class PlayViewController implements BaseViewController {
         pianoKeyboardController.setWait(isWait);
     }
 
-    private void rightHandChanged() {
-        rightHandShows = !rightHandShows;
-        sheetMusicController.rightHandChanged(rightHandShows);
-    }
-
-    private void leftHandChanged() {
-        leftHandShows = !leftHandShows;
-        sheetMusicController.leftHandChanged(leftHandShows);
+    private void handChanged(Hand hand, boolean shows) {
+        sheetMusicController.handChanged(hand, shows);
+        pianoKeyboardController.handChanged(hand, shows);
     }
 
     private void mainLoop() {

@@ -6,7 +6,8 @@ import pianolearn.diplomskirad.constants.Config;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.helper.midi.MidiDeviceManager;
 import pianolearn.diplomskirad.helper.midi.MidiInputReceiver;
-import pianolearn.diplomskirad.listener.PlayPauseListener;
+import pianolearn.diplomskirad.listener.PlayChangedListener;
+import pianolearn.diplomskirad.model.Hand;
 import pianolearn.diplomskirad.model.score.PitchModel;
 import pianolearn.diplomskirad.view.components.keyboard.PianoKeyboardView;
 
@@ -22,10 +23,12 @@ public class PianoKeyboardController implements BaseViewController {
     private final Map<String, Boolean> leftHandNotesPlaying = new HashMap<>();
 
     private boolean isWait = true;
+    private boolean rightHandShows = true;
+    private boolean leftHandShows = true;
 
     private final MidiInputReceiver midiInputReceiver = MidiDeviceManager.getReceiver();
 
-    private PlayPauseListener playPauseListener;
+    private PlayChangedListener playPauseListener;
 
     public PianoKeyboardController() {
         view = new PianoKeyboardView(Config.KEYBOARD_DISPLAY_MODEL);
@@ -57,7 +60,8 @@ public class PianoKeyboardController implements BaseViewController {
             leftHandNotesPlaying.put(key.toString(), true);
         }
 
-        if (rightHandNotesPlaying.containsValue(false) || leftHandNotesPlaying.containsValue(false)) return;
+        if (rightHandShows && rightHandNotesPlaying.containsValue(false)
+                || leftHandShows && leftHandNotesPlaying.containsValue(false)) return;
 
         playPauseListener.onAction(true);
     }
@@ -68,25 +72,19 @@ public class PianoKeyboardController implements BaseViewController {
     }
 
     public void playNotesRightHand(List<String> notes) {
-        if (isWait) playPauseListener.onAction(false);
-
         clearNotes(rightHandNotesPlaying);
 
-        for (String note : notes) {
-            view.setHighlight(note, Colors.accent);
-            rightHandNotesPlaying.put(note, false);
-        }
+        if (rightHandShows && isWait && !notes.isEmpty()) playPauseListener.onAction(false);
+        if (rightHandShows) notes.forEach(note -> view.setHighlight(note, Hand.RIGHT.getKeyColor()));
+        notes.forEach(note -> rightHandNotesPlaying.put(note, false));
     }
 
     public void playNotesLeftHand(List<String> notes) {
-        if (isWait) playPauseListener.onAction(false);
-
         clearNotes(leftHandNotesPlaying);
 
-        for (String note : notes) {
-            view.setHighlight(note, Colors.highlight);
-            leftHandNotesPlaying.put(note, false);
-        }
+        if (leftHandShows && isWait && !notes.isEmpty()) playPauseListener.onAction(false);
+        if (leftHandShows) notes.forEach(note -> view.setHighlight(note, Hand.LEFT.getKeyColor()));
+        notes.forEach(note -> leftHandNotesPlaying.put(note, false));
     }
 
     public void reset() {
@@ -103,7 +101,20 @@ public class PianoKeyboardController implements BaseViewController {
         this.isWait = isWait;
     }
 
-    public void setPlayPauseListener(PlayPauseListener listener) {
+    public void handChanged(Hand hand, boolean handShows) {
+        if (hand == Hand.RIGHT) rightHandShows = handShows;
+        else leftHandShows = handShows;
+
+        for (String note : hand == Hand.RIGHT ? rightHandNotesPlaying.keySet() : leftHandNotesPlaying.keySet()) {
+            if (handShows) {
+                view.setHighlight(note, hand.getKeyColor());
+            } else {
+                view.removeHighlight(note);
+            }
+        }
+    }
+
+    public void setPlayPauseListener(PlayChangedListener listener) {
         playPauseListener = listener;
     }
 }

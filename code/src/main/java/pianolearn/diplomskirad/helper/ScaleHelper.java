@@ -1,6 +1,7 @@
 package pianolearn.diplomskirad.helper;
 
 import pianolearn.diplomskirad.constants.SheetMusicSymbols;
+import pianolearn.diplomskirad.model.Hand;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
 import pianolearn.diplomskirad.model.score.PitchModel;
 import pianolearn.diplomskirad.model.score.AttributesModel;
@@ -96,7 +97,7 @@ public class ScaleHelper {
         return interval * comparison * -1;
     }
 
-    public static void setNoteModelPitch(NoteModel noteModel, PitchModel pitch, boolean trebleClef, AttributesModel attributes) {
+    public static void setNoteModelPitch(NoteModel noteModel, PitchModel pitch, Hand hand, AttributesModel attributes) {
         NoteAlphabet note = pitch.key();
         int fifths = attributes.fifths();
 
@@ -118,7 +119,7 @@ public class ScaleHelper {
             }
         }
 
-        int position = ScaleHelper.getPositionFromPitch(pitchToPosition, trebleClef);
+        int position = ScaleHelper.getPositionFromPitch(pitchToPosition, attributes.isHandTreble(hand));
         String accidental = BravuraHelper.getBravuraAccidentalFromAccidental(accidentalInt);
 
         noteModel.setPosition(position);
@@ -139,7 +140,7 @@ public class ScaleHelper {
             }
 
             int lowestPosition = node.getNotes().stream().mapToInt(NoteModel::getPosition).min().orElse(0);
-            if (lowestPosition % 2 == 1) lowestPosition++;
+            if (lowestPosition % 2 == -1) lowestPosition++;
 
             while (lowestPosition < -4) {
                 NoteModel ledger = new NoteModel(SheetMusicSymbols.ledger);

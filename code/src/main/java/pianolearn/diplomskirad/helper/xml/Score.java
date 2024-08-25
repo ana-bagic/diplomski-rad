@@ -3,6 +3,7 @@ package pianolearn.diplomskirad.helper.xml;
 import org.audiveris.proxymusic.*;
 import pianolearn.diplomskirad.helper.BravuraHelper;
 import pianolearn.diplomskirad.helper.ScaleHelper;
+import pianolearn.diplomskirad.model.Hand;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
 import pianolearn.diplomskirad.model.score.NoteType;
 import pianolearn.diplomskirad.model.score.AttributesModel;
@@ -181,11 +182,11 @@ public class Score {
         if (measure == null) return null;
 
         LinkedList<Object> nbfList = new LinkedList<>(measure.getNoteOrBackupOrForward());
-        List<MusicNodeModel> rightHandMeasure = measureModel(nbfList, true, attributes);
+        List<MusicNodeModel> rightHandMeasure = measureModel(nbfList, Hand.RIGHT, attributes);
         ScaleHelper.setLedgers(rightHandMeasure);
 
         boolean hasBothHands = !nbfList.isEmpty();
-        List<MusicNodeModel> leftHandMeasure = hasBothHands ? measureModel(nbfList, false, attributes) : Collections.emptyList();
+        List<MusicNodeModel> leftHandMeasure = hasBothHands ? measureModel(nbfList, Hand.LEFT, attributes) : Collections.emptyList();
         ScaleHelper.setLedgers(leftHandMeasure);
 
         MeasurePairModel measurePair = new MeasurePairModel(hasBothHands, rightHandMeasure, leftHandMeasure);
@@ -194,16 +195,14 @@ public class Score {
         return measurePair;
     }
 
-    private static List<MusicNodeModel> measureModel(LinkedList<Object> nbfList, boolean rightHand, AttributesModel attributes) {
-        boolean isTreble = rightHand ? attributes.isRightHandTreble() : attributes.isLeftHandTreble();
-
+    private static List<MusicNodeModel> measureModel(LinkedList<Object> nbfList, Hand hand, AttributesModel attributes) {
         List<MusicNodeModel> nodes = new LinkedList<>();
         MusicNodeModel musicNodeModel = new MusicNodeModel();
         boolean isNextNoteInChord = false;
 
         while (!nbfList.isEmpty()) {
             Object nbf = nbfList.peek();
-            if (rightHand && nbf instanceof Note note) {
+            if (hand == Hand.RIGHT && nbf instanceof Note note) {
                 BigInteger staff = note.getStaff();
                 if (staff != null && staff.intValue() == 2) {
                     break;
@@ -220,7 +219,7 @@ public class Score {
                     isNextNoteInChord = true;
                 }
 
-                NoteModel noteModel = noteModel(note, isTreble, attributes);
+                NoteModel noteModel = noteModel(note, hand, attributes);
                 if (noteModel == null) continue;
 
                 if (!isNextNoteInChord) {
@@ -243,7 +242,7 @@ public class Score {
         return nodes;
     }
 
-    private static NoteModel noteModel(Note note, boolean isTreble, AttributesModel attributes) {
+    private static NoteModel noteModel(Note note, Hand hand, AttributesModel attributes) {
         if (note.getType() == null) return null;
         String noteType = note.getType().getValue();
 
@@ -256,7 +255,7 @@ public class Score {
             noteModel.setDot(dot);
 
             PitchModel pitchModel = pitchModel(pitch);
-            ScaleHelper.setNoteModelPitch(noteModel, pitchModel, isTreble, attributes);
+            ScaleHelper.setNoteModelPitch(noteModel, pitchModel, hand, attributes);
             return noteModel;
         }
 

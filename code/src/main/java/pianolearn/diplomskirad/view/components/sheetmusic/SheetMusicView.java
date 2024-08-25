@@ -7,6 +7,7 @@ import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.helper.StyleHelper;
 import pianolearn.diplomskirad.listener.EventListener;
 import pianolearn.diplomskirad.listener.NotesPlayListener;
+import pianolearn.diplomskirad.model.Hand;
 import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
 import pianolearn.diplomskirad.model.viewmodel.MeasurePairModel;
 import pianolearn.diplomskirad.view.components.SongMetadataView;
@@ -39,12 +40,12 @@ public class SheetMusicView extends VBox {
         sheetMusicVBox.setBackground(StyleHelper.background(Colors.text, null));
     }
 
-    public void showPart(boolean rightHandPart, boolean show) {
-        StyleHelper.showNode(rightHandPart ? rightHandPartView : leftHandPartView, show);
+    public void showPart(Hand hand, boolean show) {
+        StyleHelper.showNode(hand == Hand.RIGHT ? rightHandPartView : leftHandPartView, show);
     }
 
-    public void setClefTimeKey(boolean rightHandPart, ClefTimeKeyModel model) {
-        if (rightHandPart) {
+    public void setClefTimeKey(Hand hand, ClefTimeKeyModel model) {
+        if (hand == Hand.RIGHT) {
             rightHandPartView.setClefTimeKey(model);
         } else {
             leftHandPartView.setClefTimeKey(model);

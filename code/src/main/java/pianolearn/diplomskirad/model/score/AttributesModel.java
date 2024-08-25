@@ -1,5 +1,7 @@
 package pianolearn.diplomskirad.model.score;
 
+import pianolearn.diplomskirad.model.Hand;
+
 import java.util.Set;
 
 public record AttributesModel(
@@ -21,5 +23,9 @@ public record AttributesModel(
 
     public boolean usesBothHands() {
         return staves == 2;
+    }
+
+    public boolean isHandTreble(Hand hand) {
+        return hand == Hand.RIGHT ? isRightHandTreble : isLeftHandTreble;
     }
 }
