@@ -1,9 +1,67 @@
+% !TeX spellcheck = hr-HR
 \documentclass[diplomskirad]{fer}
-% Dodaj opciju upload za generiranje konačne verzije koja se učitava na FERWeb
+% Dodaj opciju upload za generiranje konačne verzije koja se učitava na FERWeb: \documentclass[diplomskirad, upload]{fer}
 
-\usepackage{blindtext}
+% footnotes??
 
-\title{Application for aiding piano playing}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{courier}
+\usepackage{xcolor}
+\usepackage{subcaption}
+
+\definecolor{lightGray}{HTML}{F0F0F0}
+
+\lstset{
+	basicstyle=\ttfamily\footnotesize,
+	breaklines=true,
+	showstringspaces=false,
+	tabsize=2,
+	backgroundcolor = \color{lightGray},
+	framexleftmargin=10pt,
+	framexrightmargin=10pt
+}
+
+\lstdefinelanguage{XML}{
+	morekeywords={score, partwise, part, measure, note, pitch, step, octave, duration, 
+		type, rest, staff, voice, backup, forward, time, key, clef, attributes, 
+		divisions, fifths, beats, beat-type, sound, tempo, dynamics, lyric, text, 
+		alter, tie, articulation, chord, dot, slur, fermata, technical, articulation},
+	sensitive=false,
+	morecomment=[s]{<!--}{-->},
+	morestring=[b]",
+	keywordstyle=\color{blue},
+	stringstyle=\color{red},
+	commentstyle=\color{green},
+}
+
+\lstdefinelanguage{Java}{
+	keywords={abstract, continue, for, new, switch, assert, default, goto, 
+		package, synchronized, boolean, do, if, private, this, 
+		break, double, implements, protected, throw, byte, else, 
+		import, public, throws, case, enum, instanceof, return, 
+		transient, catch, extends, int, short, try, char, final, 
+		interface, static, void, class, finally, long, strictfp, 
+		volatile, const, float, native, super, while},
+	sensitive=true,
+	comment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	morestring=[b]",
+	morestring=[b]',
+	keywordstyle=\color{blue},
+	stringstyle=\color{red},
+	commentstyle=\color{green},
+}
+
+\graphicspath{ {./figures/} }
+
+
+%---------------------------- Title page ----------------------------------
+
+\begin{document}
+
+\title{Application to assist with learning to play the piano}
 
 \naslov{Aplikacija za pomoć učenju sviranja klavira}
 
@@ -13,21 +71,19 @@
 
 \mentor{Prof.\@ Marko Čupić}
 
-\date{June 2024}
+\date{September, 2024}
 
-\datum{lipanj 2024.}
-
-%-------------------------------------------------------------------------------
-
-
-\begin{document}
-
+\datum{rujan, 2024.}
 
 \maketitle
 
 
+%---------------------------- Assignment page -----------------------------
+
 \zadatak{zadatak.pdf}
 
+
+%---------------------------- Thank you page ------------------------------
 
 \begin{zahvale}
   Hvala na čaju...
@@ -37,63 +93,171 @@
 \mainmatter
 
 
+%---------------------------- Contents section ----------------------------
+
 \tableofcontents
 
 
+%---------------------------- Introduction section ------------------------
+
 \chapter{Uvod}
-\label{pog:uvod}
+Učenje sviranja klavira složen je proces koji od učenika zahtijeva koordinaciju niza kognitivnih i motoričkih vještina, uključujući sinkronizaciju pokreta obje ruke, precizno usklađivanje ritma, kontrolu dinamike, te istovremeno čitanje i razumijevanje notnog zapisa. Ovi zadaci mogu biti prilično zahtjevni, posebno za početnike, koji često moraju savladati više aspekata u isto vrijeme.
+
+U današnjem digitalnom dobu, računalne aplikacije nude značajnu pomoć u procesu učenja sviranja raznih instrumenata, a zbog njegove popularnosti, najčešće klavira. One pružaju vizualne i zvučne povratne informacije koje pomažu učenicima u prepoznavanju i ispravljanju grešaka, praćenju napretka i usavršavanju tehnike sviranja. One također omogućuju interaktivni i personalizirani pristup učenju i mogu značajno unaprijediti učinkovitost, zadovoljstvo i zabavu u procesu učenja. Iako ove aplikacije ne mogu u potpunosti zamijeniti iskusne učitelje i tradicionalne škole, one su pristupačnije široj publici i omogućuju neformalno i fleksibilno učenje. Neke od aplikacija usmjerene su na poučavanje teorije glazbe, neke na praktične elemente, ali većina njih na neki način kombinira oba pristupa.
+
+U ovom diplomskom radu istražila sam kako se računalne tehnologije mogu koristiti za nadopunu tradicionalnih metoda, s ciljem olakšavanja procesa učenja sviranja klavira. Razvila sam aplikaciju koja koristi praktičan pristup, specifično uči korisnika svirati odabranu skladbu. Ona na dva načina prikazuje što treba odsvirati: pomičnim notnim zapisom i bojom istaknutim tipkama klavira, te analizom odsviranog prati uspješnost korisnika. U radu sam predstavila svoje programsko rješenje, prikazala postignute rezultate, analizirala njegove prednosti i nedostatke, te navela ideje za poboljšanje i nadogradnju. Uz rad priložen je i izvorni kod razvijenog programa.
 
 
-%-------------------------------------------------------------------------------
+%---------------------------- Problem description section -----------------
 
-\chapter{Glavni dio}
-\label{pog:glavni_dio}
+\chapter{Opis problema}
+Cilj ovog diplomskog rada je razviti aplikaciju koja korisnicima omogućuje učinkovito učenje sviranja odabranih skladbi kombinirajući tradicionalne metode s modernim tehnologijama. Korisnik u aplikaciji odabire skladbu u MusicXML formatu (detaljno objašnjen u odjeljku \ref{sec:musicxml}) koju želi savladati, dok mu aplikacija istovremeno nudi dvije različite vizualne prezentacije onoga što treba odsvirati: pomični notni zapis i vizualno istaknute tipke na klaviru. Aplikacija kontinuirano prati korisnikovu izvedbu putem klavijature povezane s računalom MIDI protokolom (detaljno objašnjeno u odjeljku \ref{sec:midi}), analizira njegov napredak i daje povratne informacije o točnosti sviranja odabrane skladbe. Ovaj rad fokusira se na razvoj aplikacije koja pojednostavljuje proces učenja sviranja, čineći ga interaktivnim i pristupačnim.
 
-\blindtext
+U nastavku ovog poglavlja bit će predstavljene postojeće slične aplikacije, zajedno s njihovim značajkama i mogućnostima, te usporedba s programskim rješenjem razvijenim u ovom radu, kako bi se definirale ključne razlike između njih.
+
+\section{Postojeće aplikacije}
+Postoji veliki broj aplikacija koje se bave sličnom tematikom, međutim u nastavku navesti ću neke od najpoznatijih i najkorištenijih.
+
+\subsection{Synthesia}
+Synthesia \cite{synthesia} je aplikacija koja korisnicima omogućuje sviranje skladbi uz pomoć vizualnih uputa na ekranu. Osim za učenje, mnogi glazbenici koriste ju za digitalizaciju i prikaz svojih skladbi ili aranžmana tuđih, a na Youtube-u se često mogu vidjeti videozapisi izrađeni pomoću te aplikacije. Note se prikazuju u obliku padajućih blokova iznad klavijature, pomažući korisnicima da prate koje tipke treba pritisnuti, što je prikazano na slici \ref{fig:synthesia}. Osim bogate biblioteke pjesama koju sadrži, Synthesia podržava i učitavanje MIDI datoteka, omogućujući korisnicima sviranje raznih skladbi. Aplikacija također prati korisnikov napredak, omogućuje prilagodbu tempa i vježbanje specifičnih dijelova skladbe, što je korisno za početnike i samouke glazbenike.
+
+\begin{figure}[h]
+	\includegraphics[scale=1.5]{synthesia.jpg}
+	\centering
+	\caption{Synthesia \cite{synthesia}}
+	\label{fig:synthesia}
+\end{figure}
+
+Slično mojoj aplikaciji, Synthesia koristi bojom istaknute tipke na klaviru, ali se više oslanja na prikaz padajućih nota umjesto na tradicionalni notni zapis. Obje aplikacije nude praćenje korisnikove izvedbe na povezanoj klavijaturi i pružaju povratne informacije. Međutim, dok Synthesia nudi učitavanje isključivo MIDI datoteka, moja aplikacija koristi MusicXML format koji omogućuje precizniji prikaz notnog zapisa.
+
+\subsection{Simply Piano}
+Simply Piano \cite{simplypiano} je popularna mobilna aplikacija za učenje sviranja klavira koja nudi interaktivne lekcije i vježbe prilagođene različitim razinama vještine, a primjer korištenja može se vidjeti na slici \ref{fig:simplypiano}. Korisnici mogu učiti skladbe iz opsežnog kataloga pjesama, a aplikacija koristi tehnologiju prepoznavanja zvuka za analizu izvedbe i pružanje povratne informacije u stvarnom vremenu. S obzirom da ta metoda nije skroz ispravna kod određivanja odsviranih nota, od nedavno Simply Piano podržava i praćenje korisnika putem MIDI protokola kao i moja aplikacija, međutim pošto je namijenjena isključivo mobilnim uređajima, spajanje klavijature na uređaj može biti složenije. Moja aplikacija također omogućuje učitavanje skladbi u MusicXML formatu, dok Simply Piano podržava samo pjesme iz svog kataloga.
+
+\begin{figure}[h]
+	\includegraphics[scale=0.27]{simply-piano.png}
+	\centering
+	\caption{Simply Piano \cite{simplypianoimage}}
+	\label{fig:simplypiano}
+\end{figure}
+
+\subsection{Flowkey}
+Flowkey \cite{flowkey} je aplikacija za učenje sviranja klavira koja kombinira interaktivne lekcije, i širok katalog skladbi. Primjer korištenja prikazan je na slici \ref{fig:flowkey}. Aplikacija omogućuje korisnicima učenje sviranja pjesama uz pomoć video vodiča (engl. \textit{tutorial}) i dinamičkih prikaza notnih zapisa. Koristi tehnologiju prepoznavanja zvuka, kao i MIDI vezu s računalom kako bi analizirala korisnikovu izvedbu u stvarnom vremenu i pružala povratne informacije.
+
+Flowkey nudi različite razine težine, od početnika do naprednih korisnika, te omogućuje odabir specifičnih dijelova skladbe za vježbanje, što moja aplikacija trenutno ne podržava. Aplikacija je dostupna na više platformi, uključujući mobilne uređaje i računala, što olakšava pristup različitim korisnicima. Za razliku od moje aplikacije, Flowkey ne podržava učitavanje vlastitih skladbi, što može biti ograničenje za korisnike koji žele raditi s notnim zapisima izvan Flowkey biblioteke.
+
+\begin{figure}[h]
+	\includegraphics[scale=0.35]{flowkey.png}
+	\centering
+	\caption{Flowkey \cite{flowkeyimage}}
+	\label{fig:flowkey}
+\end{figure}
 
 
-%-------------------------------------------------------------------------------
+%---------------------------- Used technologies section -------------------
 
-\chapter{Rezultati i rasprava}
-\label{pog:rezultati_i_rasprava}
+\chapter{Korištene tehnologije}
+Aplikaciju za učenje sviranja klavira razvila sam koristeći Javu 21, trenutno (kolovoz 2024.) najnoviju verziju programskog jezika s dugoročnom podrškom (engl. \textit{LTS}). Upravljanje projektom ostvarila sam putem Apache Maven alata, dok sam za izradu korisničkog sučelja koristila JavaFX biblioteku. Kao ulazni format datoteka upotrijebila sam MusicXML, koji sam parsirala pomoću ProxyMusic biblioteke. Za prepoznavanje unosa s klavijature, te implementaciju metronoma koristila sam MIDI protokol, a prikaz notnog zapisa olakšala sam si korištenjem Bravura fonta, koji slijedi SMuFL specifikaciju.
 
-\blindtext
+U nastavku ovog poglavlja navesti ću osnovne informacije o navedenim tehnologijama i objasniti njihovu primjenu u ovom projektu.
+
+\section{Apache Maven}
+Maven \cite{maven} je alat za upravljanje programskim projektima i automatizaciju izgradnje. Razvijen je od strane Apache Software Foundation, a prvi put pušten je u rad u srpnju 2004. godine. Prvenstveno je dizajniran za Java projekte, ali može se upotrijebiti i za rad u drugim programskim jezicima kao što su C\#, Scala, Ruby i drugi. Jedna od ključnih značajki Mavena je njegova sposobnost za automatsko upravljanje procesom izgradnje, što uključuje prevođenje koda, izvođenje testova i pakiranje aplikacija. Međutim, možda najvažnija prednost Mavena je njegova funkcionalnost upravljanja ovisnostima (engl. \textit{dependency}) prema vanjskim bibliotekama.
+
+\section{JavaFX}
+JavaFX \cite{javafx} je biblioteka razvijena za programski jezik Java, namijenjena izgradnji korisničkih sučelja aplikacija. Razvila ju je kompanija Oracle, a prva verzija objavljena je u prosincu 2008. godine. JavaFX se može koristiti za razvoj desktop, web, mobilnih i ugrađenih (engl. \textit{embedded}) aplikacija.
+
+Jedna od ključnih prednosti JavaFX-a je mogućnost odvajanja logike aplikacije od vizualnog prikaza. Vizualni elementi često se definiraju u FXML datotekama, koje koriste poseban XML format, te u kombinaciji s tim i SceneBuilder – alat koji koristi povuci-i-ispusti (engl. \textit{drag-and-drop}) tehniku za jednostavno kreiranje i uređivanje izgleda aplikacije. Međutim, u svom radu odlučila sam komponente izravno napisati u kodu, bez korištenja FXML-a i SceneBuilder-a. Ovaj pristup mi je omogućio precizniju kontrolu nad izgledom i ponašanjem komponenata, te jednostavniju nadogradnju i jasniji pregled svega što je definirano u kodu kako bi komponenta izgledala na željeni način. JavaFX podržava stiliziranje komponenata putem CSS-a, no tu sam mogućnost koristila jedino kada neki dizajn nije bilo moguće napraviti putem koda.
+
+\section{MusicXML i ProxyMusic}
+\label{sec:musicxml}
+MusicXML (Music Extensible Markup Language) \cite{musicxml} je format datoteke temeljen na XML specifikaciji, dizajniran za reprezentaciju zapadnjačkog notnog zapisa na način koji je razumljiv i ljudima i računalima. Ovaj format je osmislio Michael Good, a razvila ga je tvrtka Recordare LLC. Prva verzija MusicXML-a objavljena je u siječnju 2004. godine.
+
+MusicXML je danas postao standardni format za digitalni notni zapis, koji koriste brojne aplikacije za kreiranje, reprodukciju i dijeljenje notnog zapisa. Mnoge od tih aplikacija omogućuju učitavanje datoteka u MusicXML formatu, uređivanje notnog zapisa, reprodukciju te izvoz u različite formate poput PDF-a, XML-a, MIDI-ja, mp3-a i drugih. S vremenom su se mogućnosti i značajke MusicXML-a značajno proširile, tako da sada podržava većinu oznaka i simbola korištenih u klasičnim notnim zapisima.
+
+Struktura MusicXML formata slična je drugim XML formatima. Svaki element u MusicXML-u sastoji se od oznake, opcionalnih atributa u obliku naziv="vrijednost", te opcionalnog sadržaja unutar elementa. Na slici \ref{fig:musicxmlfile} prikazan je primjer MusicXML datoteke koja definira jedan takt u četveročetvrtinskoj mjeri i C-dur ljestvici, unutar kojeg se nalazi jedna cijela nota. Zbog sažetijeg prikaza iz datoteke sam izbacila sve oznake sa metapodatcima. Notni zapis te datoteke može se vidjeti na slici \ref{fig:musicxmlnote}.
+
+S obzirom da tekstualni prikaz MusicXML-a može biti vrlo dugačak, MusicXML v2.0 uvodi komprimirani format sa sufiksom .mxl, koji može smanjiti veličinu datoteka na otprilike jednu dvadesetinu veličine nekomprimirane verzije. Međutim, zbog pojednostavljenja implementacije moja aplikacije ne podržava taj format.
+
+\begin{figure}[h]
+	\centering
+	\begin{minipage}{0.577\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{musicxml-file.png}
+		\caption{MusicXML datoteka}
+		\label{fig:musicxmlfile}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{musicxml-note.png}
+		\caption{Notni zapis \cite{musicxml}}
+		\label{fig:musicxmlnote}
+	\end{minipage}
+	\caption{MusicXML primjer}
+\end{figure}
+
+MusicXML format sadrži velik broj oznaka i kompleksnih struktura, što ručno parsiranje čini izuzetno zahtjevnim. Kako bih si to olakšala, koristila sam biblioteku koja automatski obavlja te zadatke. ProxyMusic je biblioteka koja omogućava jednostavnu serijalizaciju, deserijalizaciju i uređivanje MusicXML datoteka, međutim ne nudi nikakve naprednije mogućnosti obrade i analize skladbe. ProxyMusic je osim za Javu, dostupna i za Python, pružajući programerima u oba jezika moćan alat za rad s MusicXML formatom. Upute za preuzimanje biblioteke, te dokumentacija i primjeri upotrebe nalaze se na GitHub profilu korisnika Audiveris na sljedećoj poveznici \cite{proxymusic}. 
+
+\section{MIDI protokol}
+\label{sec:midi}
+MIDI (Musical Instrument Digital Interface) \cite{midi} je standardni protokol za povezivanje i komunikaciju između elektroničkih glazbenih instrumenata, računala i drugih uređaja koji se koriste za stvaranje, reprodukciju i obradu glazbe. Razvijen je 1980-ih i prenosi digitalne informacije, poput tona, dinamike i kontrolnih uputa, a ne sam zvuk, što čini MIDI datoteke i poruke malim i učinkovitim. MIDI kabel može prenositi do 16 kanala, a svaki može kontrolirati različite instrumente, što omogućava sinkronizaciju više uređaja u glazbenim sustavima. Njegova standardiziranost osigurava kompatibilnost među različitim uređajima i aplikacijama, čineći ga neophodnim alatom u modernoj glazbenoj industriji. MIDI omogućava preciznu kontrolu i fleksibilnost u stvaranju i reproduciranju glazbe.
+
+Java nativno podržava MIDI putem Java Sound programskog sučelja (engl. \textit{API}), konkretno kroz \textit{javax.sound.midi} paket, koji je jednostavan za korištenje. U svojoj aplikaciji koristila sam MIDI protokol na dva načina: za primanje podataka sa klavijature o tome što korisnik svira i za implementaciju zvuka metronoma. Detaljna programska implementacija ovih funkcionalnosti prikazana je u odjeljku \ref{sec:midiimpl}.
+
+Klavijature se mogu spojiti s računalom na dva načina. Većina novijih klavijatura opremljena je USB tip B priključkom (engl. \textit{port}) na stražnjoj strani, a kabel s USB-B priključkom na jednoj strani i USB-A na drugoj lako je dostupan. Međutim, stariji modeli klavijatura, uključujući onu s kojoj sam radila, nemaju USB priključak, nego samo MIDI priključke. Nažalost, kabel s MIDI priključcima, puno je teže pronaći i većina trgovina s glazbenom opremom ga ne nudi. Stoga sam bila prisiljena naručiti ga iz Slovenije.
+
+Na slici \ref{fig:ports} prikazani su spomenuti priključci. S lijeve strane nalaze se MIDI priključci, dok je s desne strane USB-B priključak. Noviji modeli klavijatura sadrže oba priključka, omogućujući korisnicima da odaberu najprikladniji način spajanja.
+
+\begin{figure}[h]
+	\includegraphics[scale=1]{keyboard-ports.png}
+	\centering
+	\caption{Priključci na klavijaturi \cite{keyboardports}}
+	\label{fig:ports}
+\end{figure}
+
+\section{SMuFL i Bravura font}
 
 
-%--- ZAKLJUČAK / CONCLUSION ----------------------------------------------------
+%---------------------------- Implementation section ----------------------
+
+\chapter{Implementacija programa}
+
+\section{MIDI}
+\label{sec:midiimpl}
+
+
+%---------------------------- Results section -----------------------------
+
+\chapter{Analiza rezultata}
+
+
+%---------------------------- Conclusion section --------------------------
 
 \chapter{Zaključak}
-\label{pog:zakljucak}
-
-\blindtext
 
 
-%--- LITERATURA / REFERENCES ---------------------------------------------------
+%---------------------------- References ----------------------------------
 
 \bibliography{literatura}
 
 
-%--- SAŽETAK / ABSTRACT --------------------------------------------------------
+%---------------------------- Abstract ------------------------------------
 
 \begin{sazetak}
-  Unesite sažetak na hrvatskom.
-
-  \blindtext
+U ovom radu istraživala sam problem razvoja aplikacije za učenje sviranja klavira, specifično usmjerene na vježbanje izvođenja odabrane skladbe. Razvila sam aplikaciju koja omogućuje korisniku učitavanje željene skladbe u MusicXML formatu, nakon čega aplikacija pomoću pomičnog notnog zapisa i vizualno istaknutih tipki na klaviru prikazuje koje note treba odsvirati. Analizom izvedbe u stvarnom vremenu, aplikacija analizira izvedbu korisnika koristeći klavijaturu povezanoj s računalom putem MIDI protokola i nudi povratne informacije o točnosti sviranja. Ovaj rad detaljno opisuje razvijenu aplikaciju, uključujući odabrane tehnologije i metode implementacije, te pruža analizu dobivenih rezultata. U radu su također razmotrene mogućnosti za daljnje poboljšanje i nadogradnju aplikacije, s ciljem povećanja njezine funkcionalnosti i prilagodljivosti različitim razinama vještine korisnika.
 \end{sazetak}
 
 \begin{kljucnerijeci}
-  prva ključna riječ; druga ključna riječ; treća ključna riječ
+glazba; klavir; midi; musicxml; javafx
 \end{kljucnerijeci}
 
 
 \begin{abstract}
-  Enter the abstract in English.
-  
-  \blindtext 
+In this thesis, I explored the development of an application designed for learning piano playing, specifically aimed at practicing the performance of selected pieces. I developed an application that allows users to load their chosen piece in MusicXML format, after which the application displays the notes to be played using a scrolling sheet music view and visually highlighted piano keys. By analyzing the performance in real-time, the application evaluates the user's playing using a keyboard connected to the computer via MIDI protocol and provides feedback on the accuracy of the performance. This thesis provides a detailed description of the developed application, including the chosen technologies and implementation methods, and offers an analysis of the obtained results. The thesis also considers possibilities for further improvement and enhancement of the application, with the goal of increasing its functionality and adaptability to different skill levels of users.
 \end{abstract}
 
 \begin{keywords}
-  the first keyword; the second keyword; the third keyword
+music; piano; midi; musicxml; javafx
 \end{keywords}
 
 
