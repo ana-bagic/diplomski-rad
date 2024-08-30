@@ -11,6 +11,7 @@ import pianolearn.diplomskirad.controller.components.PianoKeyboardController;
 import pianolearn.diplomskirad.controller.components.SheetMusicController;
 import pianolearn.diplomskirad.helper.TempoHelper;
 import pianolearn.diplomskirad.helper.midi.Metronome;
+import pianolearn.diplomskirad.helper.midi.MidiDeviceManager;
 import pianolearn.diplomskirad.helper.xml.Score;
 import pianolearn.diplomskirad.model.Hand;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
@@ -86,21 +87,21 @@ public class PlayViewController implements BaseViewController {
     private void setupListeners() {
         view.setBackButtonListener(() -> {
             NavigationController.INSTANCE.pop();
-            metronome.close();
+            close();
         });
 
         view.setPlayButtonListener(this::playChanged);
         view.setStopButtonListener(this::stopClicked);
         view.setSpeedSliderListener(this::speedChanged);
-        view.setHandChangedListener(this::handChanged);
 
         sheetMusicController.setMeasurePairCreateListener(measurePairs::add);
         sheetMusicController.setNotesPlayListeners(
-                pianoKeyboardController::playNotesRightHand, pianoKeyboardController::playNotesLeftHand);
+                (pitches) -> pianoKeyboardController.playNotes(pitches, Hand.RIGHT),
+                (pitches) -> pianoKeyboardController.playNotes(pitches, Hand.LEFT));
 
         pianoKeyboardController.setPlayPauseListener(this::playChanged);
 
-        NavigationController.INSTANCE.getStage().setOnCloseRequest(e -> metronome.close());
+        NavigationController.INSTANCE.getStage().setOnCloseRequest(e -> close());
     }
 
     private void setupView() {
@@ -116,6 +117,11 @@ public class PlayViewController implements BaseViewController {
 
         remainingTickCounts = 0;
         isPlaying = false;
+    }
+
+    private void close() {
+        metronome.close();
+        MidiDeviceManager.close();
     }
 
     private void playChanged(boolean play) {
@@ -134,11 +140,6 @@ public class PlayViewController implements BaseViewController {
         actualDurationOfQuarter = TempoHelper.getDurationOfQuarter(actualDurationOfBeatUnit, attributes.beatUnitTempo());
         isWait = speed == PlaybackSpeed.WAIT;
         pianoKeyboardController.setWait(isWait);
-    }
-
-    private void handChanged(Hand hand, boolean shows) {
-        sheetMusicController.handChanged(hand, shows);
-        pianoKeyboardController.handChanged(hand, shows);
     }
 
     private void mainLoop() {

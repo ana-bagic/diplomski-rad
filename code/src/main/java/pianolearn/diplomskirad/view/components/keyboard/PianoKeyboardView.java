@@ -21,7 +21,9 @@ public class PianoKeyboardView extends StackPane {
 
     private final HashMap<String, PianoKeyView> keysMap = new HashMap<>();
     private final KeyboardModel model;
+
     private final Scene scene = NavigationController.INSTANCE.getStage().getScene();
+    private double insets = 0;
 
     public PianoKeyboardView(KeyboardModel model) {
         this.model = model;
@@ -76,7 +78,7 @@ public class PianoKeyboardView extends StackPane {
     }
 
     private void changeSize() {
-        double sceneWidth = scene.getWidth();
+        double sceneWidth = scene.getWidth() - insets;
         int numberOfKeys = model.getNumberOfWhiteKeys();
         double whiteKeyWidth = Math.floor(sceneWidth / numberOfKeys);
         double whiteKeyHeight = whiteKeyWidth * WHITE_KEY_HEIGHT_MULTIPLIER;
@@ -109,6 +111,11 @@ public class PianoKeyboardView extends StackPane {
                 key.setLayoutY(blackKeyHeight);
             }
         }
+    }
+
+    public void setInsets(double insets) {
+        this.insets = insets;
+        changeSize();
     }
 
     public void setHighlight(String keyCode, Color color) {

@@ -38,10 +38,9 @@ public class SheetMusicView extends VBox {
 
         sheetMusicVBox.getChildren().addAll(rightHandPartView, leftHandPartView);
         sheetMusicVBox.setBackground(StyleHelper.background(Colors.text, null));
-    }
 
-    public void showPart(Hand hand, boolean show) {
-        StyleHelper.showNode(hand == Hand.RIGHT ? rightHandPartView : leftHandPartView, show);
+        Hand.RIGHT.addShowsListener((o, ov, nv) -> StyleHelper.showNode(rightHandPartView, nv));
+        Hand.LEFT.addShowsListener((o, ov, nv) -> StyleHelper.showNode(leftHandPartView, nv));
     }
 
     public void setClefTimeKey(Hand hand, ClefTimeKeyModel model) {

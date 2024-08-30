@@ -10,7 +10,7 @@ public class Images {
 
     public static final Image uploadIcon = getImage(iconsPath + "upload.png");
     public static final Image musicLibraryIcon = getImage(iconsPath + "music-library.png");
-    public static final Image settingsIcon = getImage(iconsPath + "settings.png");
+    public static final Image keyboardIcon = getImage(iconsPath + "keyboard.png");
 
     public static final Image backArrowIcon = getImage(iconsPath + "back-arrow.png");
 

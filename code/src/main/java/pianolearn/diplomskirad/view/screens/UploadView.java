@@ -63,11 +63,7 @@ public class UploadView extends BaseNavigationView {
         actionHBox.getChildren().addAll(confirmButton, orLabel, fileChooserButton);
         actionHBox.setAlignment(Pos.CENTER);
 
-        confirmButton.setFont(Fonts.body);
-        confirmButton.setTextFill(Colors.background);
-        setButtonBackground(confirmButton, Colors.text, Colors.highlight, 20);
-        confirmButton.setText(Strings.confirm);
-        confirmButton.setPadding(new Insets(20));
+        setTextButton(confirmButton, Strings.confirm);
         showNode(confirmButton, false);
         confirmButton.setOnAction(e -> confirmButtonListener.onAction());
 
@@ -77,11 +73,7 @@ public class UploadView extends BaseNavigationView {
         orLabel.setText(Strings.or);
         showNode(orLabel, false);
 
-        fileChooserButton.setFont(Fonts.body);
-        fileChooserButton.setTextFill(Colors.background);
-        setButtonBackground(fileChooserButton, Colors.text, Colors.highlight, 20);
-        fileChooserButton.setText(Strings.chooseFile);
-        fileChooserButton.setPadding(new Insets(20));
+        setTextButton(fileChooserButton, Strings.chooseFile);
         fileChooserButton.setOnAction(e -> fileChooseButtonListener.onAction());
     }
 

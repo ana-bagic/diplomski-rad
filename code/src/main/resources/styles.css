@@ -3,3 +3,11 @@
     -fx-tick-label-fill: #ECF0F1;
     -fx-tick-label-font-family: "Retro Osar";
 }
+
+.combo-box {
+    -fx-font-size: 16px;
+}
+
+.combo-box-popup .list-cell {
+    -fx-font-size: 16px;
+}

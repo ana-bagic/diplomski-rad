@@ -21,6 +21,6 @@ public class TitleViewController implements BaseViewController {
     private void setupListeners() {
         view.setUploadButtonListener(() -> NavigationController.INSTANCE.push(new UploadViewController()));
         view.setLibraryButtonListener(() -> NavigationController.INSTANCE.push(new LibraryViewController()));
-        view.setSettingsButtonListener(() -> NavigationController.INSTANCE.push(new SettingsViewController()));
+        view.setKeyboardButtonListener(() -> NavigationController.INSTANCE.push(new SetupKeyboardViewController()));
     }
 }

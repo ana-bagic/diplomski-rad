@@ -31,5 +31,9 @@ public class KeyboardModel {
     public int getNumberOfWhiteKeys() {
         return numberOfWhiteKeys;
     }
+
+    public boolean containsPitch(PitchModel pitch) {
+        return pitch.compareTo(firstPitch) >= 0 && pitch.compareTo(lastPitch) <= 0;
+    }
 }
 

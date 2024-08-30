@@ -1,6 +1,6 @@
 package pianolearn.diplomskirad.listener;
 
-public interface PlayChangedListener {
+public interface PlayChangeListener {
 
     void onAction(boolean play);
 }

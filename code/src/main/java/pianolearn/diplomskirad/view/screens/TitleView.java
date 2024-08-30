@@ -17,11 +17,11 @@ public class TitleView extends VBox {
     private final HBox buttonsStackHBox = new HBox();
     private final Button uploadButton = new Button();
     private final Button libraryButton = new Button();
-    private final Button settingsButton = new Button();
+    private final Button keyboardButton = new Button();
 
     private EventListener uploadButtonListener;
     private EventListener libraryButtonListener;
-    private EventListener settingsButtonListener;
+    private EventListener keyboardButtonListener;
 
     public TitleView() {
         setupView();
@@ -33,7 +33,7 @@ public class TitleView extends VBox {
         setAlignment(Pos.CENTER);
         setSpacing(70);
 
-        buttonsStackHBox.getChildren().addAll(uploadButton, libraryButton, settingsButton);
+        buttonsStackHBox.getChildren().addAll(uploadButton, libraryButton, keyboardButton);
         buttonsStackHBox.setAlignment(Pos.CENTER);
         buttonsStackHBox.setSpacing(50);
 
@@ -47,8 +47,8 @@ public class TitleView extends VBox {
         setupButton(libraryButton, Strings.libraryButtonTooltip, Images.musicLibraryIcon);
         libraryButton.setOnAction(e -> libraryButtonListener.onAction());
 
-        setupButton(settingsButton, Strings.settingsButtonTooltip, Images.settingsIcon);
-        settingsButton.setOnAction(e -> settingsButtonListener.onAction());
+        setupButton(keyboardButton, Strings.keyboardButtonTooltip, Images.keyboardIcon);
+        keyboardButton.setOnAction(e -> keyboardButtonListener.onAction());
     }
 
     private void setupButton(Button button, String tooltipText, Image image) {
@@ -66,7 +66,7 @@ public class TitleView extends VBox {
         libraryButtonListener = listener;
     }
 
-    public void setSettingsButtonListener(EventListener listener) {
-        settingsButtonListener = listener;
+    public void setKeyboardButtonListener(EventListener listener) {
+        keyboardButtonListener = listener;
     }
 }

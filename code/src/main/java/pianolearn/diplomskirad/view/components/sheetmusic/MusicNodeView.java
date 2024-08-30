@@ -2,6 +2,7 @@ package pianolearn.diplomskirad.view.components.sheetmusic;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import pianolearn.diplomskirad.model.score.PitchModel;
 import pianolearn.diplomskirad.model.viewmodel.MusicNodeModel;
 import pianolearn.diplomskirad.model.viewmodel.NoteModel;
 
@@ -29,8 +30,8 @@ public class MusicNodeView extends Pane {
         }
     }
 
-    public List<String> getNotes() {
-        return noteViews.stream().map(NoteView::getNote).filter(Objects::nonNull).toList();
+    public List<PitchModel> getPitches() {
+        return noteViews.stream().map(NoteView::getPitch).filter(Objects::nonNull).toList();
     }
 
     private double getNodeWidth() {

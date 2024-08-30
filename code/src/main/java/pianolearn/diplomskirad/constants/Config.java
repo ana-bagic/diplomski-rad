@@ -1,6 +1,5 @@
 package pianolearn.diplomskirad.constants;
 
-import pianolearn.diplomskirad.model.KeyboardModel;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
 import pianolearn.diplomskirad.model.score.PitchModel;
 
@@ -33,9 +32,8 @@ public class Config {
     public static final double TICK_DURATION_MS = 30;
 
     // keyboard
-    public static final KeyboardModel KEYBOARD_DISPLAY_MODEL =
-            new KeyboardModel(new PitchModel(NoteAlphabet.A, 0), new PitchModel(NoteAlphabet.C, 8));
-
+    public static final PitchModel LOWEST_PITCH = new PitchModel(NoteAlphabet.A, 0);
+    public static final PitchModel HIGHEST_PITCH = new PitchModel(NoteAlphabet.C, 8);
     public static final double WHITE_KEY_HEIGHT_MULTIPLIER = 5;
     public static final double BLACK_KEY_HEIGHT_MULTIPLIER = 4.5;
     public static final double BLACK_KEY_WIDTH_MULTIPLIER = 0.7;

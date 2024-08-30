@@ -9,7 +9,7 @@ public class Strings {
     // Title screen
     public static final String uploadButtonTooltip = "Load file from computer";
     public static final String libraryButtonTooltip = "Play song from our library";
-    public static final String settingsButtonTooltip = "Settings";
+    public static final String keyboardButtonTooltip = "Setup your keyboard";
 
     // Upload screen
     public static final String loadLabel = "Load .xml file";
@@ -37,8 +37,10 @@ public class Strings {
     public static final String classicRow = "classic:";
     public static final String modernRow = "modern:";
 
-    // Settings screen
-    public static final String settingsLabel = "Settings";
+    // Setup keyboard screen
+    public static final String selectKeyboard = "Select your keyboard";
+    public static final String refresh = "Refresh";
+    public static final String playNotes = "Play the lowest and the highest note on your keyboard";
 
     // Play screen
     public static final String playButtonTooltip = "Play";

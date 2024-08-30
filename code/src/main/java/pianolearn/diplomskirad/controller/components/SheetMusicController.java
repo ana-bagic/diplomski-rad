@@ -43,7 +43,7 @@ public class SheetMusicController implements BaseViewController {
     }
 
     private void setupView() {
-        view.showPart(Hand.LEFT, attributes.usesBothHands());
+        Hand.LEFT.setShows(attributes.usesBothHands());
 
         ClefTimeKeyModel rightCTKModel = ClefTimeKeyModel.fromAttributes(attributes, true);
         view.setClefTimeKey(Hand.RIGHT, rightCTKModel);
@@ -74,10 +74,6 @@ public class SheetMusicController implements BaseViewController {
         nextDisplayMeasureIndex = 0;
         view.reset();
         addNextMeasure();
-    }
-
-    public void handChanged(Hand hand, boolean show) {
-        view.showPart(hand, show);
     }
 
     public void translateMeasures(double amount) {

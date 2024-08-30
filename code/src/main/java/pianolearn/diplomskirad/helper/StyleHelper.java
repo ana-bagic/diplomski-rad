@@ -65,6 +65,14 @@ public class StyleHelper {
         Tooltip.install(button, tooltip);
     }
 
+    public static void setTextButton(Button button, String text) {
+        button.setFont(Fonts.body);
+        button.setTextFill(Colors.background);
+        setButtonBackground(button, Colors.text, Colors.highlight, 20);
+        button.setPadding(new Insets(20));
+        button.setText(text);
+    }
+
     public static void setImageViewSizeAndRadius(ImageView imageView, double size, double radius) {
         imageView.setFitWidth(size);
         imageView.setFitHeight(size);
