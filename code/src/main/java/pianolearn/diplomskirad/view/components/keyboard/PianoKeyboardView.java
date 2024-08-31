@@ -5,6 +5,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.helper.ScaleHelper;
+import pianolearn.diplomskirad.model.Hand;
 import pianolearn.diplomskirad.model.KeyboardModel;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
 import pianolearn.diplomskirad.model.score.PitchModel;
@@ -118,8 +119,12 @@ public class PianoKeyboardView extends StackPane {
         changeSize();
     }
 
-    public void setHighlight(String keyCode, Color color) {
-        keysMap.get(keyCode).setHighlight(color);
+    public void setHighlight(String keyCode, Hand hand) {
+        keysMap.get(keyCode).setHighlight(hand);
+    }
+
+    public void setClicked(String keyCode) {
+        keysMap.get(keyCode).setClicked();
     }
 
     public void removeHighlight(String keyCode) {

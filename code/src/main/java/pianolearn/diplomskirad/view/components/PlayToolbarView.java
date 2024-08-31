@@ -69,10 +69,10 @@ public class PlayToolbarView extends HBox {
         speedSlider.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
         speedSlider.setOnMouseReleased(e -> sliderChanged());
 
-        setupButton(leftHandButton, Hand.LEFT.getKeyColor(), Strings.leftHandButtonTooltip, Images.leftHandIcon);
+        setupButton(leftHandButton, Hand.LEFT.getKeyColorFaded(), Strings.leftHandButtonTooltip, Images.leftHandIcon);
         leftHandButton.setOnAction(e -> leftHandButtonClicked());
 
-        setupButton(rightHandButton, Hand.RIGHT.getKeyColor(), Strings.rightHandButtonTooltip, Images.rightHandIcon);
+        setupButton(rightHandButton, Hand.RIGHT.getKeyColorFaded(), Strings.rightHandButtonTooltip, Images.rightHandIcon);
         rightHandButton.setOnAction(e -> rightHandButtonClicked());
     }
 
@@ -105,7 +105,7 @@ public class PlayToolbarView extends HBox {
         boolean isLeftShown = Hand.LEFT.shows();
         if (!isLeftShown || Hand.RIGHT.shows()) {
             Hand.LEFT.setShows(!isLeftShown);
-            Color backgroundColor = !isLeftShown ? Hand.LEFT.getKeyColor() : Colors.text;
+            Color backgroundColor = !isLeftShown ? Hand.LEFT.getKeyColorFaded() : Colors.text;
             setButtonBackground(leftHandButton, backgroundColor, Colors.highlight, 20);
         }
     }
@@ -114,7 +114,7 @@ public class PlayToolbarView extends HBox {
         boolean isRightShown = Hand.RIGHT.shows();
         if (!isRightShown || Hand.LEFT.shows()) {
             Hand.RIGHT.setShows(!isRightShown);
-            Color backgroundColor = !isRightShown ? Hand.RIGHT.getKeyColor() : Colors.text;
+            Color backgroundColor = !isRightShown ? Hand.RIGHT.getKeyColorFaded() : Colors.text;
             setButtonBackground(rightHandButton, backgroundColor, Colors.highlight, 20);
         }
     }

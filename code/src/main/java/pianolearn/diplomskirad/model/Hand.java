@@ -8,15 +8,17 @@ import pianolearn.diplomskirad.constants.Colors;
 
 public enum Hand {
 
-    RIGHT(Colors.accent),
-    LEFT(Colors.highlight);
+    RIGHT(Colors.rightHandColor, Colors.rightHandColorFaded),
+    LEFT(Colors.leftHandColor, Colors.leftHandColorFaded);
 
     private final BooleanProperty shows;
     private final Color keyColor;
+    private final Color keyColorFaded;
 
-    Hand(Color keyColor) {
+    Hand(Color keyColor, Color keyColorFaded) {
         shows = new SimpleBooleanProperty(true);
         this.keyColor = keyColor;
+        this.keyColorFaded = keyColorFaded;
     }
 
     public boolean shows() {
@@ -25,6 +27,10 @@ public enum Hand {
 
     public Color getKeyColor() {
         return keyColor;
+    }
+
+    public Color getKeyColorFaded() {
+        return keyColorFaded;
     }
 
     public void setShows(boolean shows) {

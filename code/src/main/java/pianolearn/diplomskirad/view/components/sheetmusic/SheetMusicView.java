@@ -1,5 +1,6 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import pianolearn.diplomskirad.constants.Colors;
@@ -18,8 +19,8 @@ public class SheetMusicView extends VBox {
 
     private final SongMetadataView songMetadataView = new SongMetadataView();
     private final VBox sheetMusicVBox = new VBox();
-    private final SheetMusicPartView rightHandPartView = new SheetMusicPartView();
-    private final SheetMusicPartView leftHandPartView = new SheetMusicPartView();
+    private final SheetMusicPartView rightHandPartView = new SheetMusicPartView(Hand.RIGHT);
+    private final SheetMusicPartView leftHandPartView = new SheetMusicPartView(Hand.LEFT);
 
     private double lastMeasureEnd = MEASURE_START_X;
     private final Scene scene = NavigationController.INSTANCE.getStage().getScene();
@@ -35,6 +36,7 @@ public class SheetMusicView extends VBox {
 
         getChildren().addAll(songMetadataView, sheetMusicVBox);
         setSpacing(30);
+        setPadding(new Insets(40, 0, 0, 0));
 
         sheetMusicVBox.getChildren().addAll(rightHandPartView, leftHandPartView);
         sheetMusicVBox.setBackground(StyleHelper.background(Colors.text, null));

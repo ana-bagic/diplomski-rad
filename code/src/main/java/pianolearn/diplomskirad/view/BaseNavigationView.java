@@ -28,7 +28,7 @@ public class BaseNavigationView extends BorderPane {
         setBackground(StyleHelper.background(Colors.background, null));
 
         topStackPane.getChildren().add(backButton);
-        topStackPane.setPadding(new Insets(50));
+        topStackPane.setPadding(new Insets(50, 50, 10, 50));
 
         setButtonSize(backButton, 80);
         setButtonBackground(backButton, Colors.background, null, 0);

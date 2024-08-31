@@ -40,7 +40,11 @@ public class Strings {
     // Setup keyboard screen
     public static final String selectKeyboard = "Select your keyboard";
     public static final String refresh = "Refresh";
-    public static final String playNotes = "Play the lowest and the highest note on your keyboard";
+    public static final String playThe = "Play the ";
+    public static final String lowest = "lowest ";
+    public static final String andThe = "and the ";
+    public static final String highest = "highest ";
+    public static final String noteOnYourKeyboard = "note on your keyboard";
 
     // Play screen
     public static final String playButtonTooltip = "Play";

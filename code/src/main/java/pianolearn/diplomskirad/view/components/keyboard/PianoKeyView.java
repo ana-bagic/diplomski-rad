@@ -4,17 +4,18 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Fonts;
+import pianolearn.diplomskirad.model.Hand;
 
 public class PianoKeyView extends StackPane {
 
     private final Rectangle rectangle = new Rectangle();
 
     private boolean isWhite;
+    private Hand hand;
 
     private PianoKeyView() {
         getChildren().add(rectangle);
@@ -65,8 +66,15 @@ public class PianoKeyView extends StackPane {
         rectangle.setHeight(height);
     }
 
-    public void setHighlight(Color color) {
-        rectangle.setFill(color);
+    public void setHighlight(Hand hand) {
+        this.hand = hand;
+        rectangle.setFill(hand.getKeyColorFaded());
+    }
+
+    public void setClicked() {
+        if (hand != null) {
+            rectangle.setFill(hand.getKeyColor());
+        }
     }
 
     public void removeHighlight() {

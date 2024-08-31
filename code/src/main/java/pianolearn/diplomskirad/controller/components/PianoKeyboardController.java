@@ -1,7 +1,6 @@
 package pianolearn.diplomskirad.controller.components;
 
 import javafx.scene.layout.Pane;
-import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Config;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.helper.midi.MidiDeviceManager;
@@ -51,7 +50,7 @@ public class PianoKeyboardController implements BaseViewController {
 
     private void keyPressed(int midiKey) {
         PitchModel key = PitchModel.fromMidi(midiKey);
-        view.setHighlight(key.toString(), Colors.accent);
+        view.setClicked(key.toString());
 
         if (!isWait) return;
 
@@ -77,7 +76,7 @@ public class PianoKeyboardController implements BaseViewController {
     private void handChanged(Hand hand) {
         for (String note : hand == Hand.RIGHT ? rightHandNotesPlaying.keySet() : leftHandNotesPlaying.keySet()) {
             if (hand.shows()) {
-                view.setHighlight(note, hand.getKeyColor());
+                view.setHighlight(note, hand);
             } else {
                 view.removeHighlight(note);
             }
@@ -90,7 +89,7 @@ public class PianoKeyboardController implements BaseViewController {
         if (pitches.isEmpty()) return;
 
         if (hand.shows()) {
-            pitches.forEach(pitch -> view.setHighlight(pitch.toString(), Hand.RIGHT.getKeyColor()));
+            pitches.forEach(pitch -> view.setHighlight(pitch.toString(), hand));
 
             if (isWait) playPauseListener.onAction(false);
         }

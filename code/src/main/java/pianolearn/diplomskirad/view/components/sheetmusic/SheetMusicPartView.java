@@ -6,6 +6,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.listener.NotesPlayListener;
+import pianolearn.diplomskirad.model.Hand;
 import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
 import pianolearn.diplomskirad.model.viewmodel.MusicNodeModel;
 
@@ -23,9 +24,12 @@ public class SheetMusicPartView extends StackPane {
     private final Pane controlLineContainer = new Pane();
     private final Rectangle controlLine = new Rectangle();
 
+    private final Hand hand;
+
     private NotesPlayListener notesPlayListener;
 
-    public SheetMusicPartView() {
+    public SheetMusicPartView(Hand hand) {
+        this.hand = hand;
         setupView();
     }
 
@@ -56,7 +60,7 @@ public class SheetMusicPartView extends StackPane {
     }
 
     public void addMeasure(List<MusicNodeModel> measure, double measureStartX) {
-        MeasureView measureView = new MeasureView(measure);
+        MeasureView measureView = new MeasureView(measure, hand);
         measureView.setPlayNotesListener(notesPlayListener);
         measureViews.add(measureView);
         notesView.getChildren().add(measureView);

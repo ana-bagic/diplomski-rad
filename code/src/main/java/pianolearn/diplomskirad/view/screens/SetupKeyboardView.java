@@ -9,13 +9,16 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.constants.Config;
 import pianolearn.diplomskirad.constants.Fonts;
 import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.listener.EventListener;
 import pianolearn.diplomskirad.listener.MidiDeviceChangeListener;
+import pianolearn.diplomskirad.model.Hand;
 import pianolearn.diplomskirad.model.KeyboardModel;
 import pianolearn.diplomskirad.view.BaseNavigationView;
 import pianolearn.diplomskirad.view.components.keyboard.PianoKeyboardView;
@@ -33,7 +36,7 @@ public class SetupKeyboardView extends BaseNavigationView {
     private final HBox midiDeviceHBox = new HBox();
     private final ComboBox<MidiDevice.Info> midiDeviceComboBox = new ComboBox<>();
     private final Button refreshButton = new Button();
-    private final Label playKeysLabel = new Label();
+    private final TextFlow playKeysTextFlow = new TextFlow();
     private final PianoKeyboardView pianoKeyboardView;
     private final Button confirmButton = new Button();
 
@@ -50,10 +53,11 @@ public class SetupKeyboardView extends BaseNavigationView {
     private void setupView() {
         setCenter(centerVBox);
 
-        centerVBox.getChildren().addAll(selectKeyboardLabel, midiDeviceHBox, playKeysLabel, pianoKeyboardView, confirmButton);
+        centerVBox.getChildren().addAll(selectKeyboardLabel, midiDeviceHBox, playKeysTextFlow, pianoKeyboardView, confirmButton);
         centerVBox.setAlignment(Pos.TOP_CENTER);
-        centerVBox.setSpacing(50);
         centerVBox.setPadding(new Insets(0, 40, 0, 40));
+        centerVBox.setSpacing(40);
+        VBox.setMargin(playKeysTextFlow, new Insets(40, 0, 0, 0));
 
         selectKeyboardLabel.setFont(Fonts.header);
         selectKeyboardLabel.setTextFill(Colors.text);
@@ -71,11 +75,14 @@ public class SetupKeyboardView extends BaseNavigationView {
         setTextButton(refreshButton, Strings.refresh);
         refreshButton.setOnAction(e -> refreshButtonListener.onAction());
 
-        playKeysLabel.setFont(Fonts.header);
-        playKeysLabel.setTextFill(Colors.text);
-        playKeysLabel.setText(Strings.playNotes);
-        playKeysLabel.setWrapText(true);
-        playKeysLabel.setTextAlignment(TextAlignment.CENTER);
+        playKeysTextFlow.getChildren().addAll(
+                makeText(Strings.playThe, Colors.text),
+                makeText(Strings.lowest, Hand.LEFT.getKeyColorFaded()),
+                makeText(Strings.andThe, Colors.text),
+                makeText(Strings.highest, Hand.RIGHT.getKeyColorFaded()),
+                makeText(Strings.noteOnYourKeyboard, Colors.text)
+        );
+        playKeysTextFlow.setTextAlignment(TextAlignment.CENTER);
 
         pianoKeyboardView.setInsets(80);
 
@@ -83,13 +90,20 @@ public class SetupKeyboardView extends BaseNavigationView {
         confirmButton.setOnAction(e -> confirmButtonListener.onAction());
     }
 
+    private Text makeText(String content, Color color) {
+        Text text = new Text(content);
+        text.setFont(Fonts.header);
+        text.setFill(color);
+        return text;
+    }
+
     public void setMidiDeviceItems(ObservableList<MidiDevice.Info> items, MidiDevice.Info selectedItem) {
         midiDeviceComboBox.setItems(items);
         midiDeviceComboBox.setValue(selectedItem);
     }
 
-    public void setHighlight(String keyCode, Color color) {
-        pianoKeyboardView.setHighlight(keyCode, color);
+    public void setHighlight(String keyCode, Hand hand) {
+        pianoKeyboardView.setHighlight(keyCode, hand);
     }
 
     public void removeHighlight(String keyCode) {

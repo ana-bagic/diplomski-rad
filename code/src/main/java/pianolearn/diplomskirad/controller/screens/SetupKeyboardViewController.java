@@ -77,7 +77,7 @@ public class SetupKeyboardViewController implements BaseViewController {
     }
 
     private void setHighlights() {
-        view.setHighlight(lowestPitch.toString(), Hand.LEFT.getKeyColor());
-        view.setHighlight(highestPitch.toString(), Hand.RIGHT.getKeyColor());
+        view.setHighlight(lowestPitch.toString(), Hand.LEFT);
+        view.setHighlight(highestPitch.toString(), Hand.RIGHT);
     }
 }

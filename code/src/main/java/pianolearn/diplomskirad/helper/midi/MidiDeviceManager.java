@@ -1,5 +1,6 @@
 package pianolearn.diplomskirad.helper.midi;
 
+import pianolearn.diplomskirad.constants.Config;
 import pianolearn.diplomskirad.model.KeyboardModel;
 
 import javax.sound.midi.MidiDevice;
@@ -50,6 +51,9 @@ public class MidiDeviceManager {
     }
 
     public static KeyboardModel getKeyboardModel() {
+        if (keyboardModel == null) {
+            keyboardModel = new KeyboardModel(Config.LOWEST_PITCH, Config.HIGHEST_PITCH);
+        }
         return keyboardModel;
     }
 
