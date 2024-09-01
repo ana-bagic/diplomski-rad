@@ -23,7 +23,7 @@ public class SetupKeyboardViewController implements BaseViewController {
     private PitchModel highestPitch;
     private PitchModel lastPressed;
 
-    private final MidiInputReceiver midiInputReceiver = MidiDeviceManager.getReceiver();
+    private final MidiInputReceiver midiInputReceiver = MidiDeviceManager.INSTANCE.getReceiver();
 
     public SetupKeyboardViewController() {
         lowestPitch = Config.LOWEST_PITCH;
@@ -40,10 +40,10 @@ public class SetupKeyboardViewController implements BaseViewController {
     }
 
     private void setupListeners() {
-        view.setBackButtonListener(NavigationController.INSTANCE::pop);
-        view.setMidiDeviceChangeListener(MidiDeviceManager::setDevice);
+        view.setBackButtonListener(this::goBack);
+        view.setMidiDeviceChangeListener(MidiDeviceManager.INSTANCE::setDevice);
         view.setRefreshButtonListener(this::refreshMidiDevices);
-        view.setConfirmButtonListener(() -> MidiDeviceManager.setKeyboardModel(new KeyboardModel(lowestPitch, highestPitch)));
+        view.setConfirmButtonListener(this::confirm);
 
         midiInputReceiver.setKeyPressedListener(this::keyPressed);
     }
@@ -53,9 +53,18 @@ public class SetupKeyboardViewController implements BaseViewController {
         setHighlights();
     }
 
+    private void goBack() {
+        NavigationController.INSTANCE.pop();
+    }
+
     private void refreshMidiDevices() {
-        ObservableList<MidiDevice.Info> deviceInfos = FXCollections.observableList(MidiDeviceManager.getDeviceInfos());
-        view.setMidiDeviceItems(deviceInfos, MidiDeviceManager.getChosenDeviceInfo());
+        ObservableList<MidiDevice.Info> deviceInfos = FXCollections.observableList(MidiDeviceManager.INSTANCE.getDeviceInfos());
+        view.setMidiDeviceItems(deviceInfos, MidiDeviceManager.INSTANCE.getChosenDeviceInfo());
+    }
+
+    private void confirm() {
+        MidiDeviceManager.INSTANCE.setKeyboardModel(new KeyboardModel(lowestPitch, highestPitch));
+        goBack();
     }
 
     private void keyPressed(int midiKey) {

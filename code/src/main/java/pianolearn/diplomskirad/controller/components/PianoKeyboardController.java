@@ -24,8 +24,8 @@ public class PianoKeyboardController implements BaseViewController {
 
     private boolean isWait = true;
 
-    private final MidiInputReceiver midiInputReceiver = MidiDeviceManager.getReceiver();
-    private final KeyboardModel keyboardModel = MidiDeviceManager.getKeyboardModel();
+    private final MidiInputReceiver midiInputReceiver = MidiDeviceManager.INSTANCE.getReceiver();
+    private final KeyboardModel keyboardModel = MidiDeviceManager.INSTANCE.getKeyboardModel();
 
     private PlayChangeListener playPauseListener;
 
@@ -70,7 +70,7 @@ public class PianoKeyboardController implements BaseViewController {
 
     private void keyReleased(int midiKey) {
         PitchModel key = PitchModel.fromMidi(midiKey);
-        view.removeHighlight(key.toString());
+        view.setReleased(key.toString());
     }
 
     private void handChanged(Hand hand) {
@@ -91,12 +91,15 @@ public class PianoKeyboardController implements BaseViewController {
         if (hand.shows()) {
             pitches.forEach(pitch -> view.setHighlight(pitch.toString(), hand));
 
-            if (isWait) playPauseListener.onAction(false);
+            if (isWait) {
+                boolean pause = pitches.stream().anyMatch(keyboardModel::containsPitch);
+                playPauseListener.onAction(!pause);
+            }
         }
 
         pitches.forEach(pitch -> {
             boolean containsPitch = keyboardModel.containsPitch(pitch);
-            rightHandNotesPlaying.put(pitch.toString(), !containsPitch);
+            notesPlaying.put(pitch.toString(), !containsPitch);
         });
     }
 

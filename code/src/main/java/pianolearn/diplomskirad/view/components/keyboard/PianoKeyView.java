@@ -77,7 +77,14 @@ public class PianoKeyView extends StackPane {
         }
     }
 
+    public void setReleased() {
+        if (hand != null) {
+            rectangle.setFill(hand.getKeyColorFaded());
+        }
+    }
+
     public void removeHighlight() {
+        hand = null;
         rectangle.setFill(isWhite ? Colors.whiteKey : Colors.blackKey);
     }
 }

@@ -15,7 +15,8 @@ public enum NavigationController {
     public void init(Stage stage, BaseViewController viewController) {
         this.stage = stage;
         controllerStack.push(viewController);
-        stage.setScene(new Scene(viewController.getView(), 1200, 800));
+
+        stage.setScene(new Scene(viewController.getView()));
         stage.show();
     }
 

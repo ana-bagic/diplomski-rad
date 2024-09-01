@@ -121,7 +121,7 @@ public class PlayViewController implements BaseViewController {
 
     private void close() {
         metronome.close();
-        MidiDeviceManager.close();
+        MidiDeviceManager.INSTANCE.close();
     }
 
     private void playChanged(boolean play) {

@@ -2,7 +2,6 @@ package pianolearn.diplomskirad.view.components.keyboard;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.helper.ScaleHelper;
 import pianolearn.diplomskirad.model.Hand;
@@ -125,6 +124,10 @@ public class PianoKeyboardView extends StackPane {
 
     public void setClicked(String keyCode) {
         keysMap.get(keyCode).setClicked();
+    }
+
+    public void setReleased(String keyCode) {
+        keysMap.get(keyCode).setReleased();
     }
 
     public void removeHighlight(String keyCode) {

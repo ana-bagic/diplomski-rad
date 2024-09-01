@@ -9,19 +9,21 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Transmitter;
 import java.util.*;
 
-public class MidiDeviceManager {
+public enum MidiDeviceManager {
 
-    private static MidiDevice.Info chosenDeviceInfo;
-    private static MidiInputReceiver receiver;
-    private static MidiDevice currentDevice;
+    INSTANCE;
 
-    private static KeyboardModel keyboardModel;
+    private MidiDevice.Info chosenDeviceInfo;
+    private MidiDevice currentDevice;
+    private final MidiInputReceiver receiver = new MidiInputReceiver();
 
-    public static List<MidiDevice.Info> getDeviceInfos() {
+    private KeyboardModel keyboardModel;
+
+    public List<MidiDevice.Info> getDeviceInfos() {
         return Arrays.stream(MidiSystem.getMidiDeviceInfo()).toList();
     }
 
-    public static MidiDevice.Info getChosenDeviceInfo() {
+    public MidiDevice.Info getChosenDeviceInfo() {
         List<MidiDevice.Info> deviceInfos = getDeviceInfos();
         if (deviceInfos.isEmpty()) return null;
 
@@ -31,8 +33,7 @@ public class MidiDeviceManager {
         return chosenDeviceInfo;
     }
 
-    public static void setDevice(MidiDevice.Info deviceInfo) {
-        receiver = new MidiInputReceiver();
+    public void setDevice(MidiDevice.Info deviceInfo) {
         if (getDeviceInfos().isEmpty()) return;
 
         if (deviceInfo != null) chosenDeviceInfo = deviceInfo;
@@ -50,25 +51,28 @@ public class MidiDeviceManager {
         } catch (MidiUnavailableException | NullPointerException ignored) {}
     }
 
-    public static KeyboardModel getKeyboardModel() {
+    public KeyboardModel getKeyboardModel() {
         if (keyboardModel == null) {
             keyboardModel = new KeyboardModel(Config.LOWEST_PITCH, Config.HIGHEST_PITCH);
         }
         return keyboardModel;
     }
 
-    public static void setKeyboardModel(KeyboardModel keyboardModel) {
-        MidiDeviceManager.keyboardModel = keyboardModel;
+    public void setKeyboardModel(KeyboardModel keyboardModel) {
+        this.keyboardModel = keyboardModel;
     }
 
-    public static MidiInputReceiver getReceiver() {
-        if (receiver == null) setDevice(null);
+    public MidiInputReceiver getReceiver() {
+        if (currentDevice == null) {
+            setDevice(null);
+        }
         return receiver;
     }
 
-    public static void close() {
+    public void close() {
         if (currentDevice != null && currentDevice.isOpen()) {
             currentDevice.close();
+            currentDevice = null;
         }
     }
 }

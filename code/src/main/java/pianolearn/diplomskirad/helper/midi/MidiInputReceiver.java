@@ -22,9 +22,9 @@ public class MidiInputReceiver implements Receiver {
             int key = data[1] & 0xFF;
             int speed = data[2] & 0xFF;
 
-            if (status == 144 && speed != 0) {
+            if (status == 144 && speed != 0 && keyPressedListener != null) {
                 keyPressedListener.onAction(key);
-            } else {
+            } else if (keyReleasedListener != null) {
                 keyReleasedListener.onAction(key);
             }
         }
