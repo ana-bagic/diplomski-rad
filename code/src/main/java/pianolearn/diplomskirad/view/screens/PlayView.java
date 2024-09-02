@@ -17,6 +17,9 @@ public class PlayView extends BaseNavigationView {
 
     private void setupView() {
         topStackPane.getChildren().add(playToolbarView);
+
+        playToolbarView.setMinWidth(HBox.USE_PREF_SIZE);
+        playToolbarView.setMaxWidth(HBox.USE_PREF_SIZE);
     }
 
     public void setUsesBothHands(boolean usesBothHands) {
