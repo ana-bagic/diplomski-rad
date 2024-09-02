@@ -5,19 +5,15 @@ import pianolearn.diplomskirad.helper.BravuraHelper;
 import pianolearn.diplomskirad.helper.ScaleHelper;
 import pianolearn.diplomskirad.model.Hand;
 import pianolearn.diplomskirad.model.score.NoteAlphabet;
-import pianolearn.diplomskirad.model.score.NoteType;
 import pianolearn.diplomskirad.model.score.AttributesModel;
 import pianolearn.diplomskirad.model.score.PitchModel;
 import pianolearn.diplomskirad.model.viewmodel.*;
 
 import javax.xml.bind.JAXBElement;
-import java.lang.Double;
 import java.lang.String;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
-
-import static pianolearn.diplomskirad.constants.Config.*;
 
 public class Score {
 
@@ -84,18 +80,11 @@ public class Score {
         Attributes attributes = attributes(part);
         if (attributes == null) return null;
 
-        Optional<Metronome> optionalMetronome = part.getMeasure().getFirst().getNoteOrBackupOrForward()
-                .stream().filter(n -> n instanceof Direction).map(d -> ((Direction) d).getDirectionType())
-                .flatMap(List::stream).map(DirectionType::getMetronome)
-                .filter(Objects::nonNull).filter(m -> m.getBeatUnit() != null).findAny();
-        Metronome metronome = optionalMetronome.orElse(null);
-
         boolean isRightHandTreble = true;
         boolean isLeftHandTreble = false;
         int beats = 4;
         int beatUnit = 4;
         int bpm = 60;
-        NoteType beatUnitTempo = NoteType.QUARTER;
         int divisions = 8;
         int fifths = 0;
         Set<NoteAlphabet> scale = Collections.emptySet();
@@ -140,17 +129,15 @@ public class Score {
             staves = stavesInteger.intValue();
         }
 
-        if (metronome != null) {
-            String beatUnitString = (String) metronome.getBeatUnit().getFirst();
-            beatUnitTempo = NoteType.fromType(beatUnitString);
-            PerMinute perMinute = metronome.getPerMinute();
-            if (perMinute != null) {
-                bpm = (int) Double.parseDouble(perMinute.getValue());
-            }
+        Optional<BigDecimal> tempo = part.getMeasure().getFirst().getNoteOrBackupOrForward()
+                .stream().filter(n -> n instanceof Direction).map(d -> ((Direction) d).getSound())
+                .filter(Objects::nonNull).map(Sound::getTempo).findFirst();
+        if (tempo.isPresent()) {
+            bpm = tempo.get().intValue();
         }
 
         return new AttributesModel(isRightHandTreble, isLeftHandTreble,
-                beats, beatUnit, bpm, beatUnitTempo, divisions, fifths, scale, staves);
+                beats, beatUnit, bpm, divisions, fifths, scale, staves);
     }
 
     public static String title() {
@@ -189,10 +176,7 @@ public class Score {
         List<MusicNodeModel> leftHandMeasure = hasBothHands ? measureModel(nbfList, Hand.LEFT, attributes) : Collections.emptyList();
         ScaleHelper.setLedgers(leftHandMeasure);
 
-        MeasurePairModel measurePair = new MeasurePairModel(hasBothHands, rightHandMeasure, leftHandMeasure);
-        calculateDistances(measurePair);
-
-        return measurePair;
+        return new MeasurePairModel(hasBothHands, rightHandMeasure, leftHandMeasure);
     }
 
     private static List<MusicNodeModel> measureModel(LinkedList<Object> nbfList, Hand hand, AttributesModel attributes) {
@@ -279,50 +263,5 @@ public class Score {
         Stem stem = note.getStem();
         if (stem == null) return true;
         return stem.getValue().value().equalsIgnoreCase("up");
-    }
-
-    private static void calculateDistances(MeasurePairModel measurePair) {
-        List<MusicNodeModel> rightHand = measurePair.getRightHandMeasure();
-        List<MusicNodeModel> leftHand = measurePair.getLeftHandMeasure();
-        if (rightHand.isEmpty()) return;
-
-        int minDurationRight = rightHand.stream().mapToInt(MusicNodeModel::getDuration).min().orElse(Integer.MAX_VALUE);
-        int minDurationLeft = leftHand.stream().mapToInt(MusicNodeModel::getDuration).min().orElse(Integer.MAX_VALUE);
-        double minDuration = Math.min(minDurationRight, minDurationLeft);
-
-        setDistances(rightHand, minDuration);
-        if (measurePair.hasBothHands()) {
-            setDistances(leftHand, minDuration);
-        }
-
-        setMainHand(measurePair);
-        List<MusicNodeModel> mainHand = measurePair.getMainHand();
-        double notesWidth = mainHand.stream().mapToDouble(MusicNodeModel::getDistanceToNext).sum();
-        double measureWidth = notesWidth + BARLINE_NOTE_SPACE;
-        double notesWidthWithoutLast = notesWidth - mainHand.getLast().getDistanceToNext();
-
-        measurePair.setWidth(measureWidth);
-        measurePair.setNotesWidthWithoutLast(notesWidthWithoutLast);
-    }
-
-    private static void setDistances(List<MusicNodeModel> measure, double minDuration) {
-        double distanceFromPrev = BARLINE_NOTE_SPACE;
-        for (MusicNodeModel model : measure) {
-            double distanceToNext = (model.getDuration() / minDuration) * NOTE_NOTE_SPACE;
-            model.setDistanceFromPrev(distanceFromPrev);
-            model.setDistanceToNext(distanceToNext);
-            distanceFromPrev = distanceToNext;
-        }
-    }
-
-    private static void setMainHand(MeasurePairModel measurePair) {
-        if (measurePair.hasBothHands()) {
-            int rightLastDuration = measurePair.getRightHandMeasure().getLast().getDuration();
-            int leftLastDuration = measurePair.getLeftHandMeasure().getLast().getDuration();
-
-            measurePair.setMainHand(rightLastDuration <= leftLastDuration);
-        } else {
-            measurePair.setMainHand(true);
-        }
     }
 }

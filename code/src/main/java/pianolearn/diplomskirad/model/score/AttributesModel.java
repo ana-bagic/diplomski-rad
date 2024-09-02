@@ -12,7 +12,6 @@ public record AttributesModel(
         int beats,
         int beatUnit,
         int bpm,
-        NoteType beatUnitTempo,
         int divisions,
 
         int fifths,

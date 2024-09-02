@@ -51,7 +51,7 @@ public class MeasureView extends Pane {
         setLayoutX(getLayoutX() - amount);
 
         for (MusicNodeView node : nodeViews) {
-            double nodeX = node.localToScene(node.getBoundsInLocal()).getMaxX() - 15;
+            double nodeX = node.localToScene(node.getBoundsInLocal()).getMinX();
             if (nodeX < NOTE_DISAPPEAR_X) {
                 node.setVisible(false);
                 continue;
@@ -59,14 +59,14 @@ public class MeasureView extends Pane {
 
             if (node == barLineNode) continue;
 
-            if (nodeX < CONTROL_LINE_X + CONTROL_LINE_WIDTH && !node.isPlayed()) {
+            if (nodeX < CONTROL_LINE_X && !node.isPlayed()) {
                 node.setColor(hand.getKeyColor());
                 notesPlayListener.onAction(node.getPitches(), hand);
                 node.setPlayed();
                 continue;
             }
 
-            if (nodeX < CONTROL_LINE_X + CONTROL_LINE_WIDTH + 20 && !node.isPrepared()) {
+            if (nodeX < CONTROL_LINE_X + 20 && !node.isPrepared()) {
                 notesEndListener.onAction(hand);
                 node.setPrepared();
             }
