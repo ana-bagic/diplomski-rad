@@ -5,6 +5,7 @@ import pianolearn.diplomskirad.constants.Config;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.helper.midi.MidiDeviceManager;
 import pianolearn.diplomskirad.helper.midi.MidiInputReceiver;
+import pianolearn.diplomskirad.helper.midi.MidiPlayback;
 import pianolearn.diplomskirad.listener.PlayChangeListener;
 import pianolearn.diplomskirad.model.Hand;
 import pianolearn.diplomskirad.model.KeyboardModel;
@@ -19,18 +20,20 @@ public class PianoKeyboardController implements BaseViewController {
 
     private final PianoKeyboardView view;
 
-    private final Map<String, Boolean> rightHandNotesPlaying = new HashMap<>();
-    private final Map<String, Boolean> leftHandNotesPlaying = new HashMap<>();
+    private final Map<PitchModel, Boolean> rightHandNotesPlaying = new HashMap<>();
+    private final Map<PitchModel, Boolean> leftHandNotesPlaying = new HashMap<>();
 
     private boolean isWait = true;
 
     private final MidiInputReceiver midiInputReceiver = MidiDeviceManager.INSTANCE.getReceiver();
     private final KeyboardModel keyboardModel = MidiDeviceManager.INSTANCE.getKeyboardModel();
+    private final MidiPlayback midiPlayback = MidiPlayback.INSTANCE;
 
     private PlayChangeListener playPauseListener;
 
     public PianoKeyboardController() {
         view = new PianoKeyboardView(new KeyboardModel(Config.LOWEST_PITCH, Config.HIGHEST_PITCH));
+        midiPlayback.open();
 
         setupListeners();
     }
@@ -54,12 +57,12 @@ public class PianoKeyboardController implements BaseViewController {
 
         if (!isWait) return;
 
-        if (rightHandNotesPlaying.containsKey(key.toString())) {
-            rightHandNotesPlaying.put(key.toString(), true);
+        if (rightHandNotesPlaying.containsKey(key)) {
+            rightHandNotesPlaying.put(key, true);
         }
 
-        if (leftHandNotesPlaying.containsKey(key.toString())) {
-            leftHandNotesPlaying.put(key.toString(), true);
+        if (leftHandNotesPlaying.containsKey(key)) {
+            leftHandNotesPlaying.put(key, true);
         }
 
         if (Hand.RIGHT.shows() && rightHandNotesPlaying.containsValue(false)
@@ -74,43 +77,48 @@ public class PianoKeyboardController implements BaseViewController {
     }
 
     private void handChanged(Hand hand) {
-        for (String note : hand == Hand.RIGHT ? rightHandNotesPlaying.keySet() : leftHandNotesPlaying.keySet()) {
+        for (PitchModel note : hand == Hand.RIGHT ? rightHandNotesPlaying.keySet() : leftHandNotesPlaying.keySet()) {
             if (hand.shows()) {
-                view.setHighlight(note, hand);
+                view.setHighlight(note.toString(), hand);
             } else {
-                view.removeHighlight(note);
+                view.removeHighlight(note.toString());
             }
         }
     }
 
-    public void playNotes(List<PitchModel> pitches, Hand hand) {
-        Map<String, Boolean> notesPlaying = hand == Hand.RIGHT ? rightHandNotesPlaying : leftHandNotesPlaying;
-        clearNotes(notesPlaying);
-        if (pitches.isEmpty()) return;
+    public void playNotes(List<PitchModel> notes, Hand hand) {
+        Map<PitchModel, Boolean> notesPlaying = hand == Hand.RIGHT ? rightHandNotesPlaying : leftHandNotesPlaying;
+        if (notes.isEmpty()) return;
 
         if (hand.shows()) {
-            pitches.forEach(pitch -> view.setHighlight(pitch.toString(), hand));
+            notes.forEach(note -> {
+                view.setHighlight(note.toString(), hand);
+                midiPlayback.play(note.toMidi());
+            });
 
             if (isWait) {
-                boolean pause = pitches.stream().anyMatch(keyboardModel::containsPitch);
+                boolean pause = notes.stream().anyMatch(keyboardModel::containsPitch);
                 playPauseListener.onAction(!pause);
             }
         }
 
-        pitches.forEach(pitch -> {
-            boolean containsPitch = keyboardModel.containsPitch(pitch);
-            notesPlaying.put(pitch.toString(), !containsPitch);
+        notes.forEach(note -> {
+            boolean containsPitch = keyboardModel.containsPitch(note);
+            notesPlaying.put(note, !containsPitch);
         });
     }
 
-    public void reset() {
-        clearNotes(rightHandNotesPlaying);
-        clearNotes(leftHandNotesPlaying);
+    public void endNotes(Hand hand) {
+        Map<PitchModel, Boolean> notesPlaying = hand == Hand.RIGHT ? rightHandNotesPlaying : leftHandNotesPlaying;
+        notesPlaying.keySet().forEach(note -> midiPlayback.stop(note.toMidi()));
+
+        notesPlaying.keySet().forEach(note -> view.removeHighlight(note.toString()));
+        notesPlaying.clear();
     }
 
-    private void clearNotes(Map<String, Boolean> notes) {
-        notes.keySet().forEach(view::removeHighlight);
-        notes.clear();
+    public void reset() {
+        endNotes(Hand.RIGHT);
+        endNotes(Hand.LEFT);
     }
 
     public void setWait(boolean isWait) {

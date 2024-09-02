@@ -12,8 +12,8 @@ import pianolearn.diplomskirad.controller.components.SheetMusicController;
 import pianolearn.diplomskirad.helper.TempoHelper;
 import pianolearn.diplomskirad.helper.midi.Metronome;
 import pianolearn.diplomskirad.helper.midi.MidiDeviceManager;
+import pianolearn.diplomskirad.helper.midi.MidiPlayback;
 import pianolearn.diplomskirad.helper.xml.Score;
-import pianolearn.diplomskirad.model.Hand;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
 import pianolearn.diplomskirad.model.score.AttributesModel;
 import pianolearn.diplomskirad.model.viewmodel.MeasurePairModel;
@@ -86,8 +86,8 @@ public class PlayViewController implements BaseViewController {
 
     private void setupListeners() {
         view.setBackButtonListener(() -> {
-            NavigationController.INSTANCE.pop();
             close();
+            NavigationController.INSTANCE.pop();
         });
 
         view.setPlayButtonListener(this::playChanged);
@@ -95,9 +95,8 @@ public class PlayViewController implements BaseViewController {
         view.setSpeedSliderListener(this::speedChanged);
 
         sheetMusicController.setMeasurePairCreateListener(measurePairs::add);
-        sheetMusicController.setNotesPlayListeners(
-                (pitches) -> pianoKeyboardController.playNotes(pitches, Hand.RIGHT),
-                (pitches) -> pianoKeyboardController.playNotes(pitches, Hand.LEFT));
+        sheetMusicController.setNotesPlayListener(pianoKeyboardController::playNotes);
+        sheetMusicController.setNotesEndListener(pianoKeyboardController::endNotes);
 
         pianoKeyboardController.setPlayPauseListener(this::playChanged);
 
@@ -120,8 +119,9 @@ public class PlayViewController implements BaseViewController {
     }
 
     private void close() {
-        metronome.close();
         MidiDeviceManager.INSTANCE.close();
+        metronome.close();
+        MidiPlayback.INSTANCE.close();
     }
 
     private void playChanged(boolean play) {

@@ -42,8 +42,8 @@ public class UploadViewController implements BaseViewController {
             String fileName = selectedFile.getName();
             view.setFileChosen(fileName);
             view.setCanConfirm(false);
-            boolean success = XMLConverter.INSTANCE.unmarshall(selectedFile);
 
+            boolean success = XMLConverter.INSTANCE.unmarshall(selectedFile);
             if (!success) {
                 view.setError(Strings.xmlLoadError(fileName));
                 return;

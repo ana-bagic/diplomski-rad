@@ -1,13 +1,17 @@
 package pianolearn.diplomskirad.model.score;
 
-import pianolearn.diplomskirad.helper.ScaleHelper;
+import static pianolearn.diplomskirad.helper.ScaleHelper.ALPHABET;
 
 public record PitchModel(NoteAlphabet key, int octave) implements Comparable<PitchModel> {
 
     public static PitchModel fromMidi(int midiKey) {
-        NoteAlphabet noteAlphabet = ScaleHelper.ALPHABET[midiKey % 12];
-        int octave = midiKey / 12 - 1;
+        NoteAlphabet noteAlphabet = ALPHABET[midiKey % ALPHABET.length];
+        int octave = midiKey / ALPHABET.length - 1;
         return new PitchModel(noteAlphabet, octave);
+    }
+
+    public int toMidi() {
+        return (octave + 1) * ALPHABET.length + key.getChromaNumber();
     }
 
     @Override

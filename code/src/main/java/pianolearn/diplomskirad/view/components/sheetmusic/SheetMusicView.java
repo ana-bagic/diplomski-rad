@@ -7,6 +7,7 @@ import pianolearn.diplomskirad.constants.Colors;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.helper.StyleHelper;
 import pianolearn.diplomskirad.listener.EventListener;
+import pianolearn.diplomskirad.listener.NotesEndListener;
 import pianolearn.diplomskirad.listener.NotesPlayListener;
 import pianolearn.diplomskirad.model.Hand;
 import pianolearn.diplomskirad.model.viewmodel.ClefTimeKeyModel;
@@ -92,8 +93,13 @@ public class SheetMusicView extends VBox {
         newMeasureNeededListener = listener;
     }
 
-    public void setNotesPlayListeners(NotesPlayListener rightHandListener, NotesPlayListener leftHandListener) {
-        rightHandPartView.setNotesPlayListener(rightHandListener);
-        leftHandPartView.setNotesPlayListener(leftHandListener);
+    public void setNotesPlayListener(NotesPlayListener listener) {
+        rightHandPartView.setNotesPlayListener(listener);
+        leftHandPartView.setNotesPlayListener(listener);
+    }
+
+    public void setNotesEndListener(NotesEndListener listener) {
+        rightHandPartView.setNotesEndListener(listener);
+        leftHandPartView.setNotesEndListener(listener);
     }
 }

@@ -15,6 +15,7 @@ public class MusicNodeView extends Pane {
     private final List<NoteView> noteViews = new LinkedList<>();
 
     private boolean played = false;
+    private boolean prepared = false;
 
     public MusicNodeView() {
         NoteView noteView = new NoteView();
@@ -42,6 +43,10 @@ public class MusicNodeView extends Pane {
         return played;
     }
 
+    public boolean isPrepared() {
+        return prepared;
+    }
+
     public void setText(String text) {
         noteViews.forEach(noteView -> noteView.setText(text));
     }
@@ -60,7 +65,11 @@ public class MusicNodeView extends Pane {
         noteViews.forEach(n -> n.setColor(color));
     }
 
-    public void setPlayed(boolean played) {
-        this.played = played;
+    public void setPlayed() {
+        played = true;
+    }
+
+    public void setPrepared() {
+        prepared = true;
     }
 }

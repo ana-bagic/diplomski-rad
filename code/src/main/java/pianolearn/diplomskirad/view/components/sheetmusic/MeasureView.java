@@ -1,7 +1,7 @@
 package pianolearn.diplomskirad.view.components.sheetmusic;
 
 import javafx.scene.layout.Pane;
-import pianolearn.diplomskirad.constants.Colors;
+import pianolearn.diplomskirad.listener.NotesEndListener;
 import pianolearn.diplomskirad.listener.NotesPlayListener;
 import pianolearn.diplomskirad.model.Hand;
 import pianolearn.diplomskirad.model.viewmodel.MusicNodeModel;
@@ -20,6 +20,7 @@ public class MeasureView extends Pane {
     private final Hand hand;
 
     private NotesPlayListener notesPlayListener;
+    private NotesEndListener notesEndListener;
 
     public MeasureView(List<MusicNodeModel> measure, Hand hand) {
         this.hand = hand;
@@ -53,19 +54,30 @@ public class MeasureView extends Pane {
             double nodeX = node.localToScene(node.getBoundsInLocal()).getMaxX() - 15;
             if (nodeX < NOTE_DISAPPEAR_X) {
                 node.setVisible(false);
-            } else if (nodeX < CONTROL_LINE_X) {
+                continue;
+            }
 
-            } else if (nodeX < CONTROL_LINE_X + CONTROL_LINE_WIDTH && node != barLineNode) {
+            if (node == barLineNode) continue;
+
+            if (nodeX < CONTROL_LINE_X + CONTROL_LINE_WIDTH && !node.isPlayed()) {
                 node.setColor(hand.getKeyColor());
-                if (!node.isPlayed()) {
-                    notesPlayListener.onAction(node.getPitches());
-                    node.setPlayed(true);
-                }
+                notesPlayListener.onAction(node.getPitches(), hand);
+                node.setPlayed();
+                continue;
+            }
+
+            if (nodeX < CONTROL_LINE_X + CONTROL_LINE_WIDTH + 20 && !node.isPrepared()) {
+                notesEndListener.onAction(hand);
+                node.setPrepared();
             }
         }
     }
 
-    public void setPlayNotesListener(NotesPlayListener listener) {
+    public void setNotesPlayListener(NotesPlayListener listener) {
         notesPlayListener = listener;
+    }
+
+    public void setNotesEndListener(NotesEndListener listener) {
+        notesEndListener = listener;
     }
 }

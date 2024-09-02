@@ -10,6 +10,9 @@ public class Config {
     public static final int METRONOME_SOUND = 37;
     public static final int METRONOME_VOLUME = 600;
 
+    // playback
+    public static final int PLAYBACK_VOLUME = 700;
+
     // sheet music
     public static final double STAFF_LINE_SPACING = 16;
     public static final int STAFF_LINES = 5;
