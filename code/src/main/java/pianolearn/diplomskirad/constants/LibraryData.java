@@ -14,9 +14,9 @@ public class LibraryData {
     private static final LibraryItemModel modernEasySong
             = new LibraryItemModel("Feliz Navidad", "José Feliciano", Images.felicianoImage, XmlFiles.felizNavidad);
     private static final LibraryItemModel modernMediumSong
-            = new LibraryItemModel("He Is A Pirate", "Geoff Zanelli, Hans Zimmer, Klaus Badelt", Images.pirateImage, XmlFiles.heIsAPirate);
+            = new LibraryItemModel("He Is A Pirate", "Hans Zimmer, Klaus Badelt", Images.pirateImage, XmlFiles.heIsAPirate);
     private static final LibraryItemModel modernHardSong
-            = new LibraryItemModel("Over The Rainbow", "Judy Garland ", Images.garlandImage, XmlFiles.overTheRainbow);
+            = new LibraryItemModel("Over The Rainbow", "Harold Arlen", Images.garlandImage, XmlFiles.overTheRainbow);
 
     public static LibraryItemModel[] getClassicalSongs() {
         return new LibraryItemModel[]{classicalEasySong, classicalMediumSong, classicalHardSong};
