@@ -42,6 +42,7 @@ public class LibraryRowItemView extends VBox {
         setAlignment(Pos.CENTER);
         setSpacing(10);
         setPrefHeight(320);
+        setPrefWidth(320);
 
         coverStackPane.getChildren().addAll(coverButton, coverImageView);
 

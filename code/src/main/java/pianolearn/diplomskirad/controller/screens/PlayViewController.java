@@ -2,9 +2,12 @@ package pianolearn.diplomskirad.controller.screens;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import org.audiveris.proxymusic.ScorePartwise;
+import pianolearn.diplomskirad.constants.Strings;
 import pianolearn.diplomskirad.controller.BaseViewController;
 import pianolearn.diplomskirad.controller.NavigationController;
 import pianolearn.diplomskirad.controller.components.PianoKeyboardController;
@@ -116,6 +119,7 @@ public class PlayViewController implements BaseViewController {
     }
 
     private void close() {
+        stopClicked();
         MidiDeviceManager.INSTANCE.close();
         MidiPlayback.INSTANCE.close();
 //        metronome.close();
@@ -166,6 +170,8 @@ public class PlayViewController implements BaseViewController {
     private boolean setupNewRegion() throws InterruptedException {
         if (nextPlayMeasureIndex >= measurePairs.size()) {
 //            if (metronomeThread != null) metronomeThread.join();
+            stopClicked();
+            showResults();
             return false;
         }
 
@@ -208,4 +214,14 @@ public class PlayViewController implements BaseViewController {
 //        metronomeThread = new Thread(metronome);
 //        metronomeThread.start();
 //    }
+
+    private void showResults() {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(Strings.resultsTitle);
+            alert.setHeaderText(Strings.resultsHeader);
+            alert.setContentText(Strings.resultsContent(80, true, 70, 90));
+            alert.showAndWait();
+        });
+    }
 }

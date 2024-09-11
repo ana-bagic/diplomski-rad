@@ -59,4 +59,12 @@ public class Strings {
     public static final String rightHandButtonTooltip = "Right hand";
     public static final String titlePlaceholder = "Title";
     public static final String artistPlaceholder = "Artist";
+    public static final String resultsTitle = "Results";
+    public static final String resultsHeader = "Here are your results";
+    public static String resultsContent(double totalPercentage, boolean breakdown,
+                                        double rightHandPercentage, double leftHandPercentage) {
+        return String.format("You correctly played %.2f%% of the whole song.\n" +
+                (breakdown ? "You correctly played %.2f%% of the right hand part and %.2f%% of the left hand part." : ""),
+                totalPercentage, rightHandPercentage, leftHandPercentage);
+    }
 }

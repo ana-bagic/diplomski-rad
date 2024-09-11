@@ -1,6 +1,7 @@
 package pianolearn.diplomskirad.helper.xml;
 
 import org.audiveris.proxymusic.*;
+import pianolearn.diplomskirad.constants.SheetMusicSymbols;
 import pianolearn.diplomskirad.helper.BravuraHelper;
 import pianolearn.diplomskirad.helper.ScaleHelper;
 import pianolearn.diplomskirad.model.Hand;
@@ -131,7 +132,7 @@ public class Score {
 
         Optional<BigDecimal> tempo = part.getMeasure().getFirst().getNoteOrBackupOrForward()
                 .stream().filter(n -> n instanceof Direction).map(d -> ((Direction) d).getSound())
-                .filter(Objects::nonNull).map(Sound::getTempo).findFirst();
+                .filter(Objects::nonNull).map(Sound::getTempo).filter(Objects::nonNull).findFirst();
         if (tempo.isPresent()) {
             bpm = tempo.get().intValue();
         }
@@ -227,12 +228,12 @@ public class Score {
     }
 
     private static NoteModel noteModel(Note note, Hand hand, AttributesModel attributes) {
-        if (note.getType() == null) return null;
-        String noteType = note.getType().getValue();
+        NoteType noteType = note.getType();
+        String typeValue = noteType == null ? SheetMusicSymbols.wholeRest : noteType.getValue();
 
         Pitch pitch = note.getPitch();
         if (pitch != null) {
-            String type = BravuraHelper.getBravuraNote(noteType, isStemUp(note));
+            String type = BravuraHelper.getBravuraNote(typeValue, isStemUp(note));
             String dot = BravuraHelper.getBravuraDot(note.getDot().size());
 
             NoteModel noteModel = new NoteModel(type);
@@ -244,7 +245,7 @@ public class Score {
         }
 
         if (note.getRest() != null) {
-            String type = BravuraHelper.getBravuraRest(noteType);
+            String type = BravuraHelper.getBravuraRest(typeValue);
             return new NoteModel(type);
         }
 

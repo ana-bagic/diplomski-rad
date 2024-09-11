@@ -7,6 +7,7 @@ import java.util.Objects;
 public class Images {
 
     private static final String iconsPath = "icons/";
+    private static final String coversPath = "covers/";
 
     public static final Image uploadIcon = getImage(iconsPath + "upload.png");
     public static final Image musicLibraryIcon = getImage(iconsPath + "music-library.png");
@@ -20,7 +21,13 @@ public class Images {
     public static final Image leftHandIcon = getImage(iconsPath + "left-hand.png");
     public static final Image rightHandIcon = getImage(iconsPath + "right-hand.png");
 
-    public static final Image beethovenImage = getImage("beethoven.jpg");
+    public static final Image petzoldImage = getImage(coversPath + "petzold.jpeg");
+    public static final Image beethovenImage = getImage(coversPath + "beethoven.jpg");
+    public static final Image tchaikovskyImage = getImage(coversPath + "tchaikovsky.jpg");
+
+    public static final Image felicianoImage = getImage(coversPath + "feliciano.jpeg");
+    public static final Image pirateImage = getImage(coversPath + "pirate.png");
+    public static final Image garlandImage = getImage(coversPath + "garland.jpg");
 
     private static Image getImage(String image) {
         String resource = "/images/" + image;
