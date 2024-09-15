@@ -12,9 +12,7 @@ import pianolearn.diplomskirad.model.KeyboardModel;
 import pianolearn.diplomskirad.model.score.PitchModel;
 import pianolearn.diplomskirad.view.components.keyboard.PianoKeyboardView;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PianoKeyboardController implements BaseViewController {
 
@@ -22,6 +20,8 @@ public class PianoKeyboardController implements BaseViewController {
 
     private final Map<PitchModel, Boolean> rightHandNotesPlaying = new HashMap<>();
     private final Map<PitchModel, Boolean> leftHandNotesPlaying = new HashMap<>();
+    private final List<Boolean> rightHandNotesPlayed = new LinkedList<>();
+    private final List<Boolean> leftHandNotesPlayed = new LinkedList<>();
 
     private boolean isWait = true;
 
@@ -55,8 +55,6 @@ public class PianoKeyboardController implements BaseViewController {
         PitchModel key = PitchModel.fromMidi(midiKey);
         view.setClicked(key.toString());
 
-        if (!isWait) return;
-
         if (rightHandNotesPlaying.containsKey(key)) {
             rightHandNotesPlaying.put(key, true);
         }
@@ -65,7 +63,8 @@ public class PianoKeyboardController implements BaseViewController {
             leftHandNotesPlaying.put(key, true);
         }
 
-        if (Hand.RIGHT.shows() && rightHandNotesPlaying.containsValue(false)
+        if (!isWait
+                || Hand.RIGHT.shows() && rightHandNotesPlaying.containsValue(false)
                 || Hand.LEFT.shows() && leftHandNotesPlaying.containsValue(false)) return;
 
         playPauseListener.onAction(true);
@@ -87,6 +86,8 @@ public class PianoKeyboardController implements BaseViewController {
     }
 
     public void playNotes(List<PitchModel> notes, Hand hand) {
+        validatePrevNotes(hand);
+
         Map<PitchModel, Boolean> notesPlaying = hand == Hand.RIGHT ? rightHandNotesPlaying : leftHandNotesPlaying;
         if (notes.isEmpty()) return;
 
@@ -108,17 +109,24 @@ public class PianoKeyboardController implements BaseViewController {
         });
     }
 
+    private void validatePrevNotes(Hand hand) {
+        Map<PitchModel, Boolean> notesPlaying = hand == Hand.RIGHT ? rightHandNotesPlaying : leftHandNotesPlaying;
+        List<Boolean> notesPlayed = hand == Hand.RIGHT ? rightHandNotesPlayed : leftHandNotesPlayed;
+        notesPlayed.addAll(notesPlaying.values());
+        notesPlaying.clear();
+    }
+
     public void endNotes(Hand hand) {
         Map<PitchModel, Boolean> notesPlaying = hand == Hand.RIGHT ? rightHandNotesPlaying : leftHandNotesPlaying;
         notesPlaying.keySet().forEach(note -> midiPlayback.stop(note.toMidi()));
-
         notesPlaying.keySet().forEach(note -> view.removeHighlight(note.toString()));
-        notesPlaying.clear();
     }
 
     public void reset() {
         endNotes(Hand.RIGHT);
         endNotes(Hand.LEFT);
+        validatePrevNotes(Hand.RIGHT);
+        validatePrevNotes(Hand.LEFT);
     }
 
     public void setWait(boolean isWait) {
@@ -127,5 +135,21 @@ public class PianoKeyboardController implements BaseViewController {
 
     public void setPlayPauseListener(PlayChangeListener listener) {
         playPauseListener = listener;
+    }
+
+    public double getResultsPercentage() {
+        long countRight = rightHandNotesPlayed.stream().filter(v -> v.equals(Boolean.TRUE)).count();
+        long countLeft = leftHandNotesPlayed.stream().filter(v -> v.equals(Boolean.TRUE)).count();
+
+        double percentage = (double) (countRight + countLeft) / (rightHandNotesPlayed.size() + leftHandNotesPlayed.size());
+        return percentage * 100;
+    }
+
+    public double getResultsPercentageHand(Hand hand) {
+        List<Boolean> notesPlayed = hand == Hand.RIGHT ? rightHandNotesPlayed : leftHandNotesPlayed;
+        long count = notesPlayed.stream().filter(v -> v.equals(Boolean.TRUE)).count();
+
+        double percentage = (double) count / notesPlayed.size();
+        return percentage * 100;
     }
 }

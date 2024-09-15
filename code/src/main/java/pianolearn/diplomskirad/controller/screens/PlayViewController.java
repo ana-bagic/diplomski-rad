@@ -16,6 +16,7 @@ import pianolearn.diplomskirad.helper.TempoHelper;
 import pianolearn.diplomskirad.helper.midi.MidiDeviceManager;
 import pianolearn.diplomskirad.helper.midi.MidiPlayback;
 import pianolearn.diplomskirad.helper.xml.Score;
+import pianolearn.diplomskirad.model.Hand;
 import pianolearn.diplomskirad.model.PlaybackSpeed;
 import pianolearn.diplomskirad.model.score.AttributesModel;
 import pianolearn.diplomskirad.model.viewmodel.MeasurePairModel;
@@ -170,8 +171,8 @@ public class PlayViewController implements BaseViewController {
     private boolean setupNewRegion() throws InterruptedException {
         if (nextPlayMeasureIndex >= measurePairs.size()) {
 //            if (metronomeThread != null) metronomeThread.join();
-            stopClicked();
             showResults();
+            stopClicked();
             return false;
         }
 
@@ -216,11 +217,21 @@ public class PlayViewController implements BaseViewController {
 //    }
 
     private void showResults() {
+        String contentText;
+        double percentage = pianoKeyboardController.getResultsPercentage();
+        if (attributes.usesBothHands()) {
+            double percentageRight = pianoKeyboardController.getResultsPercentageHand(Hand.RIGHT);
+            double percentageLeft = pianoKeyboardController.getResultsPercentageHand(Hand.LEFT);
+            contentText = Strings.resultsContent(percentage, true, percentageRight, percentageLeft);
+        } else {
+            contentText = Strings.resultsContent(percentage, false, 0, 0);
+        }
+
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle(Strings.resultsTitle);
             alert.setHeaderText(Strings.resultsHeader);
-            alert.setContentText(Strings.resultsContent(80, true, 70, 90));
+            alert.setContentText(contentText);
             alert.showAndWait();
         });
     }
